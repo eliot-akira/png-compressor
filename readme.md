@@ -12,7 +12,7 @@ It can be useful to encode data, such as application state, into an image file t
 
 For `gzip` compression and decompression, it uses the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and on server side.
 
-To convert the compressed data into PNG image, a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) renders to [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) on a separate thread and transfers the result.
+TODO: To convert the compressed data into PNG image, a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) renders to [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) on a separate thread and transfers the result.
 
 ## Install
 
