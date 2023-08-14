@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PNG Compressor</title>
+  <style>
+html, body {
+  margin: 0;
+}
+body {
+  padding: 1rem;
+}
+body, p, textarea, pre {
+  font-size: 16px;
+}
+p {
+  margin: 1rem 0;
+}
+.result {
+  background-color: #eee;
+  min-height: 3rem;
+}
+textarea, .result, .result-image {
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  padding: .5rem;
+}
+
+.result, #decode textarea {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+#encode .result, #decode .result-image {
+  max-width: 220px;
+  image-rendering: pixelated;
+}
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+input.visually-hidden:is(:focus, :focus-within) + label {
+  outline: thin dotted;
+}
+
+</style>
+</head>
+<body>
+
+  <h1>PNG Compressor</h1>
+
+  <article>
+    <section id=encode>
+
+      <h1>Encode</h1>
+
+      <p><textarea class="input-text" cols=60 rows=10>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</textarea></p>
+
+      <p>
+      <button type=button class="button action-clear">Clear</button>
+      <button type=button class="button action-download">Download</button>
+      </p>
+
+      <h4>Result</h4>
+
+      <div class=stats></div>
+      <p><img class="result" /></p>
+
+    </section>
+    <hr>
+    <section id=decode>
+
+      <h1>Decode</h1>
+
+      <p>
+        <input type=file id=input-image class="input-image visually-hidden" accept="image/png" />
+        <button type=button><label for="input-image">
+          Select .png file
+        </label></button>
+      </p>
+      <p><button type=button class="button action-clear">Clear</button></p>
+
+      <h4>Result</h4>
+      <p><pre class="result"></pre></p>
+
+      <p><img class="result-image" /></p>
+
+    </section>
+  </article>
+
+  <script src=png-compressor.js></script>
+  <script type=module>
+// import { encode, decode } from './esm/index.js'
+const { encodeBlob, decode } = PNGCompressor
+
+const $encode = document.getElementById('encode')
+const $encodeInput = $encode.querySelector('.input-text')
+const $encodeResult = $encode.querySelector('.result')
+const $encodeClearButton = $encode.querySelector('.action-clear')
+const $encodeDownloadButton = $encode.querySelector('.action-download')
+
+const $encodeStats = $encode.querySelector('.stats')
+
+const $decode = document.getElementById('decode')
+const $decodeInput = $decode.querySelector('.input-image')
+const $decodeResult = $decode.querySelector('.result')
+const $decodeResultImage = $decode.querySelector('.result-image')
+const $decodeClearButton = $decode.querySelector('.action-clear')
+
+let currentBlob
+
+encodeInput()
+
+function encodeInput() {
+
+  const value = $encodeInput.value
+
+  encodeBlob(value)
+  .then(blob => {
+
+    currentBlob = blob
+
+    // $encodeResult.innerText = encoded
+    const url = URL.createObjectURL(blob)
+
+    $encodeResult.src = url
+
+    URL.revokeObjectURL(url)
+
+    const before = value.length
+    const after = blob.size // encoded.byteLength
+    
+    if (!before) {
+      $encodeStats.innerText = ''      
+    } else {
+      const ratio = after / before
+      $encodeStats.innerText = `Before: ${before} bytes · After: ${after} bytes · Compressed: ${(ratio * 100).toFixed(2)}%`
+    }
+
+    // Demonstrate that decode works
+    // decodeInput(currentBlob)
+  })
+  .catch(error => {
+    $encodeResult.innerText = error.message
+    console.error(error)
+  })
+}
+
+$encodeInput.addEventListener('keyup', function() {
+  encodeInput()
+})
+
+$encodeClearButton.addEventListener('click', function() {
+  $encodeInput.value = ''
+  $encodeResult.src = ''
+  $encodeStats.innerText = ''      
+
+  // $decodeInput.value = ''
+  // $decodeResult.innerText = ''
+  // $decodeResultImage.src = ''
+})
+
+$encodeDownloadButton.addEventListener('click', function() {
+  if (!currentBlob) return
+
+  const blob = currentBlob
+  const url = URL.createObjectURL(blob)
+
+  let a = document.createElement("a")
+  a.download = 'compressed.png'
+  a.href = url
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  a = null
+
+  URL.revokeObjectURL(url)
+})
+
+function decodeInput(blob) {
+  if (!blob) return
+
+  const value = blob // $decodeInput.value
+
+  decode(value)
+  .then(string => {
+    $decodeResult.innerText = string
+  })
+  .catch(error => {
+    $decodeResult.innerText = error.message
+    console.error(error)
+  })
+}
+
+$decodeInput.addEventListener('change', function() {
+
+  const file = this.files[0]
+
+  const reader = new FileReader()
+  reader.addEventListener('load', () => {
+
+    const buffer = reader.result
+    const blob = new Blob([ buffer ])
+    const url = URL.createObjectURL(blob)
+
+    $decodeResultImage.src = url
+
+    URL.revokeObjectURL(url)
+
+    decodeInput(blob)
+  })
+
+  reader.readAsArrayBuffer(file)
+})
+
+$decodeClearButton.addEventListener('click', function() {
+  $decodeInput.value = ''
+  $decodeResult.innerText = ''
+  $decodeResultImage.src = ''
+})
+  </script>
+</body>
+</html>

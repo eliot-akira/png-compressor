@@ -1,0 +1,47 @@
+{
+  "name": "png-compressor",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Compress and encode data as PNG image",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eliot-akira/png-compressor"
+  },
+  "keywords": [
+    "gzip",
+    "png",
+    "cartridge"
+  ],
+  "author": "",
+  "license": "MIT",
+  "main": "build/cjs/index.js",
+  "module": "build/esm/index.js",
+  "exports": {
+    ".": {
+      "require": "./build/cjs/index.js",
+      "import": "./build/esm/index.js"
+    }
+  },
+  "files": [
+    "build",
+    "license",
+    "readme.md"
+  ],
+  "scripts": {
+    "build:cjs": "rm -rf build/cjs/* && node build cjs",
+    "build:esm": "rm -rf build/esm/* && node build esm",
+    "build:web": "rm -rf build/web/* && node build web",
+    "build:type": "tsc --declaration --emitDeclarationOnly --outDir build",
+    "build": "mkdir -p build && npm run build:web && npm run build:cjs && npm run build:esm",
+    "dev": "node build dev",
+    "test": "npm run build:esm && node --test build/esm",
+    "tdd": "concurrently --raw 'esbuild src/**/*.ts --minify --sourcemap --format=esm --outdir=build/esm --watch' 'node --test --watch build/esm'",
+    "format": "prettier --no-config --no-semi --single-quote --write src",
+    "release": "npm run build && npm publish --access public"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "esbuild": "^0.19.1",
+    "prettier": "^3.0.1"
+  }
+}
