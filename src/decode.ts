@@ -1,4 +1,4 @@
-import { decodeBufferFromPng } from './png/decode.js'
+import { decodeBufferFromPng } from './png.js'
 import { decompressAsArrayBuffer } from './compress.js'
 import { arrayBufferToValue } from './json-array-buffer.js'
 

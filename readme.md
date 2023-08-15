@@ -1,6 +1,6 @@
 # PNG Compressor
 
-> Compress and encode data as Portable Network Graphics (PNG) image)
+> Compress and encode data as Portable Network Graphics (PNG) image
 
 ![Screenshot](screenshot.jpg)
 
@@ -53,18 +53,30 @@ const decoded =  await decodeBuffer(pngImage)
 assert.deepEqual(decoded, buffer)
 ```
 
-#### Create image from encoded buffer
+#### Create image element
 
 ```ts
-import { encodeToBlob } from 'png-compressor'
+import { encodeToImage } from 'png-compressor'
 
 const object = { key: 'value' }
 
+const image = await encodeToImage(object)
+```
+
+Or pass an image element as second argument to render into it.
+
+```ts
+const image = document.createElement('img')
+
+await encodeToImage(object, image)
+```
+
+#### Download as image
+
+```ts
+import { encodeToBlob, downloadImage } from 'png-compressor'
+
 const blob = await encodeToBlob(object)
-const url = URL.createObjectURL(blob)
 
-const image = document.createElement('img') // Or get from DOM
-image.src = url
-
-URL.revokeObjectURL(url)
+downloadImage(blob, 'example.png')
 ```

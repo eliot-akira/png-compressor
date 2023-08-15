@@ -32,7 +32,7 @@
     "build:cjs": "rm -rf build/cjs/* && node build cjs",
     "build:esm": "rm -rf build/esm/* && node build esm",
     "build:web": "rm -rf build/web/* && node build web",
-    "build:type": "tsc --declaration --emitDeclarationOnly --outDir build",
+    "build:type": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --outDir build/types",
     "build": "mkdir -p build && npm run build:web && npm run build:cjs && npm run build:esm",
     "dev": "node build dev",
     "test": "npm run build:esm && node --test build/esm",

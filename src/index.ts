@@ -1,2 +1,5 @@
 export * from './encode.js'
 export * from './decode.js'
+export * from './compress.js'
+export * from './png.js'
+export * from './image/index.js'
