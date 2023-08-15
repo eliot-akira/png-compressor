@@ -5,6 +5,9 @@ type CompressionFormat = 'gzip' | 'deflate' | 'deflate-raw'
 
 export const defaultCompressionFormat = 'gzip'
 
+/**
+ * Compress array buffer
+ */
 export async function compress(
   data: string | ArrayBuffer,
   compressionFormat: CompressionFormat = defaultCompressionFormat,

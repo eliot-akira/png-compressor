@@ -1,6 +1,6 @@
 {
   "name": "png-compressor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Compress and encode data as PNG image",
   "repository": {
@@ -17,9 +17,10 @@
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",
   "exports": {
-    ".": {
-      "require": "./build/cjs/index.js",
-      "import": "./build/esm/index.js"
+    "./*": {
+      "types": "./build/types/*.d.ts",
+      "require": "./build/cjs/*.js",
+      "import": "./build/esm/*.js"
     }
   },
   "files": [

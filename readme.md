@@ -1,18 +1,23 @@
 # PNG Compressor
 
-> Compress and encode data as PNG image
+> Compress and encode data as Portable Network Graphics (PNG) image)
 
 ![Screenshot](screenshot.jpg)
 
 ## Why
 
-It can be useful to encode data, such as application state, into an image file that can be shared easily.
+It can be useful to encode data, such as application state, into an image file that can be shared easily, for example, compared to exporting JSON or ZIP file.
 
 ## How
 
-For `gzip` compression and decompression, it uses the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and on server side.
+The data is compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API). The PNG format uses the same algorithm as `gzip`, but it was discovered that the compression ratio is dramatically better when the data is compressed before encoding as image.
 
-TODO: To convert the compressed data into PNG image, a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) renders to [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) on a separate thread and transfers the result.
+Each byte of the given data is written into the color channels (red/green/blue) of a canvas. The opacity (alpha) channel is not used because it can change color values. The canvas is then exported as a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+
+## TODO
+
+- Use a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to render image on [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) processed in a separate thread, then transfer the result.
+- Benchmark
 
 ## Install
 
@@ -22,14 +27,12 @@ npm install --save png-compressor
 
 ## Usage
 
-Encode/decode JSON-serializable JavaScript value
+#### Encode/decode JSON-serializable value
 
 ```ts
 import { encode, decode } from 'png-compressor'
 
-const object = {
-  key: 'value'
-}
+const object = { key: 'value' }
 
 const pngImage = await encode(object)
 const decoded =  await decode(pngImage)
@@ -37,15 +40,31 @@ const decoded =  await decode(pngImage)
 assert.deepEqual(decoded, object)
 ```
 
-Encode/decode binary (array buffer)
+#### Encode/decode binary (array buffer)
 
 ```ts
-import { encodeBinary, decodeBinary } from 'png-compressor'
+import { encodeBuffer, decodeBuffer } from 'png-compressor'
 
 const buffer = new ArrayBuffer(8)
 
-const pngImage = await encodeBinary(buffer)
-const decoded =  await decodeBinary(pngImage)
+const pngImage = await encodeBuffer(buffer)
+const decoded =  await decodeBuffer(pngImage)
 
 assert.deepEqual(decoded, buffer)
+```
+
+#### Create image from encoded buffer
+
+```ts
+import { encodeToBlob } from 'png-compressor'
+
+const object = { key: 'value' }
+
+const blob = await encodeToBlob(object)
+const url = URL.createObjectURL(blob)
+
+const image = document.createElement('img') // Or get from DOM
+image.src = url
+
+URL.revokeObjectURL(url)
 ```

@@ -27,9 +27,13 @@ const onError = (error) => {
   }
 
   if (command === 'cjs') {
+
+    // Individual files
+    delete esbuildOptions.outfile
+
     Object.assign(esbuildOptions, {
-      entryPoints: ['./src/index.ts'],
-      outfile: './build/cjs/index.js',
+      entryPoints: ['./src/**/*.ts'],
+      outdir: './build/cjs/',
       format: 'cjs',
       platform: 'node',
     })

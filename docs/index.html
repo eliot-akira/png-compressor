@@ -81,7 +81,7 @@ input.visually-hidden:is(:focus, :focus-within) + label {
       <p>
         <input type=file id=input-image class="input-image visually-hidden" accept="image/png" />
         <button type=button><label for="input-image">
-          Select .png file
+          Select image file
         </label></button>
       </p>
       <p><button type=button class="button action-clear">Clear</button></p>
@@ -96,8 +96,7 @@ input.visually-hidden:is(:focus, :focus-within) + label {
 
   <script src=png-compressor.js></script>
   <script type=module>
-// import { encode, decode } from './esm/index.js'
-const { encodeBlob, decode } = PNGCompressor
+const { encodeToBlob, decode } = PNGCompressor
 
 const $encode = document.getElementById('encode')
 const $encodeInput = $encode.querySelector('.input-text')
@@ -121,7 +120,7 @@ function encodeInput() {
 
   const value = $encodeInput.value
 
-  encodeBlob(value)
+  encodeToBlob(value)
   .then(blob => {
 
     currentBlob = blob
@@ -144,7 +143,7 @@ function encodeInput() {
     }
 
     // Demonstrate that decode works
-    // decodeInput(currentBlob)
+    decodeInput(currentBlob)
   })
   .catch(error => {
     $encodeResult.innerText = error.message
