@@ -1,4 +1,9 @@
 /**
+ * Convert JSON-serializable value to array buffer and back
+ * @module
+ */
+
+/**
  * Convert JSON-serializable value to array buffer
  */
 export function valueToArrayBuffer(value: any): ArrayBuffer {

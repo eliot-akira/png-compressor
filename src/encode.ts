@@ -1,7 +1,7 @@
 import { encodeBinaryToPng, encodeBinaryToBlob } from './png.ts'
 import { compress } from './compress.ts'
 import { valueToArrayBuffer } from './json-array-buffer.ts'
-import { blobToImageElement } from './image/index.ts'
+import { blobToImageElement } from './image.ts'
 
 /**
  * Encode JSON-serializable value to image data

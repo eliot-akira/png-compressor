@@ -3,7 +3,7 @@ import {
   blobToImageElement,
   decodeDataFromImage,
   getImageData,
-} from './image/index.ts'
+} from './image.ts'
 
 /**
  * Encode binary as image data

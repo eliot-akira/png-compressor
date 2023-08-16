@@ -15,10 +15,11 @@ if (isDev) command = args.shift() // Optional: cjs, esm, web
   const esbuildOptions = {
     entryPoints: [
       `./src/${name}.ts`,
-      './src/test-runner.ts'
+      './src/test/index.ts'
     ],
     // outfile: `./docs/${name}.js`,
     outdir: './docs',
+    assetNames: '',
     format: 'iife',
     // globalName: 'PNGCompressor',
     platform: 'browser',

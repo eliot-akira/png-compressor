@@ -1,6 +1,6 @@
 {
   "name": "png-compressor",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "Compress and encode data as PNG image",
   "repository": {
@@ -29,13 +29,15 @@
     "readme.md"
   ],
   "scripts": {
-    "build:cjs": "rm -rf build/cjs/* && node build cjs",
-    "build:esm": "rm -rf build/esm/* && node build esm",
-    "build:web": "rm -rf build/web/* && node build web",
+    "build:cjs": "node build cjs",
+    "build:esm": " node build esm",
+    "build:web": "node build web",
     "build:types": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --outDir build/types",
-    "build": "mkdir -p build && npm run build:web && npm run build:cjs && npm run build:esm && npm run build:types && npm run docs",
-    "dev": "node build dev",
-    "docs": "rm -rf docs/api/* && typedoc --plugin typedoc-plugin-mdn-links --readme none --out docs/api src/index.ts",
+    "build": "mkdir -p build && npm run clean && npm run format && npm run build:web && npm run build:cjs && npm run build:esm && npm run build:types && npm run docs",
+    "dev": "concurrently --raw 'node build dev' 'npm run dev:docs'",
+    "dev:docs": "npm run docs -- --watch --preserveWatchOutput",
+    "docs": "typedoc",
+    "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/*",
     "format": "prettier --no-config --no-semi --single-quote --write src",
     "release": "npm run build && npm publish --access public"
   },

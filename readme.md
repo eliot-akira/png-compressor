@@ -2,7 +2,9 @@
 
 > Compress and encode data as Portable Network Graphics (PNG) image
 
-![Screenshot](screenshot.jpg)
+![](screenshot.jpg)
+
+#### [Demo](https://eliot-akira.github.io/png-compressor/) · [API](https://eliot-akira.github.io/png-compressor/api/)
 
 ## Why
 
@@ -16,9 +18,8 @@ Each byte of the given data is written into the color channels (red/green/blue) 
 
 ## TODO
 
-- Use a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to render image on [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) processed in a separate thread, then transfer the result.
-- Document exported methods
-- Benchmark
+- [ ] Use a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to render image on [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) processed in a separate thread, then transfer the result.
+- [x] Document exported methods
 
 ## Install
 
@@ -28,7 +29,7 @@ npm install --save png-compressor
 
 ## Usage
 
-#### Encode/decode JSON-serializable value
+### Encode/decode JSON-serializable value
 
 ```ts
 import { encode, decode } from 'png-compressor'
@@ -41,7 +42,7 @@ const decoded =  await decode(pngImage)
 assert.deepEqual(decoded, object)
 ```
 
-#### Encode/decode binary (array buffer)
+### Encode/decode binary (array buffer)
 
 ```ts
 import { encodeBuffer, decodeBuffer } from 'png-compressor'
@@ -54,7 +55,7 @@ const decoded =  await decodeBuffer(pngImage)
 assert.deepEqual(decoded, buffer)
 ```
 
-#### Create image element
+### Create image element
 
 ```ts
 import { encodeToImage } from 'png-compressor'
@@ -72,7 +73,7 @@ const image = document.createElement('img')
 await encodeToImage(object, image)
 ```
 
-#### Download as image
+### Download as image
 
 ```ts
 import { encodeToBlob, downloadImage } from 'png-compressor'

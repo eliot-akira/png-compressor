@@ -1,0 +1,15 @@
+{
+  "entryPoints": ["src"],
+  "out": "./docs/api",
+  "entryPointStrategy": "expand",
+  "exclude": [
+    "src/index.ts",
+    "src/png-compressor.ts",
+    "src/test/**/*.ts",
+  ],
+  "readme": "readme.md",
+  "plugin": [
+    "typedoc-plugin-mdn-links"
+  ],
+  "visibilityFilters": {}
+}
