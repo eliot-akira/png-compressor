@@ -1,3 +1,5 @@
+import { compress } from '../compress.ts'
+
 export async function imageElementToBlob(
   image: HTMLImageElement,
 ): Promise<Blob> {
@@ -11,19 +13,23 @@ export async function imageElementToBlob(
   })
 }
 
-export async function blobToImage(blob: Blob): Promise<HTMLImageElement> {
+export async function blobToImageElement(
+  blob: Blob,
+  image: HTMLImageElement = document.createElement('img'),
+): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = function () {
-      URL.revokeObjectURL(img.src)
-      resolve(img)
+    const listener = () => {
+      URL.revokeObjectURL(image.src)
+      image.removeEventListener('load', listener)
+      resolve(image)
     }
-    img.onerror = reject
-    img.src = URL.createObjectURL(blob)
+
+    image.addEventListener('load', listener)
+    image.src = URL.createObjectURL(blob)
   })
 }
 
-export function imageElementToData(image: HTMLImageElement) {
+export function getImageData(image: HTMLImageElement) {
   const { context, width, height } = imageElementToCanvas(image)
   return context.getImageData(0, 0, width, height).data
 }
@@ -36,7 +42,6 @@ export function imageElementToCanvas(image: HTMLImageElement): {
 } {
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d')!
-
   // Update canvas size to match image
   const width = (canvas.width = image.naturalWidth)
   const height = (canvas.height = image.naturalHeight)

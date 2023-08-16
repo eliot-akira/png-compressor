@@ -32,17 +32,20 @@
     "build:cjs": "rm -rf build/cjs/* && node build cjs",
     "build:esm": "rm -rf build/esm/* && node build esm",
     "build:web": "rm -rf build/web/* && node build web",
-    "build:type": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --outDir build/types",
-    "build": "mkdir -p build && npm run build:web && npm run build:cjs && npm run build:esm",
+    "build:types": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --outDir build/types",
+    "build": "mkdir -p build && npm run build:web && npm run build:cjs && npm run build:esm && npm run build:types && npm run docs",
     "dev": "node build dev",
-    "test": "npm run build:esm && node --test build/esm",
-    "tdd": "concurrently --raw 'esbuild src/**/*.ts --minify --sourcemap --format=esm --outdir=build/esm --watch' 'node --test --watch build/esm'",
+    "docs": "rm -rf docs/api/* && typedoc --plugin typedoc-plugin-mdn-links --readme none --out docs/api src/index.ts",
     "format": "prettier --no-config --no-semi --single-quote --write src",
     "release": "npm run build && npm publish --access public"
   },
   "devDependencies": {
+    "@gjsify/esbuild-plugin-transform-ext": "^0.0.3",
     "concurrently": "^8.2.0",
     "esbuild": "^0.19.1",
-    "prettier": "^3.0.1"
+    "prettier": "^3.0.1",
+    "typedoc": "^0.24.8",
+    "typedoc-plugin-markdown": "^3.15.4",
+    "typedoc-plugin-mdn-links": "^3.0.3"
   }
 }

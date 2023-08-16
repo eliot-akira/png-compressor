@@ -10,13 +10,14 @@ It can be useful to encode data, such as application state, into an image file t
 
 ## How
 
-The data is compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API). The PNG format uses the same algorithm as `gzip`, but it was discovered that the compression ratio is dramatically better when the data is compressed before encoding as image.
+The data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers. The PNG format uses the same algorithm, but I found that the compression ratio is dramatically better when the data is compressed before encoding as image.
 
-Each byte of the given data is written into the color channels (red/green/blue) of a canvas. The opacity (alpha) channel is not used because it can change color values. The canvas is then exported as a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob).
+Each byte of the given data is written into the color channels (red/green/blue) of a canvas. The opacity (alpha) channel is not used because it can change color values. The canvas is then exported as a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), which can then be turned into an image element or downloaded as a PNG file.
 
 ## TODO
 
 - Use a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to render image on [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) processed in a separate thread, then transfer the result.
+- Document exported methods
 - Benchmark
 
 ## Install

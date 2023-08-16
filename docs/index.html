@@ -60,6 +60,8 @@ input.visually-hidden:is(:focus, :focus-within) + label {
 
   <h1>PNG Compressor</h1>
 
+  <p><a href="api">API</a> · <a href="test.html">Test</a></p>
+
   <article>
     <section id=encode>
 
@@ -101,6 +103,7 @@ input.visually-hidden:is(:focus, :focus-within) + label {
 
   <script src=png-compressor.js></script>
   <script type=module>
+
 const { encodeToBlob, decode } = PNGCompressor
 
 const $encode = document.getElementById('encode')
@@ -165,9 +168,9 @@ $encodeClearButton.addEventListener('click', function() {
   $encodeResult.src = ''
   $encodeStats.innerText = ''      
 
-  // $decodeInput.value = ''
-  // $decodeResult.innerText = ''
-  // $decodeResultImage.src = ''
+  $decodeInput.value = ''
+  $decodeResult.innerText = ''
+  $decodeResultImage.src = ''
 })
 
 $encodeDownloadButton.addEventListener('click', function() {
@@ -187,19 +190,21 @@ $encodeDownloadButton.addEventListener('click', function() {
   URL.revokeObjectURL(url)
 })
 
-function decodeInput(blob) {
-  if (!blob) return
+async function decodeInput(buffer) {
+  if (!buffer) return
 
-  const value = blob // $decodeInput.value
+  const value = buffer instanceof Blob
+    ? await buffer.arrayBuffer()
+    : buffer
 
-  decode(value)
-  .then(string => {
-    $decodeResult.innerText = string
-  })
-  .catch(error => {
+  try {
+
+    $decodeResult.innerText = await decode(value)
+
+  } catch(error) {
     $decodeResult.innerText = error.message
-    console.error(error)
-  })
+    console.error(error)  
+  }
 }
 
 $decodeInput.addEventListener('change', function() {

@@ -1,29 +1,38 @@
 import esbuild from 'esbuild'
 import fs from 'node:fs/promises'
+import { transformExtPlugin } from '@gjsify/esbuild-plugin-transform-ext'
 
-const name = 'png-compressor'
-
-const command = process.argv.slice(2).shift() || 'build' // or dev
-
+const args = process.argv.slice(2)
+let command = args.shift() || 'build'
 const isDev = command === 'dev'
-const onError = (error) => {
-  console.error(error)
-  process.exit(1)
-}
+
+if (isDev) command = args.shift() // Optional: cjs, esm, web
 
 ;(async () => {
 
+  const { name } = JSON.parse(await fs.readFile('./package.json'))
+
   const esbuildOptions = {
-    entryPoints: ['./src/index.ts'],
-    outfile: `./docs/${name}.js`,
+    entryPoints: [
+      `./src/${name}.ts`,
+      './src/test-runner.ts'
+    ],
+    // outfile: `./docs/${name}.js`,
+    outdir: './docs',
     format: 'iife',
-    globalName: 'PNGCompressor',
+    // globalName: 'PNGCompressor',
     platform: 'browser',
     logLevel: 'info',
     bundle: true,
     minify: !isDev,
     sourcemap: true,
     jsx: 'automatic',
+    plugins: [
+      /**
+       * Built ES module format expects import from .js
+       */
+      transformExtPlugin({ outExtension: { '.ts': '.js' } })
+    ]
   }
 
   if (command === 'cjs') {
@@ -33,9 +42,12 @@ const onError = (error) => {
 
     Object.assign(esbuildOptions, {
       entryPoints: ['./src/**/*.ts'],
-      outdir: './build/cjs/',
+      outdir: './build/cjs',
       format: 'cjs',
       platform: 'node',
+      bundle: false,
+      minify: false,
+      sourcemap: false,
     })
   } else if (command === 'esm') {
 
@@ -43,14 +55,23 @@ const onError = (error) => {
 
     Object.assign(esbuildOptions, {
       entryPoints: ['./src/**/*.ts'],
-      outdir: './build/esm/',
+      outdir: './build/esm',
       format: 'esm',
       platform: 'node',
+      bundle: false,
+      minify: false,
+      sourcemap: false,
     })
   } else if (command === 'web') {
-    Object.assign(esbuildOptions, {
-      outfile: `./build/web/${name}.js`,
-    })
+
+    // Object.assign(esbuildOptions, {
+    //   outfile: `./build/web/${name}.js`,
+    // })
+
+  } else {
+
+    // docs
+
   }
 
   const context = await esbuild.context(esbuildOptions)
@@ -62,10 +83,10 @@ const onError = (error) => {
   } else if (command === 'esm') {
     await fs.writeFile(`build/esm/package.json`, `{"type": "module"}`)
   } else if (command === 'web') {
-    // Copy to docs
+    // Copy from docs
     await Promise.all([
-      fs.copyFile(esbuildOptions.outfile, `./docs/${name}.js`),
-      fs.copyFile(esbuildOptions.outfile + '.map', `./docs/${name}.js.map`)
+      fs.copyFile(`./docs/${name}.js`, `./build/web/${name}.js`),
+      fs.copyFile(`./docs/${name}.js.map`, `./build/web/${name}.js.map`)
     ])
   }
 
@@ -79,4 +100,7 @@ const onError = (error) => {
     process.exit()
   }
 
-})().catch(onError)
+})().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})

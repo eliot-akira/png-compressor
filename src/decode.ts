@@ -1,21 +1,17 @@
-import { decodeBufferFromPng } from './png.js'
-import { decompressAsArrayBuffer } from './compress.js'
-import { arrayBufferToValue } from './json-array-buffer.js'
+import { decodeBinaryFromPng } from './png.ts'
+import { decompressAsArrayBuffer } from './compress.ts'
+import { arrayBufferToValue } from './json-array-buffer.ts'
 
 /**
- * Decode PNG image data to JSON-serializable value
+ * Decode image data to JSON-serializable value
  */
 export async function decode(buffer: ArrayBuffer): Promise<any> {
-  return arrayBufferToValue(
-    await decompressAsArrayBuffer(
-      await decodeBufferFromPng(buffer), // Decode PNG to array buffer
-    ),
-  )
+  return arrayBufferToValue(await decodeBinary(buffer))
 }
 
 /**
- * Decode PNG image data to array buffer
+ * Decode image data to array buffer
  */
-export async function decodeBuffer(buffer: ArrayBuffer): Promise<ArrayBuffer> {
-  return await decompressAsArrayBuffer(await decodeBufferFromPng(buffer))
+export async function decodeBinary(buffer: ArrayBuffer): Promise<ArrayBuffer> {
+  return await decompressAsArrayBuffer(await decodeBinaryFromPng(buffer))
 }

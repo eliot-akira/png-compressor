@@ -1,21 +1,24 @@
 import {
   encodeDataIntoImage,
-  blobToImage,
+  blobToImageElement,
   decodeDataFromImage,
-  imageElementToData,
-} from './image/index.js'
+  getImageData,
+} from './image/index.ts'
 
 /**
- * Encode data as PNG
+ * Encode binary as image data
  */
-export async function encodeBufferToPng(
+export async function encodeBinaryToPng(
   buffer: ArrayBuffer,
 ): Promise<ArrayBuffer> {
-  const blob = await encodeBufferToBlob(buffer)
+  const blob = await encodeBinaryToBlob(buffer)
   return await blob.arrayBuffer()
 }
 
-export async function encodeBufferToBlob(buffer: ArrayBuffer): Promise<Blob> {
+/**
+ * Encode binary as canvas blob
+ */
+export async function encodeBinaryToBlob(buffer: ArrayBuffer): Promise<Blob> {
   const data = new Uint8Array(buffer)
 
   return new Promise((resolve, reject) => {
@@ -40,12 +43,17 @@ export async function encodeBufferToBlob(buffer: ArrayBuffer): Promise<Blob> {
 }
 
 /**
- * Decode data from PNG
+ * Decode binary from image data
  */
-export async function decodeBufferFromPng(
+export async function decodeBinaryFromPng(
   buffer: ArrayBuffer,
 ): Promise<ArrayBuffer> {
+  if (!(buffer instanceof ArrayBuffer)) {
+    throw new Error('Expected ArrayBuffer but got ' + typeof buffer)
+  }
+
   const blob = new Blob([buffer])
-  const image = await blobToImage(blob)
-  return decodeDataFromImage(imageElementToData(image))
+  const image = await blobToImageElement(blob)
+
+  return decodeDataFromImage(getImageData(image))
 }

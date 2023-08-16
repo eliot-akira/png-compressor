@@ -1,15 +1,18 @@
 // Browser and server
 const { CompressionStream, DecompressionStream, Response } = globalThis
 
-type CompressionFormat = 'gzip' | 'deflate' | 'deflate-raw'
+/**
+ * Compression format
+ */
+export type CompressionFormat = 'gzip' | 'deflate' | 'deflate-raw'
 
-export const defaultCompressionFormat = 'gzip'
+export const defaultCompressionFormat: CompressionFormat = 'gzip'
 
 /**
  * Compress array buffer
  */
 export async function compress(
-  data: string | ArrayBuffer,
+  data: ArrayBuffer,
   compressionFormat: CompressionFormat = defaultCompressionFormat,
 ): Promise<ArrayBuffer> {
   const compressor = new CompressionStream(compressionFormat)

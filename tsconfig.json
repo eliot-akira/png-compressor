@@ -4,6 +4,8 @@
     "outDir": "./build",
     "rootDir": "./src",
     "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
