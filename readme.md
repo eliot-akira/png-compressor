@@ -16,11 +16,6 @@ The data is `gzip` compressed using the [Compression Streams API](https://develo
 
 Each byte of the given data is written into the color channels (red/green/blue) of a canvas. The opacity (alpha) channel is not used because it can change color values. The canvas is then exported as a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), which can then be turned into an image element or downloaded as a PNG file.
 
-## TODO
-
-- [ ] Use a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) to render image on [OffscreenCanvas](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) processed in a separate thread, then transfer the result.
-- [x] Document exported methods
-
 ## Install
 
 ```sh
@@ -45,12 +40,12 @@ assert.deepEqual(decoded, object)
 ### Encode/decode binary (array buffer)
 
 ```ts
-import { encodeBuffer, decodeBuffer } from 'png-compressor'
+import { encodeBinary, decodeBinary } from 'png-compressor'
 
 const buffer = new ArrayBuffer(8)
 
-const pngImage = await encodeBuffer(buffer)
-const decoded =  await decodeBuffer(pngImage)
+const pngImage = await encodeBinary(buffer)
+const decoded =  await decodeBinary(pngImage)
 
 assert.deepEqual(decoded, buffer)
 ```
