@@ -3,7 +3,7 @@
 const { getOwnPropertySymbols, is, keys, prototype } = Object
 const { hasOwnProperty, valueOf } = prototype
 const { isView } = ArrayBuffer
-const Node = globalThis.Node
+const { Node } = globalThis
 
 const isEqualArray = (
   a: unknown[],
@@ -202,62 +202,67 @@ function isEqualGeneral(
   if (is(a, b)) return true
 
   if (
-    typeof a === 'object' &&
-    typeof b === 'object' &&
-    a !== null &&
-    b !== null
+    typeof a !== 'object' ||
+    typeof b !== 'object' ||
+    a === null ||
+    b === null
   ) {
-    const { constructor } = a
-    const { constructor: constructorB } = b
-
-    if (constructor && constructorB && constructor !== constructorB) {
-      return false
-    }
-
-    if (compareMap.get(a) === b) return true
-
-    compareMap.set(a, b)
-
-    if (!constructor || !constructorB) {
-      if (
-        (!constructor || constructor === Object) &&
-        (!constructorB || constructorB === Object)
-      ) {
-        return isEqualObject(a, b, compareMap)
-      } else {
-        return false
-      }
-    }
-
-    if (constructor === Array) {
-      return isEqualArray(a, b, compareMap)
-    } else if (constructor === Map) {
-      return isEqualMap(a, b, compareMap)
-    } else if (constructor === Set) {
-      return isEqualSet(a, b, compareMap)
-    } else if (constructor === Date) {
-      return isEqualDate(a, b)
-    } else if (constructor === RegExp) {
-      return isEqualRegExp(a, b)
-    } else if (constructor === ArrayBuffer) {
-      return isEqualArrayBuffer(a, b)
-    } else if (isView(a)) {
-      return isEqualTypedArray(a, b)
-    } else if (
-      constructor === Promise ||
-      constructor === WeakMap ||
-      constructor === WeakSet ||
-      constructor === Node
-    ) {
-      return false
-    } else if (a.valueOf !== valueOf) {
-      return isEqualValueOf(a, b, compareMap)
-    } else {
-      return isEqualObject(a, b, compareMap)
-    }
+    return false
   }
 
-  return false
+  const { constructor } = a
+  const { constructor: constructorB } = b
+
+  if (constructor && constructorB && constructor !== constructorB) {
+    return false
+  }
+
+  if (compareMap.get(a) === b) return true
+
+  compareMap.set(a, b)
+
+  if (!constructor || !constructorB) {
+    if (
+      (!constructor || constructor === Object) &&
+      (!constructorB || constructorB === Object)
+    ) {
+      return isEqualObject(a, b, compareMap)
+    }
+    return false
+  }
+  if (constructor === Array) {
+    return isEqualArray(a, b, compareMap)
+  }
+  if (constructor === Map) {
+    return isEqualMap(a, b, compareMap)
+  }
+  if (constructor === Set) {
+    return isEqualSet(a, b, compareMap)
+  }
+  if (constructor === Date) {
+    return isEqualDate(a, b)
+  }
+  if (constructor === RegExp) {
+    return isEqualRegExp(a, b)
+  }
+  if (constructor === ArrayBuffer) {
+    return isEqualArrayBuffer(a, b)
+  }
+  if (isView(a)) {
+    return isEqualTypedArray(a, b)
+  }
+  if (
+    constructor === Promise ||
+    constructor === WeakMap ||
+    constructor === WeakSet ||
+    constructor === Node
+  ) {
+    return false
+  }
+  if (a.valueOf !== valueOf) {
+    return isEqualValueOf(a, b, compareMap)
+  }
+  return isEqualObject(a, b, compareMap)
 }
 
 export function isEqual(a: unknown, b: unknown): boolean {
