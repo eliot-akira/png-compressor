@@ -17,6 +17,11 @@
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",
   "exports": {
+    ".": {
+      "types": "./build/types/index.d.ts",
+      "require": "./build/cjs/index.js",
+      "import": "./build/esm/index.js"
+    },
     "./*": {
       "types": "./build/types/*.d.ts",
       "require": "./build/cjs/*.js",
