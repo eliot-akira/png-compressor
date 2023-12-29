@@ -56,6 +56,6 @@
     "typedoc-plugin-mdn-links": "^3.0.3"
   },
   "dependencies": {
-    "fast-png": "^6.2.0"
+    "@lunapaint/png-codec": "^0.2.0"
   }
 }

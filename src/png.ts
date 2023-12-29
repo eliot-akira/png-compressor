@@ -1,4 +1,4 @@
-import { encode as encodePng, decode as decodePng } from 'fast-png'
+import { decodePng, encodePng } from '@lunapaint/png-codec'
 import { encodeDataIntoImage, decodeDataFromImage } from './image.ts'
 
 /**
@@ -14,13 +14,13 @@ export async function encodeBinaryToPng(
 
   encodeDataIntoImage(data, imageData.data)
 
-  const arr = encodePng({
+  const arr = await encodePng({
     width: size,
     height: size,
-    data: imageData.data,
+    data: new Uint8Array(imageData.data.buffer),
   })
 
-  return arr.buffer
+  return arr.data.buffer
 }
 
 /**
@@ -44,7 +44,7 @@ export async function decodeBinaryFromPng(
     throw new Error('Expected ArrayBuffer but got ' + typeof buffer)
   }
 
-  const decoded = decodePng(buffer)
+  const decoded = await decodePng(new Uint8Array(buffer))
 
-  return decodeDataFromImage(new Uint8ClampedArray(decoded.data.buffer))
+  return decodeDataFromImage(new Uint8ClampedArray(decoded.image.data.buffer))
 }
