@@ -1,9 +1,5 @@
-import {
-  encodeDataIntoImage,
-  blobToImageElement,
-  decodeDataFromImage,
-  getImageData,
-} from './image.ts'
+import { encode as encodePng, decode as decodePng } from 'fast-png'
+import { encodeDataIntoImage, decodeDataFromImage } from './image.ts'
 
 /**
  * Encode binary as image data
@@ -11,35 +7,31 @@ import {
 export async function encodeBinaryToPng(
   buffer: ArrayBuffer,
 ): Promise<ArrayBuffer> {
-  const blob = await encodeBinaryToBlob(buffer)
-  return await blob.arrayBuffer()
+  const data = new Uint8Array(buffer)
+  const size = Math.ceil(Math.sqrt(data.length / 3 + 1))
+
+  const imageData = new ImageData(size, size)
+
+  encodeDataIntoImage(data, imageData.data)
+
+  const arr = encodePng({
+    width: size,
+    height: size,
+    data: imageData.data,
+  })
+
+  return arr.buffer
 }
 
 /**
  * Encode binary as canvas blob
  */
 export async function encodeBinaryToBlob(buffer: ArrayBuffer): Promise<Blob> {
-  const data = new Uint8Array(buffer)
-
-  return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    const size = Math.ceil(Math.sqrt(data.length / 3 + 1))
-
-    canvas.width = size
-    canvas.height = size
-
-    const image = ctx?.getImageData(0, 0, size, size)!
-
-    encodeDataIntoImage(data, image.data)
-
-    ctx?.putImageData(image, 0, 0)
-
-    canvas.toBlob((blob) => {
-      if (!blob) reject(new Error('Canvas failed to create blob'))
-      else resolve(blob)
-    }, 'image/png')
+  const png = await encodeBinaryToPng(buffer)
+  const blob = new Blob([png], {
+    type: 'image/png',
   })
+  return blob
 }
 
 /**
@@ -52,8 +44,7 @@ export async function decodeBinaryFromPng(
     throw new Error('Expected ArrayBuffer but got ' + typeof buffer)
   }
 
-  const blob = new Blob([buffer])
-  const image = await blobToImageElement(blob)
+  const decoded = decodePng(buffer)
 
-  return decodeDataFromImage(getImageData(image))
+  return decodeDataFromImage(new Uint8ClampedArray(decoded.data.buffer))
 }

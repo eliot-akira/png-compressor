@@ -7,7 +7,6 @@ export async function imageElementToBlob(
   image: HTMLImageElement,
 ): Promise<Blob> {
   const { canvas } = imageElementToCanvas(image)
-
   return new Promise((resolve, reject) => {
     canvas.toBlob(function (blob) {
       if (!blob) reject(new Error(''))
@@ -24,10 +23,11 @@ export async function blobToImageElement(
     const listener = () => {
       URL.revokeObjectURL(image.src)
       image.removeEventListener('load', listener)
+      image.removeEventListener('error', reject)
       resolve(image)
     }
-
     image.addEventListener('load', listener)
+    image.addEventListener('error', reject)
     image.src = URL.createObjectURL(blob)
   })
 }
@@ -60,9 +60,12 @@ export function imageElementToCanvas(image: HTMLImageElement): {
 }
 
 export function encodeDataIntoImage(data: Uint8Array, img: Uint8ClampedArray) {
-  for (let i = 0, size = data.length; i < 3; i++) {
+  const size = data.length
+
+  for (let i = 0; i < 3; i++) {
     img[i] = (size / Math.pow(256, i)) % 256 | 0
   }
+
   img[3] = 255
   for (let i = 4, j = 0, l = img.length; i < l; i += 4, j += 3) {
     img[i] = data[j] || 0
@@ -73,18 +76,19 @@ export function encodeDataIntoImage(data: Uint8Array, img: Uint8ClampedArray) {
   return img
 }
 
-export function decodeDataFromImage(image: Uint8ClampedArray): ArrayBuffer {
+export function decodeDataFromImage(img: Uint8ClampedArray): ArrayBuffer {
   let size = 0
   for (let i = 0; i < 3; i++) {
-    size += image[i] * Math.pow(256, i)
+    const val = img[i] * Math.pow(256, i)
+    size += val
   }
   const data = new Uint8Array(size)
-
-  root: for (let i = 4, j = 0, l = image.length; j < l; i += 4, j += 3) {
+  root: for (let i = 4, j = 0, l = img.length; j < l; i += 4, j += 3) {
     for (let k = 0; k < 3; k++) {
       if (j + k >= size) break root
-      data[j + k] = image[i + k]
+      data[j + k] = img[i + k]
     }
   }
+
   return data.buffer
 }
