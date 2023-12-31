@@ -8,13 +8,17 @@
 
 ## Why
 
-It can be useful to encode data, such as application state, into an image file that can be shared easily, for example, compared to exporting JSON or ZIP file.
+It can be useful to encode data or application state into an image file for sharing easily - compared to JSON or ZIP format, which might not be possible to upload to a discussion forum.
+
+Such images are sometimes called "cartridges", referring to retro game ROM cards.
 
 ## How
 
-The data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers. The PNG format uses the same algorithm, but I found that the compression ratio is dramatically better when the data is compressed before encoding as image.
+The data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and server-side JavaScript runtimes. The PNG format uses the same algorithm, but I found that the compression ratio is dramatically better when the data is compressed before encoding as image.
 
-Each byte of the given data is written into the color channels (red/green/blue) of a canvas. The opacity (alpha) channel is not used because it can change color values. The canvas is then exported as a [Blob](https://developer.mozilla.org/en-US/docs/Web/API/Blob), which can then be turned into an image element or downloaded as a PNG file.
+Each byte of the given data is written into the color channels (red/green/blue) of an image. The opacity (alpha) channel is not used because it can change color values.
+
+In the browser, this encoded buffer can be turned into an image element and downloaded as a PNG file. On the server, it can be written to a file.
 
 ## Install
 
@@ -50,14 +54,16 @@ const decoded =  await decodeBinary(pngImage)
 assert.deepEqual(decoded, buffer)
 ```
 
+## Browser
+
 ### Create image element
 
 ```ts
-import { encodeToImage } from 'png-compressor'
+import * as png from 'png-compressor'
 
 const object = { key: 'value' }
 
-const image = await encodeToImage(object)
+const image = await png.encodeToImage(object)
 ```
 
 Or pass an image element as second argument to render into it.
@@ -65,15 +71,34 @@ Or pass an image element as second argument to render into it.
 ```ts
 const image = document.createElement('img')
 
-await encodeToImage(object, image)
+await png.encodeToImage(object, image)
 ```
 
 ### Download as image
 
 ```ts
-import { encodeToBlob, downloadImage } from 'png-compressor'
+const blob = await png.encodeToBlob(object)
 
-const blob = await encodeToBlob(object)
+png.downloadImage(blob, 'example.png')
+```
 
-downloadImage(blob, 'example.png')
+## Server (Node.js)
+
+### Write to image file
+
+```ts
+import fs from 'node:fs/promises'
+import * as png from 'png-compressor'
+
+const object = { key: 'value' }
+
+const encoded = await png.encode(source)
+await fs.writeFile('test.png', Buffer.from(encoded))
+```
+
+### Read from image file
+
+```ts
+const buffer = await fs.readFile('test.png')
+const decoded = await png.decode(buffer.buffer)
 ```

@@ -10,14 +10,17 @@ export async function encodeBinaryToPng(
   const data = new Uint8Array(buffer)
   const size = Math.ceil(Math.sqrt(data.length / 3 + 1))
 
-  const imageData = new ImageData(size, size)
+  /**
+   * Equivalent to new ImageData(size, size)
+   */
+  const target = new Uint8ClampedArray(size * size * 4) // RGBA
 
-  encodeDataIntoImage(data, imageData.data)
+  encodeDataIntoImage(data, target)
 
   const arr = await encodePng({
     width: size,
     height: size,
-    data: new Uint8Array(imageData.data.buffer),
+    data: new Uint8Array(target.buffer),
   })
 
   return arr.data.buffer

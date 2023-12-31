@@ -42,6 +42,7 @@
     "dev": "concurrently --raw 'node build dev' 'npm run dev:docs'",
     "dev:docs": "npm run docs -- --watch --preserveWatchOutput",
     "docs": "typedoc",
+    "test": "node build esm && node test/index.js",
     "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/*",
     "format": "prettier --no-config --no-semi --single-quote --write src",
     "release": "npm run build && npm publish --access public"
