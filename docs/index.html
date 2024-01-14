@@ -128,17 +128,20 @@ function encodeInput() {
 
   const value = $encodeInput.value
 
+  let url
+
   encodeToBlob(value)
   .then(blob => {
 
     currentBlob = blob
 
     // $encodeResult.innerText = encoded
-    const url = URL.createObjectURL(blob)
+    if (url) {
+      URL.revokeObjectURL(url)
+    }
+    url = URL.createObjectURL(blob)
 
     $encodeResult.src = url
-
-    URL.revokeObjectURL(url)
 
     const before = value.length
     const after = blob.size // encoded.byteLength
