@@ -8,7 +8,7 @@
  */
 export function valueToArrayBuffer(value: any): ArrayBuffer {
   // Value -> JSON String -> Uint8Array -> ArrayBuffer
-  return new TextEncoder().encode(JSON.stringify(value)).buffer
+  return new TextEncoder().encode(JSON.stringify(value)).buffer as ArrayBuffer
 }
 
 /**

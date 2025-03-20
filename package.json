@@ -47,6 +47,7 @@
     "format": "prettier --no-config --no-semi --single-quote --write src",
     "release": "npm run build && npm publish --access public"
   },
+  "dependencies": {},
   "devDependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.3",
     "concurrently": "^8.2.0",
@@ -55,8 +56,5 @@
     "typedoc": "^0.24.8",
     "typedoc-plugin-markdown": "^3.15.4",
     "typedoc-plugin-mdn-links": "^3.0.3"
-  },
-  "dependencies": {
-    "@lunapaint/png-codec": "^0.2.0"
   }
 }

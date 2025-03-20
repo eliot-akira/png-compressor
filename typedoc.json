@@ -6,6 +6,8 @@
     "src/index.ts",
     "src/png-compressor.ts",
     "src/test/**/*.ts",
+    "src/pako/**",
+    "src/png-codec/**",
   ],
   "readme": "readme.md",
   "plugin": [

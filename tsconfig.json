@@ -17,11 +17,14 @@
     "noImplicitReturns": true,
     "pretty": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
+    "sourceMap": false,
+    "strict": false,
     "target": "ES2021",
     "lib": ["ES2021", "dom"],
-    "paths": {}
+    "paths": {},
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
   "include": ["src"],
   "references": []

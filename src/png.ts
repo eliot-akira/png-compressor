@@ -1,4 +1,4 @@
-import { decodePng, encodePng } from '@lunapaint/png-codec'
+import { decodePng, encodePng } from './png-codec/index.ts'
 import { encodeDataIntoImage, decodeDataFromImage } from './image.ts'
 
 /**
@@ -23,7 +23,7 @@ export async function encodeBinaryToPng(
     data: new Uint8Array(target.buffer),
   })
 
-  return arr.data.buffer
+  return arr.data.buffer as ArrayBuffer
 }
 
 /**

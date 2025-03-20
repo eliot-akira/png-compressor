@@ -90,5 +90,5 @@ export function decodeDataFromImage(img: Uint8ClampedArray): ArrayBuffer {
     }
   }
 
-  return data.buffer
+  return data.buffer as ArrayBuffer
 }
