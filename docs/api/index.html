@@ -16,7 +16,8 @@
 <p>Compress and encode data as Portable Network Graphics (PNG) image</p>
 </blockquote>
 <p><img src="screenshot.jpg" alt=""></p>
-<a id="md:demo-·-api-·-source" class="tsd-anchor"></a><h4><a href="#md:demo-·-api-·-source"><a href="https://eliot-akira.github.io/png-compressor/">Demo</a> · <a href="https://eliot-akira.github.io/png-compressor/api/">API</a> · <a href="https://github.com/eliot-akira/png-compressor">Source</a></a></h4><a id="md:why" class="tsd-anchor"></a><h2><a href="#md:why">Why</a></h2><p>It can be useful to encode data or application state into an image file for sharing easily - compared to JSON or ZIP format, which might not be possible to upload to a discussion forum.</p>
+<p><strong><a href="https://eliot-akira.github.io/png-compressor/">Demo</a> · <a href="https://eliot-akira.github.io/png-compressor/api/">API</a> · <a href="https://github.com/eliot-akira/png-compressor">Source</a></strong></p>
+<a id="md:why" class="tsd-anchor"></a><h2><a href="#md:why">Why</a></h2><p>It can be useful to encode data or application state into an image file for sharing easily - compared to JSON or ZIP format, which might not be possible to upload to a discussion forum.</p>
 <p>Such images are sometimes called &quot;cartridges&quot;, referring to retro game ROM cards.</p>
 <a id="md:how" class="tsd-anchor"></a><h2><a href="#md:how">How</a></h2><p>The data is <code>gzip</code> compressed using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API">Compression Streams API</a>, well-supported by browsers and server-side JavaScript runtimes. The PNG format uses the same algorithm, but I found that the compression ratio is dramatically better when the data is compressed before encoding as image.</p>
 <p>Each byte of the given data is written into the color channels (red/green/blue) of an image. The opacity (alpha) channel is not used because it can change color values.</p>
@@ -56,7 +57,6 @@
 <li><a href="#md:png-compressor"><span>PNG <wbr/>Compressor</span></a></li>
 <li>
 <ul>
-<li><a href="#md:demo-·-api-·-source"><span>Demo · API · <wbr/>Source</span></a></li>
 <li><a href="#md:why"><span>Why</span></a></li>
 <li><a href="#md:how"><span>How</span></a></li>
 <li><a href="#md:install"><span>Install</span></a></li>
