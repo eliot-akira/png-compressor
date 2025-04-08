@@ -1,5 +1,7 @@
-import { decodePng, encodePng } from './png-codec/index.ts'
+import { decodePng, encodePng, KnownChunkTypes } from './png-codec/index.ts'
 import { encodeDataIntoImage, decodeDataFromImage } from './image.ts'
+
+export * from './png-codec/index.ts'
 
 /**
  * Encode binary as image data

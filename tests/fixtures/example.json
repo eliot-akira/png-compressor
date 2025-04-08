@@ -1,0 +1,31 @@
+{
+  "null": null,
+  "boolean": true,
+  "number": 123,
+  "string": "abc123",
+  "array": [
+    null,
+    true,
+    123,
+    "abc123",
+    [
+      null,
+      true,
+      123,
+      "abc123"
+    ],
+    {
+      "null": null,
+      "boolean": true,
+      "number": 123,
+      "string": "abc123"
+    }
+  ],
+  "object": {
+    "null": null,
+    "boolean": true,
+    "number": 123,
+    "string": "abc123"
+  },
+  "utf8": "あ🔥"
+}

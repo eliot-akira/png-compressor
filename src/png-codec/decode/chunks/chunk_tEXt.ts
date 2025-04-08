@@ -34,7 +34,7 @@ export function parseChunk(
     chunk.offset + ChunkPartByteLength.Length + ChunkPartByteLength.Type
   const maxOffset = chunkDataOffset + chunk.dataLength // Ensures reading outside this chunk is not allowed
   let offset = chunkDataOffset
-  const textDecoder = new TextDecoder('latin1')
+  const textDecoder = new TextDecoder('utf8') // NOTE: Changed from "latin1" in spec
   let readResult: { bytesRead: number; text: string }
 
   readResult = readText(ctx, chunk, textDecoder, 79, offset, maxOffset, true)

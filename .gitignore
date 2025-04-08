@@ -1,4 +1,5 @@
 /build
 /node_modules
+/tests/generated
 package-lock.json
 tsconfig.tsbuildinfo

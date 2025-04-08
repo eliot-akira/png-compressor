@@ -286,11 +286,12 @@ export interface IEncodePngOptions {
   strictMode?: boolean
 
   /**
-   * Additional metadata to encode as chunks in the png. By default a single
-   * `Software=@lunapaint/png-codec` chunk will be written, setting this to `{}` or will suppress
-   * this default chunk.
+   * Additional metadata to encode as chunks in the png.
    */
-  ancillaryChunks?: IPngMetadataTextualData[]
+  ancillaryChunks?: (
+    | IPngMetadataTextualData
+    | IPngMetadataCompressedTextualData
+  )[]
 }
 
 /**
@@ -537,7 +538,7 @@ export interface IPngMetadataCompressedTextualData {
   /**
    * The text.
    */
-  text: string
+  text: string | ArrayBuffer | Uint8Array
 }
 
 /**

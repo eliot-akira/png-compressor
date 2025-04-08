@@ -1,9 +1,8 @@
 /**
- * @license
- * Copyright (c) 2022 Daniel Imms <http://www.growingwiththeweb.com>
- * Released under MIT license. See LICENSE in the project root for details.
+ * zTXt Compressed textual data
+ * https://www.w3.org/TR/2003/REC-PNG-20031110/#11zTXt
  */
-
+import * as pako from '../../../pako/index.js'
 import { EncodeError } from '../../encode/assert.js'
 import { IEncodeContext, IImage32, IImage64 } from '../../shared/types.js'
 import { writeChunkDataFn } from '../write.js'
@@ -12,24 +11,26 @@ export function encodeChunk(
   ctx: IEncodeContext,
   image: Readonly<IImage32> | Readonly<IImage64>,
   keyword: string,
-  value: string | Uint8Array,
+  value: string | ArrayBuffer | Uint8Array, // deflate-able value
 ): Uint8Array {
   if (keyword.length === 0 || keyword.length > 79) {
     throw new EncodeError(
-      `tEXt: Invalid keyword length: 0 < ${keyword.length} < 80`,
+      `zTXt: Invalid keyword length: 0 < ${keyword.length} < 80`,
       0,
     )
   }
 
-  // Encode to Uint8Array
-  value = value instanceof Uint8Array ? value : new TextEncoder().encode(value)
+  // Compress and encode to Uint8Array
+  value = pako.deflate(value) as Uint8Array
 
   // Format:
   // Keyword:            1-79 bytes (character string)
   // Null separator:     1 byte (null character)
-  // Text:               0 or more bytes
-  const dataLength = keyword.length + 1 + value.length
-  return writeChunkDataFn('tEXt', dataLength, (stream) => {
+  // Compression method: 1 byte (0 = zlib deflate)
+  // Compressed text:    0 or more bytes
+  const dataLength = keyword.length + 1 + 1 + value.byteLength
+
+  return writeChunkDataFn('zTXt', dataLength, (stream) => {
     let i = 0
     // Keyword
     for (; i < keyword.length; i++) {
@@ -37,9 +38,11 @@ export function encodeChunk(
     }
     // Null separator
     stream.writeUint8(0)
-    // Text
+    // Compression method
+    stream.writeUint8(0)
+
     for (i = 0; i < value.length; i++) {
-      stream.writeUint8(value[i] as number)
+      stream.writeUint8(value[i])
     }
   })
 }

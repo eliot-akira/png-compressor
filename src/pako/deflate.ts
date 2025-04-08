@@ -339,7 +339,7 @@ Deflate.prototype.onEnd = function (status) {
  * console.log(pako.deflate(data));
  * ```
  **/
-function deflate(input, options = {}) {
+function deflate(input, options = {}): Uint8Array {
   const deflator = new Deflate(options)
 
   deflator.push(input, true)

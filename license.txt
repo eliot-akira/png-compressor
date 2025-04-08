@@ -1,6 +1,10 @@
 MIT License
 
-Copyright (c) 2023-present Eliot Akira
+png-compressor Copyright (c) 2023-present Eliot Akira
+
+Includes fork of:
+- https://github.com/nodeca/pako/ Copyright (C) 2014-2017 by Vitaly Puzrin and Andrei Tuputcyn
+- https://github.com/lunapaint/png-codec/ Copyright (c) 2022, Daniel Imms (https://github.com/Tyriar)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

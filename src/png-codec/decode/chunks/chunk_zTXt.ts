@@ -32,18 +32,17 @@ export function parseChunk(
   // Format:
   // Keyword:            1-79 bytes (character string)
   // Null separator:     1 byte (null character)
-  // Text:               0 or more bytes
+  // Compression method: 1 byte (0 = zlib deflate)
+  // Compressed text:    0 or more bytes
   const chunkDataOffset =
     chunk.offset + ChunkPartByteLength.Length + ChunkPartByteLength.Type
   const maxOffset = chunkDataOffset + chunk.dataLength // Ensures reading outside this chunk is not allowed
   let offset = chunkDataOffset
-  const textDecoder = new TextDecoder('latin1')
+  const textDecoder = new TextDecoder('utf8') // NOTE: Changed from "latin1" in spec
   let readResult: { bytesRead: number; text: string }
-
   readResult = readText(ctx, chunk, textDecoder, 79, offset, maxOffset, true)
   offset += readResult.bytesRead
   const keyword = readResult.text
-
   const compressionMethod = ctx.view.getUint8(offset)
   assertChunkCompressionMethod(ctx, chunk, compressionMethod, offset)
   offset++
@@ -56,7 +55,7 @@ export function parseChunk(
     offset,
     maxOffset,
     false,
-    true,
+    true, // isCompressed
   )
   offset += readResult.bytesRead
   const text = readResult.text

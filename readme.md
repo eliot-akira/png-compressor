@@ -14,11 +14,12 @@ Such images are sometimes called "cartridges", referring to retro game ROM cards
 
 ## How
 
-The data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and server-side JavaScript runtimes. The PNG format uses the same algorithm, but I found that the compression ratio is dramatically better when the data is compressed before encoding as image.
+There are two ways to store data in a PNG image.
 
-Each byte of the given data is written into the color channels (red/green/blue) of an image. The opacity (alpha) channel is not used because it can change color values.
+1. Create an image by encoding the data into [color channels](#color-channels)
+2. Attach invisible [data blocks](#data-blocks) to an existing image
 
-In the browser, this encoded buffer can be turned into an image element and downloaded as a PNG file. On the server, it can be written to a file.
+Optionally the data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and server-side JavaScript runtimes.
 
 ## Install
 
@@ -26,9 +27,13 @@ In the browser, this encoded buffer can be turned into an image element and down
 npm install --save png-compressor
 ```
 
-## Usage
+## Color channels
 
-### Encode/decode JSON-serializable value
+The given data is converted into an image by encoding every byte into the color channels (red/green/blue). The opacity (alpha) channel is not used because it affects color values.
+
+The encoded buffer is written to a file, or rendered as an image element and downloaded.
+
+### Encode JSON-serializable value
 
 ```ts
 import { encode, decode } from 'png-compressor'
@@ -36,12 +41,12 @@ import { encode, decode } from 'png-compressor'
 const object = { key: 'value' }
 
 const pngImage = await encode(object)
-const decoded =  await decode(pngImage)
+const decoded = await decode(pngImage)
 
 assert.deepEqual(decoded, object)
 ```
 
-### Encode/decode binary (array buffer)
+### Encode binary data
 
 ```ts
 import { encodeBinary, decodeBinary } from 'png-compressor'
@@ -49,10 +54,55 @@ import { encodeBinary, decodeBinary } from 'png-compressor'
 const buffer = new ArrayBuffer(8)
 
 const pngImage = await encodeBinary(buffer)
-const decoded =  await decodeBinary(pngImage)
+const decoded = await decodeBinary(pngImage)
 
 assert.deepEqual(decoded, buffer)
 ```
+
+## Data blocks
+
+Blocks of data can be attached to an existing image.
+
+### Encode
+
+Each block is given a keyword, which can be used to identify a single block or group multiple blocks.
+
+```ts
+import fs from 'node:fs/promises'
+import {
+  encodeImageWithDataBlocks,
+  createDataBlock,
+  getDataBlockValue,
+  getDataBlockValues.
+} from 'png-compressor
+
+const imageBuffer = await fs.readFile('./example.png')
+
+const image = encodeImageWithDataBlocks(imageBuffer, [
+  createDataBlock('text', 'hello'),
+  createDataBlock('object', { key: 'value' }),
+  createDataBlock('file', new ArrayBuffer(8)),
+  createDataBlock('products', '12345'),
+  createDataBlock('products', '67890'),
+])
+
+await fs.writeFile('./example-with-data.png', image.data)
+
+const { blocks } = decodeImageWithDataBlocks(image.data)
+
+const text = getDataBlockValues('text', blocks)
+const json = getDataBlockValues('object', blocks)
+const file = getDataBlockValues('file', blocks)
+const products = getDataBlockValues('products', blocks)
+```
+
+### Decode
+
+### Text block
+
+### JSON block
+
+### Binary block
 
 ## Browser
 
