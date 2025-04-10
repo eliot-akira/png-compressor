@@ -7,9 +7,26 @@ let command = args.shift() || 'build'
 const isDev = command === 'dev'
 
 if (isDev)
-  command = args.shift() // Optional: cjs, esm, web
+  command = args.shift() // cjs, esm, web, docs
 ;(async () => {
+
   const { name } = JSON.parse(await fs.readFile('./package.json', 'utf8'))
+
+  if (command === 'docs') {
+
+    // Fix image link URL
+    let filePath = './docs/api/index.html'
+    let urlBase = `/${name}/api`
+    let srcLink = `screenshot.jpg`
+    let targetLink = `${urlBase}/${srcLink}`
+    await fs.writeFile(filePath, (await fs.readFile(filePath, 'utf8')).replace(
+      `src="${srcLink}"`,
+      `src="${targetLink}"`
+    ))
+    console.log('Corrected link URL', targetLink)
+    return
+  }
+
 
   const esbuildOptions = {
     entryPoints: [`./src/${name}.ts`, './src/tests/index.ts'],

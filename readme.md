@@ -2,7 +2,7 @@
 
 > Compress and encode data in Portable Network Graphics (PNG) image
 
-![](screenshot.jpg)
+![Screenshot](screenshot.jpg)
 
 **[Demo](https://eliot-akira.github.io/png-compressor/) · [API](https://eliot-akira.github.io/png-compressor/api/) · [Source](https://github.com/eliot-akira/png-compressor)**
 
