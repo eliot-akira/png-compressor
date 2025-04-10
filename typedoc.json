@@ -1,5 +1,7 @@
 {
-  "entryPoints": ["src"],
+  "entryPoints": [
+    "src"
+  ],
   "out": "./docs/api",
   "entryPointStrategy": "expand",
   "exclude": [
@@ -7,7 +9,7 @@
     "src/png-compressor.ts",
     "src/tests/**/*.ts",
     "src/pako/**",
-    "src/png-codec/**",
+    "src/png-codec/**"
   ],
   "readme": "readme.md",
   "plugin": [

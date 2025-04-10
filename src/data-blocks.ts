@@ -12,6 +12,8 @@ import type {
 import { stringToUint8Array } from './string-uint8-array.ts'
 import type { JsonValue } from './json-array-buffer.ts'
 
+export type * from './png-codec/index.ts'
+
 const { KnownChunkTypes } = PngCodec
 
 /**

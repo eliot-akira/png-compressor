@@ -1,4 +1,7666 @@
-(()=>{var Fi=Object.defineProperty;var m=(e,n)=>()=>(e&&(n=e(e=0)),n);var B=(e,n)=>{for(var t in n)Fi(e,t,{get:n[t],enumerable:!0})};var On=m(()=>{});var S=m(()=>{On();});function U(e,n){e.parsedChunks.has(n.type)&&F(e,I(n,`Multiple ${n.type} chunks not allowed`,n.offset+4))}function L(e,n,t){if(n.dataLength!==t){let r=I(n,`Invalid data length: ${n.dataLength} !== ${t}`,n.offset);if(n.dataLength>t)F(e,r);else throw r}}function J(e,n,t){if(n.dataLength<t)throw xe(e,n,`Invalid data length: ${n.dataLength} < ${t}`,n.offset)}function T(e,n,t){e.parsedChunks.has(t)&&F(e,I(n,`Must precede ${t}`,n.offset+4))}function Se(e,n,t){if(!e.parsedChunks.has(t))throw xe(e,n,`Must follow ${t}`,n.offset+4)}function ht(e,n,t){e.parsedChunks.has(t)&&F(e,I(n,`Should not be present alongside ${t}`,n.offset+4))}function ce(e,n,t,r){t!==0&&F(e,I(n,`Unknown compression method "${t}"`,r))}function xe(e,n,t,r){return new G(e,`${n.type}: ${t}`,r)}function I(e,n,t){return new ee(`${e.type}: ${n}`,t)}function F(e,n){if(e.options.strictMode)throw n;e.warnings.push(n)}var G,ee,R=m(()=>{S();G=class extends Error{constructor(t,r,a){super(r);this.offset=a;this.partiallyDecodedImage={details:"header"in t&&t.header?{width:t.header.width,height:t.header.height,bitDepth:t.header.bitDepth,colorType:t.header.colorType,interlaceMethod:t.header.interlaceMethod}:void 0,info:t.info,metadata:t.metadata,rawChunks:t.rawChunks,warnings:t.warnings}}};ee=class extends Error{constructor(t,r){super(t);this.offset=r}}});function Nn(e,n){if(e.options.strictMode)throw n;e.warnings.push(n)}var he,Me,ut=m(()=>{he=class extends Error{constructor(t,r){super(t);this.offset=r}},Me=class extends Error{constructor(t,r){super(t);this.offset=r}}});function Hn(e){let n=new Uint8Array(e.buffer),t=new Uint8Array(e.length);for(let r=0;r<t.length;r++)t[r]=n[r*2+1];return t}var Fn=m(()=>{});function Le(e){let n=e.length;for(;--n>=0;)e[n]=0}function Ft(e,n,t,r,a){this.static_tree=e,this.extra_bits=n,this.extra_base=t,this.elems=r,this.max_length=a,this.has_stree=e&&e.length}function Zt(e,n){this.dyn_tree=e,this.max_code=0,this.stat_desc=n}var $i,Xn,Gi,ji,Wi,Wt,Xe,$e,Ue,Xt,Yn,Ce,Ht,Xi,Yt,Kn,Vn,qn,Gt,pt,Yi,Jn,Ki,oe,Ze,Ge,je,Kt,gt,Qn,er,tr,nr,We,K,te,rr,Vi,qi,ar,Ji,ir,or,Zn,$t,$n,jt,Gn,jn,Qi,eo,to,Wn,no,sr,ro,ao,io,lr,_t,fr,se,dr,cr=m(()=>{$i=0,Xn=1,Gi=2,ji=3,Wi=258,Wt=29,Xe=256,$e=Xe+1+Wt,Ue=30,Xt=19,Yn=2*$e+1,Ce=15,Ht=16,Xi=7,Yt=256,Kn=16,Vn=17,qn=18,Gt=new Uint8Array([0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0]),pt=new Uint8Array([0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13]),Yi=new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,3,7]),Jn=new Uint8Array([16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15]),Ki=512,oe=new Array(($e+2)*2);Le(oe);Ze=new Array(Ue*2);Le(Ze);Ge=new Array(Ki);Le(Ge);je=new Array(Wi-ji+1);Le(je);Kt=new Array(Wt);Le(Kt);gt=new Array(Ue);Le(gt);nr=e=>e<256?Ge[e]:Ge[256+(e>>>7)],We=(e,n)=>{e.pending_buf[e.pending++]=n&255,e.pending_buf[e.pending++]=n>>>8&255},K=(e,n,t)=>{e.bi_valid>Ht-t?(e.bi_buf|=n<<e.bi_valid&65535,We(e,e.bi_buf),e.bi_buf=n>>Ht-e.bi_valid,e.bi_valid+=t-Ht):(e.bi_buf|=n<<e.bi_valid&65535,e.bi_valid+=t)},te=(e,n,t)=>{K(e,t[n*2],t[n*2+1])},rr=(e,n)=>{let t=0;do t|=e&1,e>>>=1,t<<=1;while(--n>0);return t>>>1},Vi=e=>{e.bi_valid===16?(We(e,e.bi_buf),e.bi_buf=0,e.bi_valid=0):e.bi_valid>=8&&(e.pending_buf[e.pending++]=e.bi_buf&255,e.bi_buf>>=8,e.bi_valid-=8)},qi=(e,n)=>{let t=n.dyn_tree,r=n.max_code,a=n.stat_desc.static_tree,i=n.stat_desc.has_stree,o=n.stat_desc.extra_bits,s=n.stat_desc.extra_base,d=n.stat_desc.max_length,l,f,h,u,c,_,P=0;for(u=0;u<=Ce;u++)e.bl_count[u]=0;for(t[e.heap[e.heap_max]*2+1]=0,l=e.heap_max+1;l<Yn;l++)f=e.heap[l],u=t[t[f*2+1]*2+1]+1,u>d&&(u=d,P++),t[f*2+1]=u,!(f>r)&&(e.bl_count[u]++,c=0,f>=s&&(c=o[f-s]),_=t[f*2],e.opt_len+=_*(u+c),i&&(e.static_len+=_*(a[f*2+1]+c)));if(P!==0){do{for(u=d-1;e.bl_count[u]===0;)u--;e.bl_count[u]--,e.bl_count[u+1]+=2,e.bl_count[d]--,P-=2}while(P>0);for(u=d;u!==0;u--)for(f=e.bl_count[u];f!==0;)h=e.heap[--l],!(h>r)&&(t[h*2+1]!==u&&(e.opt_len+=(u-t[h*2+1])*t[h*2],t[h*2+1]=u),f--)}},ar=(e,n,t)=>{let r=new Array(Ce+1),a=0,i,o;for(i=1;i<=Ce;i++)a=a+t[i-1]<<1,r[i]=a;for(o=0;o<=n;o++){let s=e[o*2+1];s!==0&&(e[o*2]=rr(r[s]++,s))}},Ji=()=>{let e,n,t,r,a,i=new Array(Ce+1);for(t=0,r=0;r<Wt-1;r++)for(Kt[r]=t,e=0;e<1<<Gt[r];e++)je[t++]=r;for(je[t-1]=r,a=0,r=0;r<16;r++)for(gt[r]=a,e=0;e<1<<pt[r];e++)Ge[a++]=r;for(a>>=7;r<Ue;r++)for(gt[r]=a<<7,e=0;e<1<<pt[r]-7;e++)Ge[256+a++]=r;for(n=0;n<=Ce;n++)i[n]=0;for(e=0;e<=143;)oe[e*2+1]=8,e++,i[8]++;for(;e<=255;)oe[e*2+1]=9,e++,i[9]++;for(;e<=279;)oe[e*2+1]=7,e++,i[7]++;for(;e<=287;)oe[e*2+1]=8,e++,i[8]++;for(ar(oe,$e+1,i),e=0;e<Ue;e++)Ze[e*2+1]=5,Ze[e*2]=rr(e,5);Qn=new Ft(oe,Gt,Xe+1,$e,Ce),er=new Ft(Ze,pt,0,Ue,Ce),tr=new Ft(new Array(0),Yi,0,Xt,Xi)},ir=e=>{let n;for(n=0;n<$e;n++)e.dyn_ltree[n*2]=0;for(n=0;n<Ue;n++)e.dyn_dtree[n*2]=0;for(n=0;n<Xt;n++)e.bl_tree[n*2]=0;e.dyn_ltree[Yt*2]=1,e.opt_len=e.static_len=0,e.sym_next=e.matches=0},or=e=>{e.bi_valid>8?We(e,e.bi_buf):e.bi_valid>0&&(e.pending_buf[e.pending++]=e.bi_buf),e.bi_buf=0,e.bi_valid=0},Zn=(e,n,t,r)=>{let a=n*2,i=t*2;return e[a]<e[i]||e[a]===e[i]&&r[n]<=r[t]},$t=(e,n,t)=>{let r=e.heap[t],a=t<<1;for(;a<=e.heap_len&&(a<e.heap_len&&Zn(n,e.heap[a+1],e.heap[a],e.depth)&&a++,!Zn(n,r,e.heap[a],e.depth));)e.heap[t]=e.heap[a],t=a,a<<=1;e.heap[t]=r},$n=(e,n,t)=>{let r,a,i=0,o,s;if(e.sym_next!==0)do r=e.pending_buf[e.sym_buf+i++]&255,r+=(e.pending_buf[e.sym_buf+i++]&255)<<8,a=e.pending_buf[e.sym_buf+i++],r===0?te(e,a,n):(o=je[a],te(e,o+Xe+1,n),s=Gt[o],s!==0&&(a-=Kt[o],K(e,a,s)),r--,o=nr(r),te(e,o,t),s=pt[o],s!==0&&(r-=gt[o],K(e,r,s)));while(i<e.sym_next);te(e,Yt,n)},jt=(e,n)=>{let t=n.dyn_tree,r=n.stat_desc.static_tree,a=n.stat_desc.has_stree,i=n.stat_desc.elems,o,s,d=-1,l;for(e.heap_len=0,e.heap_max=Yn,o=0;o<i;o++)t[o*2]!==0?(e.heap[++e.heap_len]=d=o,e.depth[o]=0):t[o*2+1]=0;for(;e.heap_len<2;)l=e.heap[++e.heap_len]=d<2?++d:0,t[l*2]=1,e.depth[l]=0,e.opt_len--,a&&(e.static_len-=r[l*2+1]);for(n.max_code=d,o=e.heap_len>>1;o>=1;o--)$t(e,t,o);l=i;do o=e.heap[1],e.heap[1]=e.heap[e.heap_len--],$t(e,t,1),s=e.heap[1],e.heap[--e.heap_max]=o,e.heap[--e.heap_max]=s,t[l*2]=t[o*2]+t[s*2],e.depth[l]=(e.depth[o]>=e.depth[s]?e.depth[o]:e.depth[s])+1,t[o*2+1]=t[s*2+1]=l,e.heap[1]=l++,$t(e,t,1);while(e.heap_len>=2);e.heap[--e.heap_max]=e.heap[1],qi(e,n),ar(t,d,e.bl_count)},Gn=(e,n,t)=>{let r,a=-1,i,o=n[0*2+1],s=0,d=7,l=4;for(o===0&&(d=138,l=3),n[(t+1)*2+1]=65535,r=0;r<=t;r++)i=o,o=n[(r+1)*2+1],!(++s<d&&i===o)&&(s<l?e.bl_tree[i*2]+=s:i!==0?(i!==a&&e.bl_tree[i*2]++,e.bl_tree[Kn*2]++):s<=10?e.bl_tree[Vn*2]++:e.bl_tree[qn*2]++,s=0,a=i,o===0?(d=138,l=3):i===o?(d=6,l=3):(d=7,l=4))},jn=(e,n,t)=>{let r,a=-1,i,o=n[0*2+1],s=0,d=7,l=4;for(o===0&&(d=138,l=3),r=0;r<=t;r++)if(i=o,o=n[(r+1)*2+1],!(++s<d&&i===o)){if(s<l)do te(e,i,e.bl_tree);while(--s!==0);else i!==0?(i!==a&&(te(e,i,e.bl_tree),s--),te(e,Kn,e.bl_tree),K(e,s-3,2)):s<=10?(te(e,Vn,e.bl_tree),K(e,s-3,3)):(te(e,qn,e.bl_tree),K(e,s-11,7));s=0,a=i,o===0?(d=138,l=3):i===o?(d=6,l=3):(d=7,l=4)}},Qi=e=>{let n;for(Gn(e,e.dyn_ltree,e.l_desc.max_code),Gn(e,e.dyn_dtree,e.d_desc.max_code),jt(e,e.bl_desc),n=Xt-1;n>=3&&e.bl_tree[Jn[n]*2+1]===0;n--);return e.opt_len+=3*(n+1)+5+5+4,n},eo=(e,n,t,r)=>{let a;for(K(e,n-257,5),K(e,t-1,5),K(e,r-4,4),a=0;a<r;a++)K(e,e.bl_tree[Jn[a]*2+1],3);jn(e,e.dyn_ltree,n-1),jn(e,e.dyn_dtree,t-1)},to=e=>{let n=4093624447,t;for(t=0;t<=31;t++,n>>>=1)if(n&1&&e.dyn_ltree[t*2]!==0)return 0;if(e.dyn_ltree[9*2]!==0||e.dyn_ltree[10*2]!==0||e.dyn_ltree[13*2]!==0)return 1;for(t=32;t<Xe;t++)if(e.dyn_ltree[t*2]!==0)return 1;return 0},Wn=!1,no=e=>{Wn||(Ji(),Wn=!0),e.l_desc=new Zt(e.dyn_ltree,Qn),e.d_desc=new Zt(e.dyn_dtree,er),e.bl_desc=new Zt(e.bl_tree,tr),e.bi_buf=0,e.bi_valid=0,ir(e)},sr=(e,n,t,r)=>{K(e,($i<<1)+(r?1:0),3),or(e),We(e,t),We(e,~t),t&&e.pending_buf.set(e.window.subarray(n,n+t),e.pending),e.pending+=t},ro=e=>{K(e,Xn<<1,3),te(e,Yt,oe),Vi(e)},ao=(e,n,t,r)=>{let a,i,o=0;e.level>0?(e.strm.data_type===2&&(e.strm.data_type=to(e)),jt(e,e.l_desc),jt(e,e.d_desc),o=Qi(e),a=e.opt_len+3+7>>>3,i=e.static_len+3+7>>>3,i<=a&&(a=i)):a=i=t+5,t+4<=a&&n!==-1?sr(e,n,t,r):e.strategy===4||i===a?(K(e,(Xn<<1)+(r?1:0),3),$n(e,oe,Ze)):(K(e,(Gi<<1)+(r?1:0),3),eo(e,e.l_desc.max_code+1,e.d_desc.max_code+1,o+1),$n(e,e.dyn_ltree,e.dyn_dtree)),ir(e),r&&or(e)},io=(e,n,t)=>(e.pending_buf[e.sym_buf+e.sym_next++]=n,e.pending_buf[e.sym_buf+e.sym_next++]=n>>8,e.pending_buf[e.sym_buf+e.sym_next++]=t,n===0?e.dyn_ltree[t*2]++:(e.matches++,n--,e.dyn_ltree[(je[t]+Xe+1)*2]++,e.dyn_dtree[nr(n)*2]++),e.sym_next===e.sym_end),lr=no,_t=sr,fr=ao,se=io,dr=ro});var oo,Pe,Vt=m(()=>{oo=(e,n,t,r)=>{let a=e&65535|0,i=e>>>16&65535|0,o=0;for(;t!==0;){o=t>2e3?2e3:t,t-=o;do a=a+n[r++]|0,i=i+a|0;while(--o);a%=65521,i%=65521}return a|i<<16|0},Pe=oo});var so,lo,fo,Z,qt=m(()=>{so=()=>{let e,n=[];for(var t=0;t<256;t++){e=t;for(var r=0;r<8;r++)e=e&1?3988292384^e>>>1:e>>>1;n[t]=e}return n},lo=new Uint32Array(so()),fo=(e,n,t,r)=>{let a=lo,i=r+t;e^=-1;for(let o=r;o<i;o++)e=e>>>8^a[(e^n[o])&255];return e^-1},Z=fo});var le,mt=m(()=>{"use strict";le={2:"need dictionary",1:"stream end",0:"","-1":"file error","-2":"stream error","-3":"data error","-4":"insufficient memory","-5":"buffer error","-6":"incompatible version"}});var ue=m(()=>{});function ne(e,n,t,r,a){this.good_length=e,this.max_lazy=n,this.nice_length=t,this.max_chain=r,this.func=a}function Ao(){this.strm=null,this.status=0,this.pending_buf=null,this.pending_buf_size=0,this.pending_out=0,this.pending=0,this.wrap=0,this.gzhead=null,this.gzindex=0,this.method=8,this.last_flush=-1,this.w_size=0,this.w_bits=0,this.w_mask=0,this.window=null,this.window_size=0,this.prev=null,this.head=null,this.ins_h=0,this.hash_size=0,this.hash_bits=0,this.hash_mask=0,this.hash_shift=0,this.block_start=0,this.match_length=0,this.prev_match=0,this.match_available=0,this.strstart=0,this.match_start=0,this.lookahead=0,this.prev_length=0,this.max_chain_length=0,this.max_lazy_match=0,this.level=0,this.strategy=0,this.good_match=0,this.nice_match=0,this.dyn_ltree=new Uint16Array(Io*2),this.dyn_dtree=new Uint16Array((2*yo+1)*2),this.bl_tree=new Uint16Array((2*bo+1)*2),pe(this.dyn_ltree),pe(this.dyn_dtree),pe(this.bl_tree),this.l_desc=null,this.d_desc=null,this.bl_desc=null,this.bl_count=new Uint16Array(xo+1),this.heap=new Uint16Array(2*en+1),pe(this.heap),this.heap_len=0,this.heap_max=0,this.depth=new Uint16Array(2*en+1),pe(this.depth),this.sym_buf=0,this.lit_bufsize=0,this.sym_next=0,this.sym_end=0,this.opt_len=0,this.static_len=0,this.matches=0,this.insert=0,this.bi_buf=0,this.bi_valid=0}var _o,mo,wo,en,yo,bo,Io,xo,v,ge,re,Co,Be,fn,tn,nn,rn,an,De,Ke,Y,Oe,ke,Ne,Po,Te,hr,pe,Do,To,_e,V,q,M,Ye,on,pr,ze,gr,Qt,Re,ko,Eo,Ve,vo,Je,So,Mo,Uo,Lo,Ro,Bo,zo,_r,mr,wr,yr,br,Ir=m(()=>{cr();Vt();qt();mt();ue();_o=9,mo=29,wo=256,en=wo+1+mo,yo=30,bo=19,Io=2*en+1,xo=15,v=3,ge=258,re=ge+v+1,Co=32,Be=42,fn=57,tn=69,nn=73,rn=91,an=103,De=113,Ke=666,Y=1,Oe=2,ke=3,Ne=4,Po=3,Te=(e,n)=>(e.msg=le[n],n),hr=e=>e*2-(e>4?9:0),pe=e=>{let n=e.length;for(;--n>=0;)e[n]=0},Do=e=>{let n,t,r,a=e.w_size;n=e.hash_size,r=n;do t=e.head[--r],e.head[r]=t>=a?t-a:0;while(--n);n=a,r=n;do t=e.prev[--r],e.prev[r]=t>=a?t-a:0;while(--n)},To=(e,n,t)=>(n<<e.hash_shift^t)&e.hash_mask,_e=To,V=e=>{let n=e.state,t=n.pending;t>e.avail_out&&(t=e.avail_out),t!==0&&(e.output.set(n.pending_buf.subarray(n.pending_out,n.pending_out+t),e.next_out),e.next_out+=t,n.pending_out+=t,e.total_out+=t,e.avail_out-=t,n.pending-=t,n.pending===0&&(n.pending_out=0))},q=(e,n)=>{fr(e,e.block_start>=0?e.block_start:-1,e.strstart-e.block_start,n),e.block_start=e.strstart,V(e.strm)},M=(e,n)=>{e.pending_buf[e.pending++]=n},Ye=(e,n)=>{e.pending_buf[e.pending++]=n>>>8&255,e.pending_buf[e.pending++]=n&255},on=(e,n,t,r)=>{let a=e.avail_in;return a>r&&(a=r),a===0?0:(e.avail_in-=a,n.set(e.input.subarray(e.next_in,e.next_in+a),t),e.state.wrap===1?e.adler=Pe(e.adler,n,a,t):e.state.wrap===2&&(e.adler=Z(e.adler,n,a,t)),e.next_in+=a,e.total_in+=a,a)},pr=(e,n)=>{let t=e.max_chain_length,r=e.strstart,a,i,o=e.prev_length,s=e.nice_match,d=e.strstart>e.w_size-re?e.strstart-(e.w_size-re):0,l=e.window,f=e.w_mask,h=e.prev,u=e.strstart+ge,c=l[r+o-1],_=l[r+o];e.prev_length>=e.good_match&&(t>>=2),s>e.lookahead&&(s=e.lookahead);do if(a=n,!(l[a+o]!==_||l[a+o-1]!==c||l[a]!==l[r]||l[++a]!==l[r+1])){r+=2,a++;do;while(l[++r]===l[++a]&&l[++r]===l[++a]&&l[++r]===l[++a]&&l[++r]===l[++a]&&l[++r]===l[++a]&&l[++r]===l[++a]&&l[++r]===l[++a]&&l[++r]===l[++a]&&r<u);if(i=ge-(u-r),r=u-ge,i>o){if(e.match_start=n,o=i,i>=s)break;c=l[r+o-1],_=l[r+o]}}while((n=h[n&f])>d&&--t!==0);return o<=e.lookahead?o:e.lookahead},ze=e=>{let n=e.w_size,t,r,a;do{if(r=e.window_size-e.lookahead-e.strstart,e.strstart>=n+(n-re)&&(e.window.set(e.window.subarray(n,n+n-r),0),e.match_start-=n,e.strstart-=n,e.block_start-=n,e.insert>e.strstart&&(e.insert=e.strstart),Do(e),r+=n),e.strm.avail_in===0)break;if(t=on(e.strm,e.window,e.strstart+e.lookahead,r),e.lookahead+=t,e.lookahead+e.insert>=v)for(a=e.strstart-e.insert,e.ins_h=e.window[a],e.ins_h=_e(e,e.ins_h,e.window[a+1]);e.insert&&(e.ins_h=_e(e,e.ins_h,e.window[a+v-1]),e.prev[a&e.w_mask]=e.head[e.ins_h],e.head[e.ins_h]=a,a++,e.insert--,!(e.lookahead+e.insert<v)););}while(e.lookahead<re&&e.strm.avail_in!==0)},gr=(e,n)=>{let t=e.pending_buf_size-5>e.w_size?e.w_size:e.pending_buf_size-5,r,a,i,o=0,s=e.strm.avail_in;do{if(r=65535,i=e.bi_valid+42>>3,e.strm.avail_out<i||(i=e.strm.avail_out-i,a=e.strstart-e.block_start,r>a+e.strm.avail_in&&(r=a+e.strm.avail_in),r>i&&(r=i),r<t&&(r===0&&n!==4||n===0||r!==a+e.strm.avail_in)))break;o=n===4&&r===a+e.strm.avail_in?1:0,_t(e,0,0,o),e.pending_buf[e.pending-4]=r,e.pending_buf[e.pending-3]=r>>8,e.pending_buf[e.pending-2]=~r,e.pending_buf[e.pending-1]=~r>>8,V(e.strm),a&&(a>r&&(a=r),e.strm.output.set(e.window.subarray(e.block_start,e.block_start+a),e.strm.next_out),e.strm.next_out+=a,e.strm.avail_out-=a,e.strm.total_out+=a,e.block_start+=a,r-=a),r&&(on(e.strm,e.strm.output,e.strm.next_out,r),e.strm.next_out+=r,e.strm.avail_out-=r,e.strm.total_out+=r)}while(o===0);return s-=e.strm.avail_in,s&&(s>=e.w_size?(e.matches=2,e.window.set(e.strm.input.subarray(e.strm.next_in-e.w_size,e.strm.next_in),0),e.strstart=e.w_size,e.insert=e.strstart):(e.window_size-e.strstart<=s&&(e.strstart-=e.w_size,e.window.set(e.window.subarray(e.w_size,e.w_size+e.strstart),0),e.matches<2&&e.matches++,e.insert>e.strstart&&(e.insert=e.strstart)),e.window.set(e.strm.input.subarray(e.strm.next_in-s,e.strm.next_in),e.strstart),e.strstart+=s,e.insert+=s>e.w_size-e.insert?e.w_size-e.insert:s),e.block_start=e.strstart),e.high_water<e.strstart&&(e.high_water=e.strstart),o?Ne:n!==0&&n!==4&&e.strm.avail_in===0&&e.strstart===e.block_start?Oe:(i=e.window_size-e.strstart,e.strm.avail_in>i&&e.block_start>=e.w_size&&(e.block_start-=e.w_size,e.strstart-=e.w_size,e.window.set(e.window.subarray(e.w_size,e.w_size+e.strstart),0),e.matches<2&&e.matches++,i+=e.w_size,e.insert>e.strstart&&(e.insert=e.strstart)),i>e.strm.avail_in&&(i=e.strm.avail_in),i&&(on(e.strm,e.window,e.strstart,i),e.strstart+=i,e.insert+=i>e.w_size-e.insert?e.w_size-e.insert:i),e.high_water<e.strstart&&(e.high_water=e.strstart),i=e.bi_valid+42>>3,i=e.pending_buf_size-i>65535?65535:e.pending_buf_size-i,t=i>e.w_size?e.w_size:i,a=e.strstart-e.block_start,(a>=t||(a||n===4)&&n!==0&&e.strm.avail_in===0&&a<=i)&&(r=a>i?i:a,o=n===4&&e.strm.avail_in===0&&r===a?1:0,_t(e,e.block_start,r,o),e.block_start+=r,V(e.strm)),o?ke:Y)},Qt=(e,n)=>{let t,r;for(;;){if(e.lookahead<re){if(ze(e),e.lookahead<re&&n===0)return Y;if(e.lookahead===0)break}if(t=0,e.lookahead>=v&&(e.ins_h=_e(e,e.ins_h,e.window[e.strstart+v-1]),t=e.prev[e.strstart&e.w_mask]=e.head[e.ins_h],e.head[e.ins_h]=e.strstart),t!==0&&e.strstart-t<=e.w_size-re&&(e.match_length=pr(e,t)),e.match_length>=v)if(r=se(e,e.strstart-e.match_start,e.match_length-v),e.lookahead-=e.match_length,e.match_length<=e.max_lazy_match&&e.lookahead>=v){e.match_length--;do e.strstart++,e.ins_h=_e(e,e.ins_h,e.window[e.strstart+v-1]),t=e.prev[e.strstart&e.w_mask]=e.head[e.ins_h],e.head[e.ins_h]=e.strstart;while(--e.match_length!==0);e.strstart++}else e.strstart+=e.match_length,e.match_length=0,e.ins_h=e.window[e.strstart],e.ins_h=_e(e,e.ins_h,e.window[e.strstart+1]);else r=se(e,0,e.window[e.strstart]),e.lookahead--,e.strstart++;if(r&&(q(e,!1),e.strm.avail_out===0))return Y}return e.insert=e.strstart<v-1?e.strstart:v-1,n===4?(q(e,!0),e.strm.avail_out===0?ke:Ne):e.sym_next&&(q(e,!1),e.strm.avail_out===0)?Y:Oe},Re=(e,n)=>{let t,r,a;for(;;){if(e.lookahead<re){if(ze(e),e.lookahead<re&&n===0)return Y;if(e.lookahead===0)break}if(t=0,e.lookahead>=v&&(e.ins_h=_e(e,e.ins_h,e.window[e.strstart+v-1]),t=e.prev[e.strstart&e.w_mask]=e.head[e.ins_h],e.head[e.ins_h]=e.strstart),e.prev_length=e.match_length,e.prev_match=e.match_start,e.match_length=v-1,t!==0&&e.prev_length<e.max_lazy_match&&e.strstart-t<=e.w_size-re&&(e.match_length=pr(e,t),e.match_length<=5&&(e.strategy===1||e.match_length===v&&e.strstart-e.match_start>4096)&&(e.match_length=v-1)),e.prev_length>=v&&e.match_length<=e.prev_length){a=e.strstart+e.lookahead-v,r=se(e,e.strstart-1-e.prev_match,e.prev_length-v),e.lookahead-=e.prev_length-1,e.prev_length-=2;do++e.strstart<=a&&(e.ins_h=_e(e,e.ins_h,e.window[e.strstart+v-1]),t=e.prev[e.strstart&e.w_mask]=e.head[e.ins_h],e.head[e.ins_h]=e.strstart);while(--e.prev_length!==0);if(e.match_available=0,e.match_length=v-1,e.strstart++,r&&(q(e,!1),e.strm.avail_out===0))return Y}else if(e.match_available){if(r=se(e,0,e.window[e.strstart-1]),r&&q(e,!1),e.strstart++,e.lookahead--,e.strm.avail_out===0)return Y}else e.match_available=1,e.strstart++,e.lookahead--}return e.match_available&&(r=se(e,0,e.window[e.strstart-1]),e.match_available=0),e.insert=e.strstart<v-1?e.strstart:v-1,n===4?(q(e,!0),e.strm.avail_out===0?ke:Ne):e.sym_next&&(q(e,!1),e.strm.avail_out===0)?Y:Oe},ko=(e,n)=>{let t,r,a,i,o=e.window;for(;;){if(e.lookahead<=ge){if(ze(e),e.lookahead<=ge&&n===0)return Y;if(e.lookahead===0)break}if(e.match_length=0,e.lookahead>=v&&e.strstart>0&&(a=e.strstart-1,r=o[a],r===o[++a]&&r===o[++a]&&r===o[++a])){i=e.strstart+ge;do;while(r===o[++a]&&r===o[++a]&&r===o[++a]&&r===o[++a]&&r===o[++a]&&r===o[++a]&&r===o[++a]&&r===o[++a]&&a<i);e.match_length=ge-(i-a),e.match_length>e.lookahead&&(e.match_length=e.lookahead)}if(e.match_length>=v?(t=se(e,1,e.match_length-v),e.lookahead-=e.match_length,e.strstart+=e.match_length,e.match_length=0):(t=se(e,0,e.window[e.strstart]),e.lookahead--,e.strstart++),t&&(q(e,!1),e.strm.avail_out===0))return Y}return e.insert=0,n===4?(q(e,!0),e.strm.avail_out===0?ke:Ne):e.sym_next&&(q(e,!1),e.strm.avail_out===0)?Y:Oe},Eo=(e,n)=>{let t;for(;;){if(e.lookahead===0&&(ze(e),e.lookahead===0)){if(n===0)return Y;break}if(e.match_length=0,t=se(e,0,e.window[e.strstart]),e.lookahead--,e.strstart++,t&&(q(e,!1),e.strm.avail_out===0))return Y}return e.insert=0,n===4?(q(e,!0),e.strm.avail_out===0?ke:Ne):e.sym_next&&(q(e,!1),e.strm.avail_out===0)?Y:Oe};Ve=[new ne(0,0,0,0,gr),new ne(4,4,8,4,Qt),new ne(4,5,16,8,Qt),new ne(4,6,32,32,Qt),new ne(4,4,16,16,Re),new ne(8,16,32,32,Re),new ne(8,16,128,128,Re),new ne(8,32,128,256,Re),new ne(32,128,258,1024,Re),new ne(32,258,258,4096,Re)],vo=e=>{e.window_size=2*e.w_size,pe(e.head),e.max_lazy_match=Ve[e.level].max_lazy,e.good_match=Ve[e.level].good_length,e.nice_match=Ve[e.level].nice_length,e.max_chain_length=Ve[e.level].max_chain,e.strstart=0,e.block_start=0,e.lookahead=0,e.insert=0,e.match_length=e.prev_length=v-1,e.match_available=0,e.ins_h=0};Je=e=>{if(!e)return 1;let n=e.state;return!n||n.strm!==e||n.status!==Be&&n.status!==fn&&n.status!==tn&&n.status!==nn&&n.status!==rn&&n.status!==an&&n.status!==De&&n.status!==Ke?1:0},So=e=>{if(Je(e))return Te(e,-2);e.total_in=e.total_out=0,e.data_type=2;let n=e.state;return n.pending=0,n.pending_out=0,n.wrap<0&&(n.wrap=-n.wrap),n.status=n.wrap===2?fn:n.wrap?Be:De,e.adler=n.wrap===2?0:1,n.last_flush=-2,lr(n),0},Mo=e=>{let n=So(e);return n===0&&vo(e.state),n},Uo=(e,n)=>Je(e)||e.state.wrap!==2?-2:(e.state.gzhead=n,0),Lo=(e,n,t,r,a,i)=>{if(!e)return-2;let o=1;if(n===-1&&(n=6),r<0?(o=0,r=-r):r>15&&(o=2,r-=16),a<1||a>_o||t!==8||r<8||r>15||n<0||n>9||i<0||i>4||r===8&&o!==1)return Te(e,-2);r===8&&(r=9);let s=new Ao;return e.state=s,s.strm=e,s.status=Be,s.wrap=o,s.gzhead=null,s.w_bits=r,s.w_size=1<<s.w_bits,s.w_mask=s.w_size-1,s.hash_bits=a+7,s.hash_size=1<<s.hash_bits,s.hash_mask=s.hash_size-1,s.hash_shift=~~((s.hash_bits+v-1)/v),s.window=new Uint8Array(s.w_size*2),s.head=new Uint16Array(s.hash_size),s.prev=new Uint16Array(s.w_size),s.lit_bufsize=1<<a+6,s.pending_buf_size=s.lit_bufsize*4,s.pending_buf=new Uint8Array(s.pending_buf_size),s.sym_buf=s.lit_bufsize,s.sym_end=(s.lit_bufsize-1)*3,s.level=n,s.strategy=i,s.method=t,Mo(e)},Ro=(e,n)=>{if(Je(e)||n>5||n<0)return e?Te(e,-2):-2;let t=e.state;if(!e.output||e.avail_in!==0&&!e.input||t.status===Ke&&n!==4)return Te(e,e.avail_out===0?-5:-2);let r=t.last_flush;if(t.last_flush=n,t.pending!==0){if(V(e),e.avail_out===0)return t.last_flush=-1,0}else if(e.avail_in===0&&hr(n)<=hr(r)&&n!==4)return Te(e,-5);if(t.status===Ke&&e.avail_in!==0)return Te(e,-5);if(t.status===Be&&t.wrap===0&&(t.status=De),t.status===Be){let a=8+(t.w_bits-8<<4)<<8,i=-1;if(t.strategy>=2||t.level<2?i=0:t.level<6?i=1:t.level===6?i=2:i=3,a|=i<<6,t.strstart!==0&&(a|=Co),a+=31-a%31,Ye(t,a),t.strstart!==0&&(Ye(t,e.adler>>>16),Ye(t,e.adler&65535)),e.adler=1,t.status=De,V(e),t.pending!==0)return t.last_flush=-1,0}if(t.status===fn){if(e.adler=0,M(t,31),M(t,139),M(t,8),t.gzhead)M(t,(t.gzhead.text?1:0)+(t.gzhead.hcrc?2:0)+(t.gzhead.extra?4:0)+(t.gzhead.name?8:0)+(t.gzhead.comment?16:0)),M(t,t.gzhead.time&255),M(t,t.gzhead.time>>8&255),M(t,t.gzhead.time>>16&255),M(t,t.gzhead.time>>24&255),M(t,t.level===9?2:t.strategy>=2||t.level<2?4:0),M(t,t.gzhead.os&255),t.gzhead.extra&&t.gzhead.extra.length&&(M(t,t.gzhead.extra.length&255),M(t,t.gzhead.extra.length>>8&255)),t.gzhead.hcrc&&(e.adler=Z(e.adler,t.pending_buf,t.pending,0)),t.gzindex=0,t.status=tn;else if(M(t,0),M(t,0),M(t,0),M(t,0),M(t,0),M(t,t.level===9?2:t.strategy>=2||t.level<2?4:0),M(t,Po),t.status=De,V(e),t.pending!==0)return t.last_flush=-1,0}if(t.status===tn){if(t.gzhead.extra){let a=t.pending,i=(t.gzhead.extra.length&65535)-t.gzindex;for(;t.pending+i>t.pending_buf_size;){let s=t.pending_buf_size-t.pending;if(t.pending_buf.set(t.gzhead.extra.subarray(t.gzindex,t.gzindex+s),t.pending),t.pending=t.pending_buf_size,t.gzhead.hcrc&&t.pending>a&&(e.adler=Z(e.adler,t.pending_buf,t.pending-a,a)),t.gzindex+=s,V(e),t.pending!==0)return t.last_flush=-1,0;a=0,i-=s}let o=new Uint8Array(t.gzhead.extra);t.pending_buf.set(o.subarray(t.gzindex,t.gzindex+i),t.pending),t.pending+=i,t.gzhead.hcrc&&t.pending>a&&(e.adler=Z(e.adler,t.pending_buf,t.pending-a,a)),t.gzindex=0}t.status=nn}if(t.status===nn){if(t.gzhead.name){let a=t.pending,i;do{if(t.pending===t.pending_buf_size){if(t.gzhead.hcrc&&t.pending>a&&(e.adler=Z(e.adler,t.pending_buf,t.pending-a,a)),V(e),t.pending!==0)return t.last_flush=-1,0;a=0}t.gzindex<t.gzhead.name.length?i=t.gzhead.name.charCodeAt(t.gzindex++)&255:i=0,M(t,i)}while(i!==0);t.gzhead.hcrc&&t.pending>a&&(e.adler=Z(e.adler,t.pending_buf,t.pending-a,a)),t.gzindex=0}t.status=rn}if(t.status===rn){if(t.gzhead.comment){let a=t.pending,i;do{if(t.pending===t.pending_buf_size){if(t.gzhead.hcrc&&t.pending>a&&(e.adler=Z(e.adler,t.pending_buf,t.pending-a,a)),V(e),t.pending!==0)return t.last_flush=-1,0;a=0}t.gzindex<t.gzhead.comment.length?i=t.gzhead.comment.charCodeAt(t.gzindex++)&255:i=0,M(t,i)}while(i!==0);t.gzhead.hcrc&&t.pending>a&&(e.adler=Z(e.adler,t.pending_buf,t.pending-a,a))}t.status=an}if(t.status===an){if(t.gzhead.hcrc){if(t.pending+2>t.pending_buf_size&&(V(e),t.pending!==0))return t.last_flush=-1,0;M(t,e.adler&255),M(t,e.adler>>8&255),e.adler=0}if(t.status=De,V(e),t.pending!==0)return t.last_flush=-1,0}if(e.avail_in!==0||t.lookahead!==0||n!==0&&t.status!==Ke){let a=t.level===0?gr(t,n):t.strategy===2?Eo(t,n):t.strategy===3?ko(t,n):Ve[t.level].func(t,n);if((a===ke||a===Ne)&&(t.status=Ke),a===Y||a===ke)return e.avail_out===0&&(t.last_flush=-1),0;if(a===Oe&&(n===1?dr(t):n!==5&&(_t(t,0,0,!1),n===3&&(pe(t.head),t.lookahead===0&&(t.strstart=0,t.block_start=0,t.insert=0))),V(e),e.avail_out===0))return t.last_flush=-1,0}return n!==4?0:t.wrap<=0?1:(t.wrap===2?(M(t,e.adler&255),M(t,e.adler>>8&255),M(t,e.adler>>16&255),M(t,e.adler>>24&255),M(t,e.total_in&255),M(t,e.total_in>>8&255),M(t,e.total_in>>16&255),M(t,e.total_in>>24&255)):(Ye(t,e.adler>>>16),Ye(t,e.adler&65535)),V(e),t.wrap>0&&(t.wrap=-t.wrap),t.pending!==0?0:1)},Bo=e=>{if(Je(e))return-2;let n=e.state.status;return e.state=null,n===De?Te(e,-3):0},zo=(e,n)=>{let t=n.length;if(Je(e))return-2;let r=e.state,a=r.wrap;if(a===2||a===1&&r.status!==Be||r.lookahead)return-2;if(a===1&&(e.adler=Pe(e.adler,n,t,0)),r.wrap=0,t>=r.w_size){a===0&&(pe(r.head),r.strstart=0,r.block_start=0,r.insert=0);let d=new Uint8Array(r.w_size);d.set(n.subarray(t-r.w_size,t),0),n=d,t=r.w_size}let i=e.avail_in,o=e.next_in,s=e.input;for(e.avail_in=t,e.next_in=0,e.input=n,ze(r);r.lookahead>=v;){let d=r.strstart,l=r.lookahead-(v-1);do r.ins_h=_e(r,r.ins_h,r.window[d+v-1]),r.prev[d&r.w_mask]=r.head[r.ins_h],r.head[r.ins_h]=d,d++;while(--l);r.strstart=d,r.lookahead=v-1,ze(r)}return r.strstart+=r.lookahead,r.block_start=r.strstart,r.insert=r.lookahead,r.lookahead=0,r.match_length=r.prev_length=v-1,r.match_available=0,e.next_in=o,e.input=s,e.avail_in=i,r.wrap=a,0},_r=Lo,mr=Uo,wr=Ro,yr=Bo,br=zo});function bt(e,...n){for(;n.length;){let t=n.shift();if(t){if(typeof t!="object")throw new TypeError(t+"must be non-object");for(let r in t)Oo(t,r)&&(e[r]=t[r])}}return e}function It(e){let n=0;for(let r=0,a=e.length;r<a;r++)n+=e[r].length;let t=new Uint8Array(n);for(let r=0,a=0,i=e.length;r<i;r++){let o=e[r];t.set(o,a),a+=o.length}return t}var Oo,dn=m(()=>{Oo=(e,n)=>Object.prototype.hasOwnProperty.call(e,n)});function et(e){if(typeof TextEncoder=="function"&&TextEncoder.prototype.encode)return new TextEncoder().encode(e);let n,t,r,a,i,o=e.length,s=0;for(a=0;a<o;a++)t=e.charCodeAt(a),(t&64512)===55296&&a+1<o&&(r=e.charCodeAt(a+1),(r&64512)===56320&&(t=65536+(t-55296<<10)+(r-56320),a++)),s+=t<128?1:t<2048?2:t<65536?3:4;for(n=new Uint8Array(s),i=0,a=0;i<s;a++)t=e.charCodeAt(a),(t&64512)===55296&&a+1<o&&(r=e.charCodeAt(a+1),(r&64512)===56320&&(t=65536+(t-55296<<10)+(r-56320),a++)),t<128?n[i++]=t:t<2048?(n[i++]=192|t>>>6,n[i++]=128|t&63):t<65536?(n[i++]=224|t>>>12,n[i++]=128|t>>>6&63,n[i++]=128|t&63):(n[i++]=240|t>>>18,n[i++]=128|t>>>12&63,n[i++]=128|t>>>6&63,n[i++]=128|t&63);return n}function Cr(e,n){let t=n||e.length;if(typeof TextDecoder=="function"&&TextDecoder.prototype.decode)return new TextDecoder().decode(e.subarray(0,n));let r,a,i=new Array(t*2);for(a=0,r=0;r<t;){let o=e[r++];if(o<128){i[a++]=o;continue}let s=Qe[o];if(s>4){i[a++]=65533,r+=s-1;continue}for(o&=s===2?31:s===3?15:7;s>1&&r<t;)o=o<<6|e[r++]&63,s--;if(s>1){i[a++]=65533;continue}o<65536?i[a++]=o:(o-=65536,i[a++]=55296|o>>10&1023,i[a++]=56320|o&1023)}return No(i,a)}function Pr(e,n){n=n||e.length,n>e.length&&(n=e.length);let t=n-1;for(;t>=0&&(e[t]&192)===128;)t--;return t<0||t===0?n:t+Qe[e[t]]>n?t:n}var xr,Qe,No,cn=m(()=>{xr=!0;try{String.fromCharCode.apply(null,new Uint8Array(1))}catch{xr=!1}Qe=new Uint8Array(256);for(let e=0;e<256;e++)Qe[e]=e>=252?6:e>=248?5:e>=240?4:e>=224?3:e>=192?2:1;Qe[254]=Qe[254]=1;No=(e,n)=>{if(n<65534&&e.subarray&&xr)return String.fromCharCode.apply(null,e.length===n?e:e.subarray(0,n));let t="";for(let r=0;r<n;r++)t+=String.fromCharCode(e[r]);return t}});function Ho(){this.input=null,this.next_in=0,this.avail_in=0,this.total_in=0,this.output=null,this.next_out=0,this.avail_out=0,this.total_out=0,this.msg="",this.state=null,this.data_type=2,this.adler=0}var xt,hn=m(()=>{xt=Ho});function tt(e){this.options=bt({level:-1,method:8,chunkSize:16384,windowBits:15,memLevel:8,strategy:0},e||{});let n=this.options;n.raw&&n.windowBits>0?n.windowBits=-n.windowBits:n.gzip&&n.windowBits>0&&n.windowBits<16&&(n.windowBits+=16),this.err=0,this.msg="",this.ended=!1,this.chunks=[],this.strm=new xt,this.strm.avail_out=0;let t=_r(this.strm,n.level,n.method,n.windowBits,n.memLevel,n.strategy);if(t!==0)throw new Error(le[t]);if(n.header&&mr(this.strm,n.header),n.dictionary){let r;if(typeof n.dictionary=="string"?r=et(n.dictionary):Dr.call(n.dictionary)==="[object ArrayBuffer]"?r=new Uint8Array(n.dictionary):r=n.dictionary,t=br(this.strm,r),t!==0)throw new Error(le[t]);this._dict_set=!0}}function un(e,n={}){let t=new tt(n);if(t.push(e,!0),t.err)throw t.msg||le[t.err];return t.result}var Dr,Tr=m(()=>{Ir();dn();cn();mt();hn();ue();ue();Dr=Object.prototype.toString;tt.prototype.push=function(e,n){let t=this.strm,r=this.options.chunkSize,a,i;if(this.ended)return!1;for(n===~~n?i=n:i=n===!0?4:0,typeof e=="string"?t.input=et(e):Dr.call(e)==="[object ArrayBuffer]"?t.input=new Uint8Array(e):t.input=e,t.next_in=0,t.avail_in=t.input.length;;){if(t.avail_out===0&&(t.output=new Uint8Array(r),t.next_out=0,t.avail_out=r),(i===2||i===3)&&t.avail_out<=6){this.onData(t.output.subarray(0,t.next_out)),t.avail_out=0;continue}if(a=wr(t,i),a===1)return t.next_out>0&&this.onData(t.output.subarray(0,t.next_out)),a=yr(this.strm),this.onEnd(a),this.ended=!0,a===0;if(t.avail_out===0){this.onData(t.output);continue}if(i>0&&t.next_out>0){this.onData(t.output.subarray(0,t.next_out)),t.avail_out=0;continue}if(t.avail_in===0)break}return!0};tt.prototype.onData=function(e){this.chunks.push(e)};tt.prototype.onEnd=function(e){e===0&&(this.result=It(this.chunks)),this.chunks=[],this.err=e,this.msg=this.strm.msg}});function pn(e,n){let t,r,a,i,o,s,d,l,f,h,u,c,_,P,b,w,g,p,C,H,E,D,A,y,x=e.state;t=e.next_in,A=e.input,r=t+(e.avail_in-5),a=e.next_out,y=e.output,i=a-(n-e.avail_out),o=a+(e.avail_out-257),s=x.dmax,d=x.wsize,l=x.whave,f=x.wnext,h=x.window,u=x.hold,c=x.bits,_=x.lencode,P=x.distcode,b=(1<<x.lenbits)-1,w=(1<<x.distbits)-1;e:do{c<15&&(u+=A[t++]<<c,c+=8,u+=A[t++]<<c,c+=8),g=_[u&b];t:for(;;){if(p=g>>>24,u>>>=p,c-=p,p=g>>>16&255,p===0)y[a++]=g&65535;else if(p&16){C=g&65535,p&=15,p&&(c<p&&(u+=A[t++]<<c,c+=8),C+=u&(1<<p)-1,u>>>=p,c-=p),c<15&&(u+=A[t++]<<c,c+=8,u+=A[t++]<<c,c+=8),g=P[u&w];n:for(;;){if(p=g>>>24,u>>>=p,c-=p,p=g>>>16&255,p&16){if(H=g&65535,p&=15,c<p&&(u+=A[t++]<<c,c+=8,c<p&&(u+=A[t++]<<c,c+=8)),H+=u&(1<<p)-1,H>s){e.msg="invalid distance too far back",x.mode=16209;break e}if(u>>>=p,c-=p,p=a-i,H>p){if(p=H-p,p>l&&x.sane){e.msg="invalid distance too far back",x.mode=16209;break e}if(E=0,D=h,f===0){if(E+=d-p,p<C){C-=p;do y[a++]=h[E++];while(--p);E=a-H,D=y}}else if(f<p){if(E+=d+f-p,p-=f,p<C){C-=p;do y[a++]=h[E++];while(--p);if(E=0,f<C){p=f,C-=p;do y[a++]=h[E++];while(--p);E=a-H,D=y}}}else if(E+=f-p,p<C){C-=p;do y[a++]=h[E++];while(--p);E=a-H,D=y}for(;C>2;)y[a++]=D[E++],y[a++]=D[E++],y[a++]=D[E++],C-=3;C&&(y[a++]=D[E++],C>1&&(y[a++]=D[E++]))}else{E=a-H;do y[a++]=y[E++],y[a++]=y[E++],y[a++]=y[E++],C-=3;while(C>2);C&&(y[a++]=y[E++],C>1&&(y[a++]=y[E++]))}}else if(p&64){e.msg="invalid distance code",x.mode=16209;break e}else{g=P[(g&65535)+(u&(1<<p)-1)];continue n}break}}else if(p&64)if(p&32){x.mode=16191;break e}else{e.msg="invalid literal/length code",x.mode=16209;break e}else{g=_[(g&65535)+(u&(1<<p)-1)];continue t}break}}while(t<r&&a<o);C=c>>3,t-=C,c-=C<<3,u&=(1<<c)-1,e.next_in=t,e.next_out=a,e.avail_in=t<r?5+(r-t):5-(t-r),e.avail_out=a<o?257+(o-a):257-(a-o),x.hold=u,x.bits=c}var kr=m(()=>{});var Zo,$o,Go,jo,Wo,He,Er=m(()=>{Zo=new Uint16Array([3,4,5,6,7,8,9,10,11,13,15,17,19,23,27,31,35,43,51,59,67,83,99,115,131,163,195,227,258,0,0]),$o=new Uint8Array([16,16,16,16,16,16,16,16,17,17,17,17,18,18,18,18,19,19,19,19,20,20,20,20,21,21,21,21,16,72,78]),Go=new Uint16Array([1,2,3,4,5,7,9,13,17,25,33,49,65,97,129,193,257,385,513,769,1025,1537,2049,3073,4097,6145,8193,12289,16385,24577,0,0]),jo=new Uint8Array([16,16,16,16,17,17,18,18,19,19,20,20,21,21,22,22,23,23,24,24,25,25,26,26,27,27,28,28,29,29,64,64]),Wo=(e,n,t,r,a,i,o,s)=>{let d=s.bits,l=0,f=0,h=0,u=0,c=0,_=0,P=0,b=0,w=0,g=0,p,C,H,E,D,A=null,y,x=new Uint16Array(15+1),X=new Uint16Array(15+1),be=null,zn,dt,ct;for(l=0;l<=15;l++)x[l]=0;for(f=0;f<r;f++)x[n[t+f]]++;for(c=d,u=15;u>=1&&x[u]===0;u--);if(c>u&&(c=u),u===0)return a[i++]=1<<24|64<<16|0,a[i++]=1<<24|64<<16|0,s.bits=1,0;for(h=1;h<u&&x[h]===0;h++);for(c<h&&(c=h),b=1,l=1;l<=15;l++)if(b<<=1,b-=x[l],b<0)return-1;if(b>0&&(e===0||u!==1))return-1;for(X[1]=0,l=1;l<15;l++)X[l+1]=X[l]+x[l];for(f=0;f<r;f++)n[t+f]!==0&&(o[X[n[t+f]]++]=f);if(e===0?(A=be=o,y=20):e===1?(A=Zo,be=$o,y=257):(A=Go,be=jo,y=0),g=0,f=0,l=h,D=i,_=c,P=0,H=-1,w=1<<c,E=w-1,e===1&&w>852||e===2&&w>592)return 1;for(;;){zn=l-P,o[f]+1<y?(dt=0,ct=o[f]):o[f]>=y?(dt=be[o[f]-y],ct=A[o[f]-y]):(dt=32+64,ct=0),p=1<<l-P,C=1<<_,h=C;do C-=p,a[D+(g>>P)+C]=zn<<24|dt<<16|ct|0;while(C!==0);for(p=1<<l-1;g&p;)p>>=1;if(p!==0?(g&=p-1,g+=p):g=0,f++,--x[l]===0){if(l===u)break;l=n[t+o[f]]}if(l>c&&(g&E)!==H){for(P===0&&(P=c),D+=h,_=l-P,b=1<<_;_+P<u&&(b-=x[_+P],!(b<=0));)_++,b<<=1;if(w+=1<<_,e===1&&w>852||e===2&&w>592)return 1;H=g&E,a[H]=c<<24|_<<16|D-i|0}}return g!==0&&(a[D+g]=l-P<<24|64<<16|0),s.bits=c,0},He=Wo});function Vo(){this.strm=null,this.mode=0,this.last=!1,this.wrap=0,this.havedict=!1,this.flags=0,this.dmax=0,this.check=0,this.total=0,this.head=null,this.wbits=0,this.wsize=0,this.whave=0,this.wnext=0,this.window=null,this.hold=0,this.bits=0,this.length=0,this.offset=0,this.extra=0,this.lencode=null,this.distcode=null,this.lenbits=0,this.distbits=0,this.ncode=0,this.nlen=0,this.ndist=0,this.have=0,this.next=null,this.lens=new Uint16Array(320),this.work=new Uint16Array(288),this.lendyn=null,this.distdyn=null,this.sane=0,this.back=0,this.was=0}var Xo,Jr,Qr,kt,vr,Ar,Sr,Mr,Ur,Lr,Rr,Br,zr,Tt,fe,gn,Or,_n,Nr,Hr,Fr,Zr,Pt,Dt,$r,Gr,jr,Wr,Xr,mn,Yr,Kr,N,bn,ea,Yo,Ko,Vr,ve,qo,ta,Jo,Qo,qr,wn,yn,es,na,ts,ns,rs,as,ra,aa,Et,ia,oa,In,sa=m(()=>{Vt();qt();kr();Er();ue();Xo=0,Jr=1,Qr=2,kt=16180,vr=16181,Ar=16182,Sr=16183,Mr=16184,Ur=16185,Lr=16186,Rr=16187,Br=16188,zr=16189,Tt=16190,fe=16191,gn=16192,Or=16193,_n=16194,Nr=16195,Hr=16196,Fr=16197,Zr=16198,Pt=16199,Dt=16200,$r=16201,Gr=16202,jr=16203,Wr=16204,Xr=16205,mn=16206,Yr=16207,Kr=16208,N=16209,bn=16210,ea=16211,Yo=852,Ko=592,Vr=e=>(e>>>24&255)+(e>>>8&65280)+((e&65280)<<8)+((e&255)<<24);ve=e=>{if(!e)return 1;let n=e.state;return!n||n.strm!==e||n.mode<kt||n.mode>ea?1:0},qo=e=>{if(ve(e))return-2;let n=e.state;return e.total_in=e.total_out=n.total=0,e.msg="",n.wrap&&(e.adler=n.wrap&1),n.mode=kt,n.last=0,n.havedict=0,n.flags=-1,n.dmax=32768,n.head=null,n.hold=0,n.bits=0,n.lencode=n.lendyn=new Int32Array(Yo),n.distcode=n.distdyn=new Int32Array(Ko),n.sane=1,n.back=-1,0},ta=e=>{if(ve(e))return-2;let n=e.state;return n.wsize=0,n.whave=0,n.wnext=0,qo(e)},Jo=(e,n)=>{let t;if(ve(e))return-2;let r=e.state;return n<0?(t=0,n=-n):(t=(n>>4)+5,n<48&&(n&=15)),n&&(n<8||n>15)?-2:(r.window!==null&&r.wbits!==n&&(r.window=null),r.wrap=t,r.wbits=n,ta(e))},Qo=(e,n)=>{if(!e)return-2;let t=new Vo;e.state=t,t.strm=e,t.window=null,t.mode=kt;let r=Jo(e,n);return r!==0&&(e.state=null),r},qr=!0,es=e=>{if(qr){wn=new Int32Array(512),yn=new Int32Array(32);let n=0;for(;n<144;)e.lens[n++]=8;for(;n<256;)e.lens[n++]=9;for(;n<280;)e.lens[n++]=7;for(;n<288;)e.lens[n++]=8;for(He(Jr,e.lens,0,288,wn,0,e.work,{bits:9}),n=0;n<32;)e.lens[n++]=5;He(Qr,e.lens,0,32,yn,0,e.work,{bits:5}),qr=!1}e.lencode=wn,e.lenbits=9,e.distcode=yn,e.distbits=5},na=(e,n,t,r)=>{let a,i=e.state;return i.window===null&&(i.wsize=1<<i.wbits,i.wnext=0,i.whave=0,i.window=new Uint8Array(i.wsize)),r>=i.wsize?(i.window.set(n.subarray(t-i.wsize,t),0),i.wnext=0,i.whave=i.wsize):(a=i.wsize-i.wnext,a>r&&(a=r),i.window.set(n.subarray(t-r,t-r+a),i.wnext),r-=a,r?(i.window.set(n.subarray(t-r,t),0),i.wnext=r,i.whave=i.wsize):(i.wnext+=a,i.wnext===i.wsize&&(i.wnext=0),i.whave<i.wsize&&(i.whave+=a))),0},ts=(e,n)=>{let t,r,a,i,o,s,d,l,f,h,u,c,_,P,b=0,w,g,p,C,H,E,D,A,y=new Uint8Array(4),x,X,be=new Uint8Array([16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15]);if(ve(e)||!e.output||!e.input&&e.avail_in!==0)return-2;t=e.state,t.mode===fe&&(t.mode=gn),o=e.next_out,a=e.output,d=e.avail_out,i=e.next_in,r=e.input,s=e.avail_in,l=t.hold,f=t.bits,h=s,u=d,A=0;e:for(;;)switch(t.mode){case kt:if(t.wrap===0){t.mode=gn;break}for(;f<16;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(t.wrap&2&&l===35615){t.wbits===0&&(t.wbits=15),t.check=0,y[0]=l&255,y[1]=l>>>8&255,t.check=Z(t.check,y,2,0),l=0,f=0,t.mode=vr;break}if(t.head&&(t.head.done=!1),!(t.wrap&1)||(((l&255)<<8)+(l>>8))%31){e.msg="incorrect header check",t.mode=N;break}if((l&15)!==8){e.msg="unknown compression method",t.mode=N;break}if(l>>>=4,f-=4,D=(l&15)+8,t.wbits===0&&(t.wbits=D),D>15||D>t.wbits){e.msg="invalid window size",t.mode=N;break}t.dmax=1<<t.wbits,t.flags=0,e.adler=t.check=1,t.mode=l&512?zr:fe,l=0,f=0;break;case vr:for(;f<16;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(t.flags=l,(t.flags&255)!==8){e.msg="unknown compression method",t.mode=N;break}if(t.flags&57344){e.msg="unknown header flags set",t.mode=N;break}t.head&&(t.head.text=l>>8&1),t.flags&512&&t.wrap&4&&(y[0]=l&255,y[1]=l>>>8&255,t.check=Z(t.check,y,2,0)),l=0,f=0,t.mode=Ar;case Ar:for(;f<32;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}t.head&&(t.head.time=l),t.flags&512&&t.wrap&4&&(y[0]=l&255,y[1]=l>>>8&255,y[2]=l>>>16&255,y[3]=l>>>24&255,t.check=Z(t.check,y,4,0)),l=0,f=0,t.mode=Sr;case Sr:for(;f<16;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}t.head&&(t.head.xflags=l&255,t.head.os=l>>8),t.flags&512&&t.wrap&4&&(y[0]=l&255,y[1]=l>>>8&255,t.check=Z(t.check,y,2,0)),l=0,f=0,t.mode=Mr;case Mr:if(t.flags&1024){for(;f<16;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}t.length=l,t.head&&(t.head.extra_len=l),t.flags&512&&t.wrap&4&&(y[0]=l&255,y[1]=l>>>8&255,t.check=Z(t.check,y,2,0)),l=0,f=0}else t.head&&(t.head.extra=null);t.mode=Ur;case Ur:if(t.flags&1024&&(c=t.length,c>s&&(c=s),c&&(t.head&&(D=t.head.extra_len-t.length,t.head.extra||(t.head.extra=new Uint8Array(t.head.extra_len)),t.head.extra.set(r.subarray(i,i+c),D)),t.flags&512&&t.wrap&4&&(t.check=Z(t.check,r,c,i)),s-=c,i+=c,t.length-=c),t.length))break e;t.length=0,t.mode=Lr;case Lr:if(t.flags&2048){if(s===0)break e;c=0;do D=r[i+c++],t.head&&D&&t.length<65536&&(t.head.name+=String.fromCharCode(D));while(D&&c<s);if(t.flags&512&&t.wrap&4&&(t.check=Z(t.check,r,c,i)),s-=c,i+=c,D)break e}else t.head&&(t.head.name=null);t.length=0,t.mode=Rr;case Rr:if(t.flags&4096){if(s===0)break e;c=0;do D=r[i+c++],t.head&&D&&t.length<65536&&(t.head.comment+=String.fromCharCode(D));while(D&&c<s);if(t.flags&512&&t.wrap&4&&(t.check=Z(t.check,r,c,i)),s-=c,i+=c,D)break e}else t.head&&(t.head.comment=null);t.mode=Br;case Br:if(t.flags&512){for(;f<16;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(t.wrap&4&&l!==(t.check&65535)){e.msg="header crc mismatch",t.mode=N;break}l=0,f=0}t.head&&(t.head.hcrc=t.flags>>9&1,t.head.done=!0),e.adler=t.check=0,t.mode=fe;break;case zr:for(;f<32;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}e.adler=t.check=Vr(l),l=0,f=0,t.mode=Tt;case Tt:if(t.havedict===0)return e.next_out=o,e.avail_out=d,e.next_in=i,e.avail_in=s,t.hold=l,t.bits=f,2;e.adler=t.check=1,t.mode=fe;case fe:if(n===5||n===6)break e;case gn:if(t.last){l>>>=f&7,f-=f&7,t.mode=mn;break}for(;f<3;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}switch(t.last=l&1,l>>>=1,f-=1,l&3){case 0:t.mode=Or;break;case 1:if(es(t),t.mode=Pt,n===6){l>>>=2,f-=2;break e}break;case 2:t.mode=Hr;break;case 3:e.msg="invalid block type",t.mode=N}l>>>=2,f-=2;break;case Or:for(l>>>=f&7,f-=f&7;f<32;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if((l&65535)!==(l>>>16^65535)){e.msg="invalid stored block lengths",t.mode=N;break}if(t.length=l&65535,l=0,f=0,t.mode=_n,n===6)break e;case _n:t.mode=Nr;case Nr:if(c=t.length,c){if(c>s&&(c=s),c>d&&(c=d),c===0)break e;a.set(r.subarray(i,i+c),o),s-=c,i+=c,d-=c,o+=c,t.length-=c;break}t.mode=fe;break;case Hr:for(;f<14;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(t.nlen=(l&31)+257,l>>>=5,f-=5,t.ndist=(l&31)+1,l>>>=5,f-=5,t.ncode=(l&15)+4,l>>>=4,f-=4,t.nlen>286||t.ndist>30){e.msg="too many length or distance symbols",t.mode=N;break}t.have=0,t.mode=Fr;case Fr:for(;t.have<t.ncode;){for(;f<3;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}t.lens[be[t.have++]]=l&7,l>>>=3,f-=3}for(;t.have<19;)t.lens[be[t.have++]]=0;if(t.lencode=t.lendyn,t.lenbits=7,x={bits:t.lenbits},A=He(Xo,t.lens,0,19,t.lencode,0,t.work,x),t.lenbits=x.bits,A){e.msg="invalid code lengths set",t.mode=N;break}t.have=0,t.mode=Zr;case Zr:for(;t.have<t.nlen+t.ndist;){for(;b=t.lencode[l&(1<<t.lenbits)-1],w=b>>>24,g=b>>>16&255,p=b&65535,!(w<=f);){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(p<16)l>>>=w,f-=w,t.lens[t.have++]=p;else{if(p===16){for(X=w+2;f<X;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(l>>>=w,f-=w,t.have===0){e.msg="invalid bit length repeat",t.mode=N;break}D=t.lens[t.have-1],c=3+(l&3),l>>>=2,f-=2}else if(p===17){for(X=w+3;f<X;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}l>>>=w,f-=w,D=0,c=3+(l&7),l>>>=3,f-=3}else{for(X=w+7;f<X;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}l>>>=w,f-=w,D=0,c=11+(l&127),l>>>=7,f-=7}if(t.have+c>t.nlen+t.ndist){e.msg="invalid bit length repeat",t.mode=N;break}for(;c--;)t.lens[t.have++]=D}}if(t.mode===N)break;if(t.lens[256]===0){e.msg="invalid code -- missing end-of-block",t.mode=N;break}if(t.lenbits=9,x={bits:t.lenbits},A=He(Jr,t.lens,0,t.nlen,t.lencode,0,t.work,x),t.lenbits=x.bits,A){e.msg="invalid literal/lengths set",t.mode=N;break}if(t.distbits=6,t.distcode=t.distdyn,x={bits:t.distbits},A=He(Qr,t.lens,t.nlen,t.ndist,t.distcode,0,t.work,x),t.distbits=x.bits,A){e.msg="invalid distances set",t.mode=N;break}if(t.mode=Pt,n===6)break e;case Pt:t.mode=Dt;case Dt:if(s>=6&&d>=258){e.next_out=o,e.avail_out=d,e.next_in=i,e.avail_in=s,t.hold=l,t.bits=f,pn(e,u),o=e.next_out,a=e.output,d=e.avail_out,i=e.next_in,r=e.input,s=e.avail_in,l=t.hold,f=t.bits,t.mode===fe&&(t.back=-1);break}for(t.back=0;b=t.lencode[l&(1<<t.lenbits)-1],w=b>>>24,g=b>>>16&255,p=b&65535,!(w<=f);){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(g&&!(g&240)){for(C=w,H=g,E=p;b=t.lencode[E+((l&(1<<C+H)-1)>>C)],w=b>>>24,g=b>>>16&255,p=b&65535,!(C+w<=f);){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}l>>>=C,f-=C,t.back+=C}if(l>>>=w,f-=w,t.back+=w,t.length=p,g===0){t.mode=Xr;break}if(g&32){t.back=-1,t.mode=fe;break}if(g&64){e.msg="invalid literal/length code",t.mode=N;break}t.extra=g&15,t.mode=$r;case $r:if(t.extra){for(X=t.extra;f<X;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}t.length+=l&(1<<t.extra)-1,l>>>=t.extra,f-=t.extra,t.back+=t.extra}t.was=t.length,t.mode=Gr;case Gr:for(;b=t.distcode[l&(1<<t.distbits)-1],w=b>>>24,g=b>>>16&255,p=b&65535,!(w<=f);){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(!(g&240)){for(C=w,H=g,E=p;b=t.distcode[E+((l&(1<<C+H)-1)>>C)],w=b>>>24,g=b>>>16&255,p=b&65535,!(C+w<=f);){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}l>>>=C,f-=C,t.back+=C}if(l>>>=w,f-=w,t.back+=w,g&64){e.msg="invalid distance code",t.mode=N;break}t.offset=p,t.extra=g&15,t.mode=jr;case jr:if(t.extra){for(X=t.extra;f<X;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}t.offset+=l&(1<<t.extra)-1,l>>>=t.extra,f-=t.extra,t.back+=t.extra}if(t.offset>t.dmax){e.msg="invalid distance too far back",t.mode=N;break}t.mode=Wr;case Wr:if(d===0)break e;if(c=u-d,t.offset>c){if(c=t.offset-c,c>t.whave&&t.sane){e.msg="invalid distance too far back",t.mode=N;break}c>t.wnext?(c-=t.wnext,_=t.wsize-c):_=t.wnext-c,c>t.length&&(c=t.length),P=t.window}else P=a,_=o-t.offset,c=t.length;c>d&&(c=d),d-=c,t.length-=c;do a[o++]=P[_++];while(--c);t.length===0&&(t.mode=Dt);break;case Xr:if(d===0)break e;a[o++]=t.length,d--,t.mode=Dt;break;case mn:if(t.wrap){for(;f<32;){if(s===0)break e;s--,l|=r[i++]<<f,f+=8}if(u-=d,e.total_out+=u,t.total+=u,t.wrap&4&&u&&(e.adler=t.check=t.flags?Z(t.check,a,u,o-u):Pe(t.check,a,u,o-u)),u=d,t.wrap&4&&(t.flags?l:Vr(l))!==t.check){e.msg="incorrect data check",t.mode=N;break}l=0,f=0}t.mode=Yr;case Yr:if(t.wrap&&t.flags){for(;f<32;){if(s===0)break e;s--,l+=r[i++]<<f,f+=8}if(t.wrap&4&&l!==(t.total&4294967295)){e.msg="incorrect length check",t.mode=N;break}l=0,f=0}t.mode=Kr;case Kr:A=1;break e;case N:A=-3;break e;case bn:return-4;case ea:default:return-2}return e.next_out=o,e.avail_out=d,e.next_in=i,e.avail_in=s,t.hold=l,t.bits=f,(t.wsize||u!==e.avail_out&&t.mode<N&&(t.mode<mn||n!==4))&&na(e,e.output,e.next_out,u-e.avail_out)?(t.mode=bn,-4):(h-=e.avail_in,u-=e.avail_out,e.total_in+=h,e.total_out+=u,t.total+=u,t.wrap&4&&u&&(e.adler=t.check=t.flags?Z(t.check,a,u,e.next_out-u):Pe(t.check,a,u,e.next_out-u)),e.data_type=t.bits+(t.last?64:0)+(t.mode===fe?128:0)+(t.mode===Pt||t.mode===_n?256:0),(h===0&&u===0||n===4)&&A===0&&(A=-5),A)},ns=e=>{if(ve(e))return-2;let n=e.state;return n.window&&(n.window=null),e.state=null,0},rs=(e,n)=>{if(ve(e))return-2;let t=e.state;return t.wrap&2?(t.head=n,n.done=!1,0):-2},as=(e,n)=>{let t=n.length,r,a,i;return ve(e)?-2:(r=e.state,r.wrap!==0&&r.mode!==Tt?-2:r.mode===Tt&&(a=1,a=Pe(a,n,t,0),a!==r.check)?-3:(i=na(e,n,t,t),i?(r.mode=bn,-4):(r.havedict=1,0)))},ra=ta,aa=Qo,Et=ts,ia=ns,oa=rs,In=as});function is(){this.text=0,this.time=0,this.xflags=0,this.os=0,this.extra=null,this.extra_len=0,this.name="",this.comment="",this.hcrc=0,this.done=!1}var la,fa=m(()=>{la=is});function we(e={}){this.options=bt({chunkSize:1024*64,windowBits:15,to:""},e);let n=this.options;n.raw&&n.windowBits>=0&&n.windowBits<16&&(n.windowBits=-n.windowBits,n.windowBits===0&&(n.windowBits=-15)),n.windowBits>=0&&n.windowBits<16&&!(e&&e.windowBits)&&(n.windowBits+=32),n.windowBits>15&&n.windowBits<48&&(n.windowBits&15||(n.windowBits|=15)),this.err=0,this.msg="",this.ended=!1,this.chunks=[],this.strm=new xt,this.strm.avail_out=0;let t=aa(this.strm,n.windowBits);if(t!==0)throw new Error(le[t]);if(this.header=new la,oa(this.strm,this.header),n.dictionary&&(typeof n.dictionary=="string"?n.dictionary=et(n.dictionary):da.call(n.dictionary)==="[object ArrayBuffer]"&&(n.dictionary=new Uint8Array(n.dictionary)),n.raw&&(t=In(this.strm,n.dictionary),t!==0)))throw new Error(le[t])}var da,ca=m(()=>{sa();dn();cn();mt();hn();fa();ue();ue();da=Object.prototype.toString;we.prototype.push=function(e,n){let t=this.strm,r=this.options.chunkSize,a=this.options.dictionary,i,o,s;if(this.ended)return!1;for(n===~~n?o=n:o=n===!0?4:0,da.call(e)==="[object ArrayBuffer]"?t.input=new Uint8Array(e):t.input=e,t.next_in=0,t.avail_in=t.input.length;;){for(t.avail_out===0&&(t.output=new Uint8Array(r),t.next_out=0,t.avail_out=r),i=Et(t,o),i===2&&a&&(i=In(t,a),i===0?i=Et(t,o):i===-3&&(i=2));t.avail_in>0&&i===1&&t.state.wrap>0&&e[t.next_in]!==0;)ra(t),i=Et(t,o);switch(i){case-2:case-3:case 2:case-4:return this.onEnd(i),this.ended=!0,!1}if(s=t.avail_out,t.next_out&&(t.avail_out===0||i===1))if(this.options.to==="string"){let d=Pr(t.output,t.next_out),l=t.next_out-d,f=Cr(t.output,d);t.next_out=l,t.avail_out=r-l,l&&t.output.set(t.output.subarray(d,d+l),0),this.onData(f)}else this.onData(t.output.length===t.next_out?t.output:t.output.subarray(0,t.next_out));if(!(i===0&&s===0)){if(i===1)return i=ia(this.strm),this.onEnd(i),this.ended=!0,!0;if(t.avail_in===0)break}}return!0};we.prototype.onData=function(e){this.chunks.push(e)};we.prototype.onEnd=function(e){e===0&&(this.options.to==="string"?this.result=this.chunks.join(""):this.result=It(this.chunks)),this.chunks=[],this.err=e,this.msg=this.strm.msg}});var vt=m(()=>{Tr();ca();ue()});function at(e,n,t){let r=e+n-t,a=Math.abs(r-e),i=Math.abs(r-n),o=Math.abs(r-t);return a<=i&&a<=o?e:i<=o?n:t}var Cn=m(()=>{});function ha(e,n,t){let r=ls(e,t),a;n.interlaceMethod===1?a=cs(e,n,r):a=ua(e,n,r);let i=e.metadata.find(s=>s.type==="tRNS"),o=hs(e,n,a,e.palette,i);return i&&(n.colorType===0||n.colorType===2)&&us(n,o,i),o}function ls(e,n){let t=new we,r=0;for(let a of n)r=a.offset+4+4,t.push(e.view.buffer.slice(e.view.byteOffset+r,e.view.byteOffset+r+a.dataLength));if(t.err)throw xe(e,n[0],`Inflate error: ${t.msg}`,n[0].offset);if(t.result===void 0)throw new G(e,"IDAT: Failed to decompress data chunks",0);return t.result}function ua(e,n,t,r=0,a=n.width,i=n.height){let o=0,s=Pn(n),d=At(n),l=pa(n,a),f=Math.ceil(a*d),h=new Uint8Array(i*f),u=new Map;for(let c=0;c<i;c++){let _=r+c*(l+1),P=t[_++];if(!fs)throw new G(e,`IDAT: Invalid filter type ${P}`,0);let b=u.get(P);b||(b=ds(d,l,a,P),u.set(P,b));let w=1,g=0;switch(P){case 0:case 1:{for(;g<s;g++)h[o]=t[_+g],o++;break}case 3:{let p=0;for(;g<s;g++)p=o-a*s,h[o]=t[_+g]+Math.floor(0+(p<0?0:h[p]))/2,o++;break}case 2:{w=0;break}case 4:{for(;g<s;g++){let p=Math.floor(o-l);h[o]=(t[_+g]+at(0,p<0?0:h[p],0))%256,o++}break}}if(n.bitDepth>=8)for(;w<a;w++)for(let p=0;p<s;p++)h[o]=b(t,_+w*s+p,h,o),o++;else{for(w&&(o-=w),g=w;g<l;g++)h[o+g]=b(t,_+g,h,o+g);o+=l}}return h}function fs(e){return e%1===0&&e>=0&&e<=4}function ds(e,n,t,r){let a=0,i=0,o=0;switch(r){case 0:return(s,d)=>s[d];case 1:return(s,d,l,f)=>(s[d]+l[Math.floor(f-e)])%256;case 2:return(s,d,l,f)=>(i=Math.floor(f-t*e),i<0?s[d]:(s[d]+l[i])%256);case 3:return(s,d,l,f)=>(a=Math.floor(f-e),i=Math.floor(f-t*e),s[d]+Math.floor((a<0?0:l[a])+(i<0?0:l[i]))/2);case 4:return(s,d,l,f)=>(a=Math.floor(f-Math.ceil(e)),i=Math.floor(f-n),o=Math.floor(f-n-Math.ceil(e)),(s[d]+at(a<0?0:l[a],i<0?0:l[i],o<0?0:l[o]))%256)}}function Pn(e){return Math.ceil(At(e))}function At(e){return ga(e.colorType)*e.bitDepth/8}function pa(e,n){return Math.ceil(ga(e.colorType)*e.bitDepth*n/8)}function ga(e){switch(e){case 0:return 1;case 2:return 3;case 3:return 1;case 4:return 2;case 6:return 4}}function cs(e,n,t){let r=At(n),a=Math.ceil(n.width*r),i=new Uint8Array(a*n.height),o=Pn(n),s=8/n.bitDepth,d=(1<<n.bitDepth)-1,l=[0,4,0,2,0,1,0],f=[0,0,4,0,2,0,1],h=[8,8,4,4,2,2,1],u=[8,8,8,4,4,2,2],c=0;for(let _=0;_<7;_++){let P=l[_],b=f[_],w=h[_],g=u[_],p=Math.ceil((n.width-P)/w),C=Math.ceil((n.height-b)/g),H=Math.ceil(r*p);if(p===0||C===0)continue;let E=ua(e,n,t,c,p,C),D=0;for(let A=0;A<C;A++){D=(b+A*g)*a+P*r;for(let y=0;y<p;y++){if(n.bitDepth<8){let x=E[A*H+Math.floor(y*r)];x>>=(s-y%s-1)*n.bitDepth,x&=d;let X=(s-1-D%1*s)*n.bitDepth;x<<=X,i[Math.floor(D)]|=x}else for(let x=0;x<o;x++)i[D+x]=E[(A*p+y)*o+x];D+=w*r}}c+=C*(1+pa(n,p))}return i}function hs(e,n,t,r,a){let i=new(n.bitDepth===16?Uint16Array:Uint8Array)(n.width*n.height*4),o=0,s=Pn(n),d=At(n),l=Math.ceil(n.width*d);switch(n.colorType){case 0:{switch(n.bitDepth){case 1:case 2:case 4:{let f=8/n.bitDepth,h=(1<<n.bitDepth)-1,u=n.bitDepth/8;for(let c=0;c<n.height;c++)for(let _=0;_<n.width;_++)o=(c*n.width+_)*4,i[o]=t[c*l+Math.floor(_*u)],i[o]>>=(f-_%f-1)*n.bitDepth,i[o]&=h,i[o]*=255/h,i[o+1]=i[o],i[o+2]=i[o],i[o+3]=255;break}case 8:case 16:{for(let f=0;f<n.height;f++)for(let h=0;h<n.width;h++)o=(f*n.width+h)*4,n.bitDepth===16?i[o]=t[(f*n.width+h)*s]<<8|t[(f*n.width+h)*s+1]:i[o]=t[(f*n.width+h)*s],i[o+1]=i[o],i[o+2]=i[o],i[o+3]=n.bitDepth===16?65535:255;break}}break}case 4:{for(let f=0;f<n.height;f++)for(let h=0;h<n.width;h++)o=(f*n.width+h)*4,n.bitDepth===16?i[o]=t[(f*n.width+h)*s]<<8|t[(f*n.width+h)*s+1]:i[o]=t[(f*n.width+h)*s],i[o+1]=i[o],i[o+2]=i[o],n.bitDepth===16?i[o+3]=t[(f*n.width+h)*s+2]<<8|t[(f*n.width+h)*s+3]:i[o+3]=t[(f*n.width+h)*s+1];break}case 3:{if(!r)throw new G(e,"IDAT: Cannot decode indexed color type without a palette",0);switch(n.bitDepth){case 1:case 2:case 4:{let f=8/n.bitDepth,h=(1<<n.bitDepth)-1,u=n.bitDepth/8;for(let c=0;c<n.height;c++)for(let _=0;_<n.width;_++){o=(c*n.width+_)*4;let P=t[c*l+Math.floor(_*u)];P>>=(f-_%f-1)*n.bitDepth,P&=h,r.setRgba(i,o,P),a&&a.transparency.length>P&&(i[o+3]=a.transparency[P])}break}case 8:{let f=0;for(let h=0;h<n.height;h++)for(let u=0;u<n.width;u++)o=(h*n.width+u)*4,f=t[h*n.width+u],r.setRgba(i,o,f),a&&a.transparency.length>f&&(i[o+3]=a.transparency[f]);break}}break}case 2:{for(let f=0;f<n.height;f++)for(let h=0;h<n.width;h++)o=(f*n.width+h)*4,n.bitDepth===16?(i[o]=t[(f*n.width+h)*s]<<8|t[(f*n.width+h)*s+1],i[o+1]=t[(f*n.width+h)*s+2]<<8|t[(f*n.width+h)*s+3],i[o+2]=t[(f*n.width+h)*s+4]<<8|t[(f*n.width+h)*s+5]):(i[o]=t[(f*n.width+h)*s],i[o+1]=t[(f*n.width+h)*s+1],i[o+2]=t[(f*n.width+h)*s+2]),i[o+3]=n.bitDepth===16?65535:255;break}case 6:{for(let f=0;f<n.height;f++)for(let h=0;h<n.width;h++)o=(f*n.width+h)*4,n.bitDepth===16?(i[o]=t[(f*n.width+h)*s]<<8|t[(f*n.width+h)*s+1],i[o+1]=t[(f*n.width+h)*s+2]<<8|t[(f*n.width+h)*s+3],i[o+2]=t[(f*n.width+h)*s+4]<<8|t[(f*n.width+h)*s+5],i[o+3]=t[(f*n.width+h)*s+6]<<8|t[(f*n.width+h)*s+7]):(i[o]=t[(f*n.width+h)*s],i[o+1]=t[(f*n.width+h)*s+1],i[o+2]=t[(f*n.width+h)*s+2],i[o+3]=t[(f*n.width+h)*s+3]);break}}return i}function us(e,n,t){let r=(1<<e.bitDepth)-1,a=e.bitDepth===16?65535:255;if(e.colorType===0){let i=a/r*t.transparency;for(let o=0;o<n.length;o+=4)n[o]===i&&(n[o+3]=0);return}if(e.colorType===2){let i=[a/r*t.transparency[0],a/r*t.transparency[1],a/r*t.transparency[2]];for(let o=0;o<n.length;o+=4)n[o]===i[0]&&n[o+1]===i[1]&&n[o+2]===i[2]&&(n[o+3]=0);return}}var _a=m(()=>{vt();R();Cn();S();});function ma(e,n,t){Se(e,t,"IDAT"),L(e,t,0)}var wa=m(()=>{R();S();});function ya(e){return e===1||e===2||e===4||e===8||e===16}function ba(e,n){return e===0&&n>=1&&n<=16||e===2&&n>=8&&n<=16||e===3&&n>=1&&n<=8||e===4&&n>=8&&n<=16||e===6&&n>=8&&n<=16}function Ia(e){return e===0}function xa(e){return e===0||e===1}var Ca=m(()=>{S();});function Pa(e,n){L(e,n,13);let t=n.offset+4+4,r=e.view.getUint32(t);t+=4;let a=e.view.getUint32(t);t+=4;let i=e.view.getUint8(t);if(!ya(i))throw xe(e,n,`Bit depth "${i}" is not valid`,t);t++;let o=e.view.getUint8(t);if(!ba(o,i))throw xe(e,n,`Color type "${o}" is not valid with bit depth "${i}"`,t);t++;let s=e.view.getUint8(t);ce(e,n,s,t),t++;let d=e.view.getUint8(t);Ia(d)||(F(e,I(n,`Filter method "${d}" is not valid`,t)),d=0),t++;let l=e.view.getUint8(t);return xa(l)||(F(e,I(n,`Interlace method "${l}" is not valid`,t)),l=0),t++,{width:r,height:a,bitDepth:i,colorType:o,interlaceMethod:l}}var Da=m(()=>{R();S();Ca();});function ps(){if(it)return it;it=[];for(let e=0;e<256;e++){let n=e;for(let t=0;t<8;t++)n&1?n=3988292384^n>>>1:n=n>>>1;it[e]=n>>>0}return it}function gs(e,n,t,r){let a=ps(),i=e;for(let o=0;o<r;o++)i=a[(i^n.getUint8(t+o))&255]^i>>>8;return i}function ot(e,n,t){return(gs(4294967295,e,n,t)^4294967295)>>>0}var it,Dn=m(()=>{});var Ta={};B(Ta,{parseChunk:()=>_s});function _s(e,n,t){U(e,t),T(e,t,"IDAT");let r=t.offset+4+4,a,i;switch(n.colorType){case 0:case 4:{a=e.view.getUint16(r),i=2;break}case 2:case 6:{a=[e.view.getUint16(r),e.view.getUint16(r+2),e.view.getUint16(r+4)],i=6;break}case 3:{a=e.view.getUint8(r),i=1;break}default:throw I(t,`Unrecognized color type "${n.colorType}"`,r)}return L(e,t,i),{type:"bKGD",color:a}}var ka=m(()=>{R();S();});var Ea={};B(Ea,{parseChunk:()=>ms});function ms(e,n,t){U(e,t),T(e,t,"PLTE"),T(e,t,"IDAT"),L(e,t,32);let r=t.offset+4+4,a={x:e.view.getUint32(r)/1e5,y:e.view.getUint32(r+4)/1e5};if(a.x>1||a.y>1)throw I(t,`Invalid white point (${a.x},${a.y})`,r);r+=8;let i={x:e.view.getUint32(r)/1e5,y:e.view.getUint32(r+4)/1e5};if(i.x>1||i.y>1)throw I(t,`Invalid red (${i.x},${i.y})`,r);r+=8;let o={x:e.view.getUint32(r)/1e5,y:e.view.getUint32(r+4)/1e5};if(o.x>1||o.y>1)throw I(t,`Invalid green (${o.x},${o.y})`,r);r+=8;let s={x:e.view.getUint32(r)/1e5,y:e.view.getUint32(r+4)/1e5};if(s.x>1||s.y>1)throw I(t,`Invalid blue (${s.x},${s.y})`,r);return{type:"cHRM",whitePoint:a,red:i,green:o,blue:s}}var va=m(()=>{R();S();});var Aa={};B(Aa,{parseChunk:()=>ws});function ws(e,n,t){let r=t.offset+4+4;return{type:"eXIf",value:e.view.buffer.slice(e.view.byteOffset+r,e.view.byteOffset+r+t.dataLength)}}var Sa=m(()=>{S();});var Ma={};B(Ma,{parseChunk:()=>ys});function ys(e,n,t){U(e,t),T(e,t,"PLTE"),T(e,t,"IDAT"),L(e,t,4);let r=t.offset+4+4,a=e.view.getUint32(r)/1e5;return a===0&&F(e,I(t,"A value of 0 is meaningless",r)),{type:"gAMA",value:a}}var Ua=m(()=>{R();S();});var La={};B(La,{parseChunk:()=>bs});function bs(e,n,t){U(e,t),Se(e,t,"PLTE"),T(e,t,"IDAT"),L(e,t,e.palette.size*2);let r=t.offset+4+4,a=[];for(let i=0;i<e.palette.size*2;i+=2)a.push(e.view.getUint16(r+i));return{type:"hIST",frequency:a}}var Ra=m(()=>{R();S();});function $(e,n,t,r,a,i,o,s){let d=[],l=0,f=0;for(;(r===void 0||f<r)&&!(!o&&a===i);f++){try{l=e.view.getUint8(a)}catch(u){throw u instanceof Error&&u.message==="Offset is outside the bounds of the DataView"?I(n,"EOF while reading text",a):u}if(!s&&l===0)break;a++,d.push(l)}if(o&&e.view.getUint8(a)!==0)throw I(n,"No null character after text",a);let h=new Uint8Array(d);if(s){let u=new we;if(u.push(h),u.err)throw I(n,`Inflate error: ${u.msg}`,a);h=u.result}return{text:t?t.decode(h):String.fromCharCode(...d),bytesRead:f+1}}var ye=m(()=>{vt();R();});var Ba={};B(Ba,{parseChunk:()=>Is});function Is(e,n,t){U(e,t),ht(e,t,"sRGB"),T(e,t,"PLTE"),T(e,t,"IDAT"),J(e,t,3);let r=t.offset+4+4,a=r+t.dataLength,i=r,o=new TextDecoder("latin1"),s=$(e,t,o,79,i,a,!0);i+=s.bytesRead;let d=s.text,l=e.view.getUint8(i);ce(e,t,l,i),i++;let f=new Uint8Array(e.view.buffer.slice(e.view.byteOffset+i,e.view.byteOffset+a));return{type:"iCCP",name:d,data:f}}var za=m(()=>{R();ye();S();});var Oa={};B(Oa,{parseChunk:()=>xs});function xs(e,n,t){J(e,t,6);let r=t.offset+4+4,a=r+t.dataLength,i=new TextDecoder("utf8"),o;o=$(e,t,i,79,r,a,!0),r+=o.bytesRead;let s=o.text,d=e.view.getUint8(r++)===1,l=e.view.getUint8(r);d&&ce(e,t,l,r),r++,o=$(e,t,i,void 0,r,a,!0),r+=o.bytesRead;let f=o.text;o=$(e,t,i,void 0,r,a,!0),r+=o.bytesRead;let h=o.text;o=$(e,t,i,void 0,r,a,!1,d),r+=o.bytesRead;let u=o.text;return{type:"iTXt",keyword:s,languageTag:f,translatedKeyword:h,text:u}}var Na=m(()=>{R();ye();S();});var Ha={};B(Ha,{parseChunk:()=>Cs});function Cs(e,n,t){U(e,t),L(e,t,7);let r=t.offset+4+4,a=e.view.getUint16(r);r+=2;let i=e.view.getUint8(r++),o=e.view.getUint8(r++),s=e.view.getUint8(r++),d=e.view.getUint8(r++),l=e.view.getUint8(r++);return{type:"tIME",value:new Date(a,i,o,s,d,l)}}var Fa=m(()=>{R();S();});var Za={};B(Za,{parseChunk:()=>Ps});function Ps(e,n,t){U(e,t),T(e,t,"IDAT"),L(e,t,9);let r=t.offset+4+4,a=e.view.getInt32(r);r+=4;let i=e.view.getInt32(r);r+=4;let o=e.view.getUint8(r),s;switch(o){case 0:s="pixel";break;case 1:s="micrometer";break;default:throw I(t,`Invalid oFFs unit type ("${o}")`,r)}return{type:"oFFs",offset:{x:a,y:i},unitType:s}}var $a=m(()=>{R();S();});function st(e,n,t,r,a,i){let o=$(e,n,t,void 0,r,a,i);r+=o.bytesRead,Ds(o.text)||F(e,I(n,`Invalid character in floating point number ("${o.text}")`,r));let s=parseFloat(o.text);return{bytesRead:o.bytesRead,value:s}}function Ds(e){return e.match(/^[+-]?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?$/)||e.match(/^[+-]?[0-9]+\.?([eE][+-]?[0-9]+)?$/)||e.match(/^[+-]?\.[0-9]+([eE][+-]?[0-9]+)?$/)}var Tn=m(()=>{R();ye();});var Ga={};B(Ga,{parseChunk:()=>Ts});function Ts(e,n,t){U(e,t),T(e,t,"IDAT"),J(e,t,4);let r=t.offset+4+4,a=r+t.dataLength,i=r,o=new TextDecoder("latin1"),s;s=$(e,t,o,79,i,a,!0),i+=s.bytesRead;let d=s.text,l=e.view.getInt32(i);i+=4;let f=e.view.getInt32(i);i+=4;let h=e.view.getUint8(i++),u;switch(h){case 0:u="linear-mapping";break;case 1:u="base-e exponential mapping";break;case 2:u="arbitrary-base exponential mapping";break;case 3:u="hyperbolic mapping";break;default:throw I(t,`Invalid equation type "${h}"`,i)}let c=e.view.getUint8(i++);s=$(e,t,o,79,i,a,!0),i+=s.bytesRead;let _=s.text,P=[],b;for(let w=0;w<c;w++)b=st(e,t,o,i,a,w<c-1),i+=b.bytesRead,P.push(b.value);return{type:"pCAL",calibrationName:d,x0:l,x1:f,equationType:u,unitName:_,params:P}}var ja=m(()=>{R();Tn();ye();S();});var Wa={};B(Wa,{parseChunk:()=>ks});function ks(e,n,t){U(e,t),T(e,t,"IDAT"),L(e,t,9);let r=t.offset+4+4,a=e.view.getUint32(r);r+=4;let i=e.view.getUint32(r);r+=4;let o=e.view.getUint8(r)===1?"meter":"unknown";return{type:"pHYs",pixelsPerUnit:{x:a,y:i},unitType:o}}var Xa=m(()=>{R();S();});var Ya={};B(Ya,{parseChunk:()=>Es});function Es(e,n,t){U(e,t),T(e,t,"PLTE"),T(e,t,"IDAT");let r=t.offset+4+4,a,i;switch(n.colorType){case 0:{a=e.view.getUint8(r),i=1;break}case 2:case 3:{a=[e.view.getUint8(r),e.view.getUint8(r+1),e.view.getUint8(r+2)],i=3;break}case 4:{a=[e.view.getUint8(r),e.view.getUint8(r+1)],i=2;break}case 6:{a=[e.view.getUint8(r),e.view.getUint8(r+1),e.view.getUint8(r+2),e.view.getUint8(r+3)],i=4;break}default:throw I(t,`Unrecognized color type "${n.colorType}"`,r)}return L(e,t,i),{type:"sBIT",value:a}}var Ka=m(()=>{R();S();});var Va={};B(Va,{parseChunk:()=>vs});function vs(e,n,t){U(e,t),T(e,t,"IDAT"),J(e,t,4);let r=t.offset+4+4,a=r+t.dataLength,i=r,o=new TextDecoder("latin1"),s=e.view.getUint8(i),d;switch(s){case 0:d="meter";break;case 1:d="radian";break;default:throw I(t,`Invalid sCAL unit type ("${s}")`,i)}i++;let l;l=st(e,t,o,i,a,!0),i+=l.bytesRead;let f=l.value;l=st(e,t,o,i,a,!1),i+=l.bytesRead;let h=l.value;if(f<0||h<0)throw I(t,`Values cannot be negative (${f}, ${h})`,i);return{type:"sCAL",pixelsPerUnit:{x:f,y:h},unitType:d}}var qa=m(()=>{R();Tn();S();});var Ja={};B(Ja,{parseChunk:()=>As});function As(e,n,t){T(e,t,"IDAT");let r=t.offset+4+4,a=r,i=a+t.dataLength,o=new TextDecoder("latin1"),s=$(e,t,o,void 0,a,i,!0);a+=s.bytesRead;let d=s.text,l=e.view.getUint8(a++),f=l===16?2:1,h=f*4+2,u=t.dataLength-(a-r),c=u/h;if(c%1!==0)throw I(t,`Invalid data length: ${u} should be divisible by entry size ${h}`,a);let _=[];for(let P=0;P<c;P++){let b=[];for(let g=0;g<4;g++)b.push(f===2?e.view.getUint16(a):e.view.getUint8(a)),a+=f;let w=e.view.getUint16(a);a+=2,_.push({red:b[0],green:b[1],blue:b[2],alpha:b[3],frequency:w})}return{type:"sPLT",name:d,sampleDepth:l,entries:_}}var Qa=m(()=>{R();ye();S();});var ei={};B(ei,{parseChunk:()=>Ss});function Ss(e,n,t){U(e,t),ht(e,t,"iCCP"),T(e,t,"PLTE"),T(e,t,"IDAT"),L(e,t,1);let r=t.offset+4+4,a=e.view.getUint8(r),i;switch(a){case 0:case 1:case 2:case 3:i=a;break;default:throw I(t,`Invalid rendering intent "${a}"`,r)}return{type:"sRGB",renderingIntent:i}}var ti=m(()=>{R();S();});var ni={};B(ni,{parseChunk:()=>Ms});function Ms(e,n,t){U(e,t),T(e,t,"IDAT"),L(e,t,1);let r=t.offset+4+4,a=e.view.getUint8(r),i;switch(a){case 0:i="cross-fuse";break;case 1:i="diverging-fuse";break;default:throw I(t,`Invalid layout mode "${a}"`,r)}let o=15-(n.width-1)%16;if(o>7)throw I(t,`Invalid padding value "${o}" for image width ${n.width}`,r);let s=Math.floor((n.width-o)/2);return{type:"sTER",layoutMode:i,subimageWidth:s,padding:o}}var ri=m(()=>{R();S();});var ai={};B(ai,{parseChunk:()=>Us});function Us(e,n,t){J(e,t,6);let r=t.offset+4+4,a=r+t.dataLength,i=r,o=new TextDecoder("latin1"),s;s=$(e,t,o,79,i,a,!0),i+=s.bytesRead;let d=s.text;s=$(e,t,o,void 0,i,a,!1),i+=s.bytesRead;let l=s.text;return{type:"tEXt",keyword:d,text:l}}var ii=m(()=>{R();ye();S();});var oi={};B(oi,{parseChunk:()=>Ls});function Ls(e,n,t){switch(T(e,t,"IDAT"),n.colorType){case 0:L(e,t,2);break;case 2:L(e,t,6);break;case 3:if(Se(e,t,"PLTE"),t.dataLength>e.palette.size)throw I(t,`Invalid data length for color type ${n.colorType}: ${t.dataLength} > ${e.palette.size}`,t.offset+4+4);break;case 4:case 6:throw I(t,`Chunk invalid when color type has alpha (${n.colorType})`,t.offset+4+4)}let r=t.offset+4+4,a;switch(n.colorType){case 0:a=e.view.getUint16(r);break;case 2:a=[e.view.getUint16(r),e.view.getUint16(r+2),e.view.getUint16(r+4)];break;case 3:a=[];for(let i=0;i<t.dataLength;i++)a.push(e.view.getUint8(r+i));break}return{type:"tRNS",transparency:a}}var si=m(()=>{R();S();});var li={};B(li,{parseChunk:()=>Rs});function Rs(e,n,t){J(e,t,6);let r=t.offset+4+4,a=r+t.dataLength,i=r,o=new TextDecoder("latin1"),s;s=$(e,t,o,79,i,a,!0),i+=s.bytesRead;let d=s.text,l=e.view.getUint8(i);ce(e,t,l,i),i++,s=$(e,t,o,void 0,i,a,!1,!0),i+=s.bytesRead;let f=s.text;return{type:"zTXt",keyword:d,text:f}}var fi=m(()=>{R();ye();S();});var di={};B(di,{Palette:()=>St,parseChunk:()=>Bs});function Bs(e,n,t){U(e,t),T(e,t,"bKGD"),T(e,t,"hIST"),T(e,t,"tRNS"),T(e,t,"IDAT");let r=t.offset+4;if(n.colorType===0||n.colorType===4)throw I(t,`Color type "${n.colorType}" cannot have a palette`,r);if(r+=4,t.dataLength===0)throw I(t,"Cannot have 0 entries",r);if(t.dataLength%3!==0)throw I(t,`Chunk length must be divisible by 3 (actual "${t.dataLength}")`,r);return t.dataLength/3>256&&F(e,I(t,`Too many entries (${t.dataLength/3} > 256)`,r)),t.dataLength/3>Math.pow(2,n.bitDepth)&&F(e,I(t,`Too many entries for bit depth (${t.dataLength/3} > 2^${n.bitDepth})`,r)),new St(e.view,t.offset+4+4,t.dataLength)}var St,ci=m(()=>{R();S();St=class{constructor(n,t,r){this._view=n;this._paletteOffset=t;this._length=r}get size(){return this._length/3}getRgb(n){return this._checkIndex(n),new Uint8Array(this._view.buffer.slice(this._view.byteOffset+this._paletteOffset+n*3,this._view.byteOffset+this._paletteOffset+n*3+3))}setRgba(n,t,r){this._checkIndex(r);let a=this._paletteOffset+r*3;n[t]=this._view.getUint8(a),n[t+1]=this._view.getUint8(a+1),n[t+2]=this._view.getUint8(a+2),n[t+3]=255}_checkIndex(n){if(n<0||n*3>this._length-3)throw new Error(`Palette does not contain color index "${n}"`)}}});var wi={};B(wi,{DecodeError:()=>G,DecodeWarning:()=>ee,decodePng:()=>Os,readChunk:()=>mi,readChunks:()=>_i,verifyPngSignature:()=>gi});function gi(e){if(e.view.byteLength<7)throw new G(e,`Not enough bytes in file for png signature (${e.view.byteLength})`,0);if(!(e.view.getUint8(0)===137&&e.view.getUint8(1)===80&&e.view.getUint8(2)===78&&e.view.getUint8(3)===71&&e.view.getUint8(4)===13&&e.view.getUint8(5)===10&&e.view.getUint8(6)===26&&e.view.getUint8(7)===10)){let t=hi(Array.from(new Uint8Array(e.view.buffer).slice(e.view.byteOffset,e.view.byteOffset+8))),r=hi([137,80,78,71,13,10,26,10]);throw new G(e,`Png signature is not correct (${t} != ${r})`,0)}}function hi(e){return`0x${e.map(n=>n.toString(16).padStart(2,"0")).join("")}`}function zs(e){switch(e){case"bKGD":return Promise.resolve().then(()=>(ka(),Ta));case"cHRM":return Promise.resolve().then(()=>(va(),Ea));case"eXIf":return Promise.resolve().then(()=>(Sa(),Aa));case"gAMA":return Promise.resolve().then(()=>(Ua(),Ma));case"hIST":return Promise.resolve().then(()=>(Ra(),La));case"iCCP":return Promise.resolve().then(()=>(za(),Ba));case"iTXt":return Promise.resolve().then(()=>(Na(),Oa));case"tIME":return Promise.resolve().then(()=>(Fa(),Ha));case"oFFs":return Promise.resolve().then(()=>($a(),Za));case"pCAL":return Promise.resolve().then(()=>(ja(),Ga));case"pHYs":return Promise.resolve().then(()=>(Xa(),Wa));case"sBIT":return Promise.resolve().then(()=>(Ka(),Ya));case"sCAL":return Promise.resolve().then(()=>(qa(),Va));case"sPLT":return Promise.resolve().then(()=>(Qa(),Ja));case"sRGB":return Promise.resolve().then(()=>(ti(),ei));case"sTER":return Promise.resolve().then(()=>(ri(),ni));case"tEXt":return Promise.resolve().then(()=>(ii(),ai));case"tRNS":return Promise.resolve().then(()=>(si(),oi));case"zTXt":return Promise.resolve().then(()=>(fi(),li));default:throw new Error(`Could not get decoder for chunk type "${e}"`)}}async function Os(e,n={}){let t={view:new DataView(e.buffer,e.byteOffset,e.byteLength),image:void 0,palette:void 0,metadata:[],parsedChunks:new Set,warnings:[],info:[],options:n};gi(t);let r=_i(t);t.rawChunks=r;let a=Pa(t,r[0]),i={...t,header:a},o;n&&n.parseChunkTypes?n.parseChunkTypes==="*"?o=pi:o=ui.concat(n.parseChunkTypes):o=ui;for(let s=1;s<r.length;s++){let d=r[s];switch(d.type){case"IHDR":F(i,I(d,"Multiple IHDR chunks not allowed",d.offset+4));break;case"IDAT":{let l=[d];for(;r.length>s+1&&r[s+1].type==="IDAT";)l.push(r[++s]);i.image={width:a.width,height:a.height,data:ha(i,a,l)};break}case"PLTE":i.palette=(await Promise.resolve().then(()=>(ci(),di))).parseChunk(i,a,d);break;case"IEND":ma(i,a,d);break;default:if(o.includes(d.type))try{i.metadata.push((await zs(d.type)).parseChunk(i,a,d))}catch(l){if(l instanceof ee)F(i,l);else throw l}else if(!pi.includes(d.type))if(d.isAncillary)i.info.push(`Unrecognized chunk type "${d.type}"`);else throw new G(i,`Unrecognized critical chunk type "${d.type}"`,d.offset+4);break}i.parsedChunks.add(d.type)}if(!i.image)throw new G(i,"Failed to decode, no IDAT chunk",0);return n&&n.force32&&i.image.data.BYTES_PER_ELEMENT===2&&(i.image.data=Hn(i.image.data)),{image:i.image,details:{width:a.width,height:a.height,bitDepth:a.bitDepth,colorType:a.colorType,interlaceMethod:a.interlaceMethod},palette:i.palette,metadata:i.metadata,rawChunks:r,warnings:i.warnings,info:i.info}}function _i(e){let n=[],t=8,r=!1,a=!1,i;for(;t<e.view.byteLength;){try{i=mi(e,t)}catch(o){if(!a||!(o instanceof Error))throw o;F(e,new ee("Could not parse chunk after IEND: "+o.message,t))}t+=4+4+i.dataLength+4,n.push(i),r||=i.type==="IDAT",a||=i.type==="IEND"}if(n[0].type!=="IHDR")throw new G(e,"First chunk is not IHDR",n[0].offset+4);if(n[n.length-1].type!=="IEND"&&F(e,new ee("Last chunk is not IEND",n[n.length-1].offset+4)),!r)throw new G(e,"No IDAT chunk",0);return n}function mi(e,n){if(e.view.byteLength<n+4)throw new G(e,"EOF while reading chunk length",n);let t=e.view.getUint32(n);if(e.view.byteLength<n+4+4)throw new G(e,"EOF while reading chunk type",n);let r=String.fromCharCode(e.view.getUint8(n+4),e.view.getUint8(n+5),e.view.getUint8(n+6),e.view.getUint8(n+7));if(e.view.byteLength<n+4+4+t+4)throw new G(e,`EOF while reading chunk "${r}"`,n);let a=e.view.getUint32(n+4+4+t)>>>0,i=ot(e.view,n+4,4+t);return a!==i&&F(e,new ee(`CRC for chunk "${r}" at offset 0x${n.toString(16)} doesn't match (0x${a.toString(16)} !== 0x${i.toString(16)})`,n)),{offset:n,type:r,dataLength:t,isAncillary:kn(r,0),isPrivate:kn(r,1),isSafeToCopy:kn(r,3)}}function kn(e,n){return!!(e.charCodeAt(n)&32)}var ui,pi,yi=m(()=>{Fn();R();_a();wa();Da();Dn();S();ui=Object.freeze(["tRNS"]),pi=Object.freeze(["bKGD","cHRM","eXIf","gAMA","hIST","iCCP","iTXt","tIME","oFFs","pCAL","pHYs","sBIT","sCAL","sPLT","sRGB","sTER","tEXt","tRNS","zTXt"])});var de,Mt=m(()=>{de=class{constructor(n){this.offset=0;this.array=new Uint8Array(n),this.view=new DataView(this.array.buffer,this.array.byteOffset,this.array.byteLength)}writeUint8(n){this.view.setUint8(this.offset,n),this.offset+=1}writeUint16(n){this.view.setUint16(this.offset,n),this.offset+=2}writeUint32(n){this.view.setUint32(this.offset,n),this.offset+=4}writeArray(n){this.array.set(n,this.array.byteOffset+this.offset),this.offset+=n.length}assertAtEnd(){if(this.offset!==this.array.length)throw new Error("Writing finished before expected length of stream")}}});function bi(e,n){e.writeUint8(n.charCodeAt(0)),e.writeUint8(n.charCodeAt(1)),e.writeUint8(n.charCodeAt(2)),e.writeUint8(n.charCodeAt(3))}function Ut(e,n){let t=new de(4+4+n.length+4);if(t.writeUint32(n.length),e.length!==4)throw new Error(`Cannot encode a chunk type of length ${e.length}`);return bi(t,e),t.writeArray(n),t.writeUint32(ot(t.view,4,4+n.length)),t.assertAtEnd(),t.array}function ie(e,n,t){let r=new de(4+4+n+4);if(r.writeUint32(n),e.length!==4)throw new Error(`Cannot encode a chunk type of length ${e.length}`);return bi(r,e),t(r),r.writeUint32(ot(r.view,4,4+n)),r.assertAtEnd(),r.array}var Ae=m(()=>{Mt();Dn();S();});function Ii(e,n){let t=Ns(e,n),r=new de(t);Hs(e,n,r);let a=un(r.array);return Ut("IDAT",a)}function Ns(e,n){if(e.bitDepth<8)throw new Error("Only bit depth 8 and 16 is supported currently");if(n.data.BYTES_PER_ELEMENT===2&&e.bitDepth===8)throw new Error("16 to 8 bit conversion isn't supported yet");if(e.interlaceMethod!==0)throw new Error("Only interlace method 0 is supported currently");let t;switch(e.colorType){case 0:t=1;break;case 2:t=3;break;case 3:t=1;break;case 4:t=2;break;case 6:t=4;break}let r=e.bitDepth===16?2:1;return(1+t*r*n.width)*n.height}function Hs(e,n,t){let r=0,a=0,i=0;if(e.colorType===3){if(!e.palette)throw new Error("Cannot encode indexed file without palette");if(n.data.BYTES_PER_ELEMENT===2)throw new Error("Cannot encode indexed file from 16-bit image");for(;i<n.height;i++)for(t.writeUint8(0),a=0;a<n.width;a++)t.writeUint8(e.palette.get(n.data[r]<<24|n.data[r+1]<<16|n.data[r+2]<<8|n.data[r+3])),r+=4;return}let o;if(e.options.filterPattern){if(e.options.filterPattern.length===0)throw new Error("Filter pattern with 0 entries");o=e.options.filterPattern}let s=4*n.data.BYTES_PER_ELEMENT,d=[];for(let f of[0,1,2,3,4])d[f]=Zs(s,s*n.width,f);let l=xi(e.colorType);for(;i<n.height;i++){let f=o?o[i%o.length]:Fs(e.colorType,n,i*n.width*4,d),h=new Uint8Array(n.data.buffer,n.data.byteOffset,n.data.byteLength);t.writeUint8(f);let u=0,c=0;for(a=0;a<n.width;a++){for(c of l)for(u=n.data.BYTES_PER_ELEMENT-1;u>=0;u--)t.writeUint8(d[f](h,(r+c)*n.data.BYTES_PER_ELEMENT+u,a===0));r+=4}}}function Fs(e,n,t,r){let a=[],i=4*n.data.BYTES_PER_ELEMENT;for(let d of[0,1,2,3,4]){let l=0,f=xi(e),h=new Uint8Array(n.data.buffer,n.data.byteOffset,n.data.byteLength),u=0,c=0;for(let _=t;_<t+n.width*4;_+=4)for(u of f)for(c=n.data.BYTES_PER_ELEMENT-1;c>=0;c--)l+=r[d](h,(_+u)*n.data.BYTES_PER_ELEMENT+c,_===t);a[d]=l}let o=0,s=a[0];for(let d of[1,2,3,4])a[d]<s&&(o=d,s=a[d]);return o}function Zs(e,n,t){let r=0,a=0,i=0;switch(t){case 0:return(o,s)=>o[s];case 1:return(o,s,d)=>(r=d?-1:s-e,(o[s]-(r<0?0:o[s-e])+256)%256);case 2:return(o,s)=>(a=s-n,(o[s]-(a<0?0:o[a])+256)%256);case 3:return(o,s,d)=>(r=d?-1:s-e,a=s-n,(o[s]-Math.floor(((r<0?0:o[r])+(a<0?0:o[a]))/2)+256)%256);case 4:return(o,s,d)=>(r=d?-1:s-e,a=s-n,i=d?-1:s-e-n,(o[s]-at(r<0?0:o[r],a<0?0:o[a],i<0?0:o[i])+256)%256)}}function xi(e){switch(e){case 0:return[0];case 2:return[0,1,2];case 4:return[0,3];case 6:return[0,1,2,3]}}var Ci=m(()=>{vt();Mt();Cn();S();Ae();});function Pi(){return Ut("IEND",new Uint8Array(0))}var Di=m(()=>{Ae();});function Ti(e,n){if(n.width<=0||n.height<=0)throw new Error(`Invalid dimensions ${n.width}x${n.height}`);return ie("IHDR",13,t=>{t.writeUint32(n.width),t.writeUint32(n.height),t.writeUint8(e.bitDepth),t.writeUint8(e.colorType),t.writeUint8(0),t.writeUint8(0),t.writeUint8(e.interlaceMethod)})}var ki=m(()=>{Ae();});var Ei={};B(Ei,{encodeChunk:()=>$s});function $s(e,n){switch(e.colorType){case 0:{if(e.firstTransparentColor===void 0)throw new Error("Cannot write tRNS for grayscale without any transparent colors");let t=e.firstTransparentColor;return ie("tRNS",2,r=>{n.data.BYTES_PER_ELEMENT===2?r.writeUint16(t>>48&65535):r.writeUint16(t>>24&255)})}case 3:{if(!e.palette)throw new Error("Cannot encode tRNS chunk for indexed image without palette");return ie("tRNS",e.palette.size,t=>{for(let r of e.colorSet)t.writeUint8(r&255)})}case 2:{if(e.firstTransparentColor===void 0)throw new Error("Cannot write tRNS for True color without any transparent colors");let t=e.firstTransparentColor;return ie("tRNS",6,r=>{n.data.BYTES_PER_ELEMENT===2?(r.writeUint16(t>>48&65535),r.writeUint16(t>>32&65535),r.writeUint16(t>>16&65535)):(r.writeUint16(t>>24&255),r.writeUint16(t>>16&255),r.writeUint16(t>>8&255))})}default:throw new Error(`Cannot encode tRNS chunk for color type "${e.colorType}"`)}}var vi=m(()=>{S();Ae();});var Ai={};B(Ai,{encodeChunk:()=>Gs});function Gs(e,n){if(e.bitDepth===16||n.data.BYTES_PER_ELEMENT===2)throw new Error("Cannot encode 16 bit images using indexed color type");if(e.colorSet.size>Math.pow(2,e.bitDepth))throw new Error(`Too many colors ${e.colorSet.size} to encode into indexed image (2^${e.bitDepth} = ${Math.pow(2,e.bitDepth)})`);let t=ie("PLTE",e.colorSet.size*3,a=>{for(let i of e.colorSet.values())a.writeUint8(i>>24&255),a.writeUint8(i>>16&255),a.writeUint8(i>>8&255)}),r=new Map;for(let a of e.colorSet.values())r.set(a,r.size);return{chunkData:t,palette:r}}var Si=m(()=>{Ae();});var En={};B(En,{encodeChunk:()=>js});function js(e,n,t,r){if(t.length===0||t.length>79)throw new he(`tEXt: Invalid keyword length: 0 < ${t.length} < 80`,0);let a=t.length+1+r.length;return ie("tEXt",a,i=>{let o=0;for(;o<t.length;o++)i.writeUint8(t.charCodeAt(o));for(i.writeUint8(0),o=0;o<r.length;o++)i.writeUint8(r.charCodeAt(o))})}var vn=m(()=>{ut();Ae();});var Mi={};B(Mi,{EncodeError:()=>he,EncodeWarning:()=>Me,encodePng:()=>Xs});function Ws(e){switch(e){case"tRNS":return Promise.resolve().then(()=>(vi(),Ei));default:throw new Error(`Could not get encoder for chunk type "${e}"`)}}async function Xs(e,n={}){if(e.data.length!==e.width*e.height*4)throw new he(`Provided image data length (${e.data.length}) is not expected length (${e.width*e.height*4})`,Math.min(e.data.length,e.width*e.height*4)-1);let t=[];t.push(Ys());let r=Ks(e,n);if(t.push(Ti(r,e)),r.colorType===3){let s=(await Promise.resolve().then(()=>(Si(),Ai))).encodeChunk(r,e);r.palette=s.palette,t.push(s.chunkData)}if(r.useTransparencyChunk&&t.push((await Ws("tRNS")).encodeChunk(r,e)),t.push(Ii(r,e)),n?.ancillaryChunks===void 0)t.push((await Promise.resolve().then(()=>(vn(),En))).encodeChunk(r,e,"Software","@lunapaint/png-codec"));else for(let s of n.ancillaryChunks)switch(s.type){case"tEXt":t.push((await Promise.resolve().then(()=>(vn(),En))).encodeChunk(r,e,s.keyword,s.text));break;default:throw new Error(`Cannot encode chunk type "${s.type}"`)}t.push(Pi());let a=t.reduce((s,d)=>s+d.length,0),i=new Uint8Array(a),o=0;for(let s of t)i.set(s,o),o+=s.length;return{data:i,warnings:r.warnings,info:r.info}}function Ys(){let e=new de(8);return e.writeUint8(137),e.writeUint8(80),e.writeUint8(78),e.writeUint8(71),e.writeUint8(13),e.writeUint8(10),e.writeUint8(26),e.writeUint8(10),e.assertAtEnd(),e.array}function Ks(e,n={}){let t=[],r=[],i=e.width*e.height*4,o=new Set,s=new Set,d=0;if(e.data.BYTES_PER_ELEMENT===2)for(let h=0;h<i;h+=4)d=e.data[h]<<48|e.data[h+1]<<32|e.data[h+2]<<16|e.data[h+3],e.data[h+3]<65535&&s.add(d),o.add(d);else for(let h=0;h<i;h+=4)d=e.data[h]<<24|e.data[h+1]<<16|e.data[h+2]<<8|e.data[h+3],e.data[h+3]<255&&s.add(d),o.add(d);let l=n.colorType;l===void 0&&(o.size>256||e.data.BYTES_PER_ELEMENT===2?l=2:l=3);let f;switch(l){case 0:case 2:f=s.size===1,!f&&s.size>1&&(l=l===2?6:4,n.colorType===2&&Nn({options:n,warnings:t},new Me(`Cannot encode image as color type Truecolor as it contains ${s.size} transparent colors`,0)));break;case 3:f=s.size>0;break;default:f=!1}return n.colorType===void 0&&r.push(`Using color type ${l}`),{colorType:l,bitDepth:e.data.BYTES_PER_ELEMENT===2?16:8,interlaceMethod:0,colorSet:o,transparentColorCount:s.size,firstTransparentColor:s.size>0?s.values().next().value:void 0,useTransparencyChunk:f,options:n,warnings:t,info:r}}var Ui=m(()=>{Mt();Ci();Di();ki();ut();S();});var Bn={};B(Bn,{arrayBufferToValue:()=>ft,blobToImageElement:()=>An,compress:()=>Bt,decode:()=>al,decodeBinary:()=>Nt,decodeBinaryFromFile:()=>Ni,decodeBinaryFromPng:()=>Rn,decodeDataFromImage:()=>Un,decodeFromFile:()=>ol,decompress:()=>tl,decompressAsArrayBuffer:()=>zt,decompressAsString:()=>el,defaultCompressionFormat:()=>lt,downloadImage:()=>il,encode:()=>nl,encodeBinary:()=>Oi,encodeBinaryToBlob:()=>Ln,encodeBinaryToPng:()=>Lt,encodeDataIntoImage:()=>Mn,encodeToBlob:()=>zi,encodeToImage:()=>rl,getBufferfromFile:()=>Hi,getImageData:()=>qs,imageElementToBlob:()=>Vs,imageElementToCanvas:()=>Sn,valueToArrayBuffer:()=>Ot});R();ut();async function Li(e,n){return(await Promise.resolve().then(()=>(yi(),wi))).decodePng(e,n)}async function Ri(e,n){return(await Promise.resolve().then(()=>(Ui(),Mi))).encodePng(e,n)}async function Vs(e){let{canvas:n}=Sn(e);return new Promise((t,r)=>{n.toBlob(function(a){a?t(a):r(new Error(""))},"image/png")})}async function An(e,n=document.createElement("img")){return new Promise((t,r)=>{let a=()=>{URL.revokeObjectURL(n.src),n.removeEventListener("load",a),n.removeEventListener("error",r),t(n)};n.addEventListener("load",a),n.addEventListener("error",r),n.src=URL.createObjectURL(e)})}function qs(e){let{context:n,width:t,height:r}=Sn(e);return n.getImageData(0,0,t,r).data}function Sn(e){let n=document.createElement("canvas"),t=n.getContext("2d"),r=n.width=e.naturalWidth,a=n.height=e.naturalHeight;return t?.drawImage(e,0,0),{canvas:n,context:t,width:r,height:a}}function Mn(e,n){let t=e.length;for(let r=0;r<3;r++)n[r]=t/Math.pow(256,r)%256|0;n[3]=255;for(let r=4,a=0,i=n.length;r<i;r+=4,a+=3)n[r]=e[a]||0,n[r+1]=e[a+1]||0,n[r+2]=e[a+2]||0,n[r+3]=255;return n}function Un(e){let n=0;for(let r=0;r<3;r++){let a=e[r]*Math.pow(256,r);n+=a}let t=new Uint8Array(n);e:for(let r=4,a=0,i=e.length;a<i;r+=4,a+=3)for(let o=0;o<3;o++){if(a+o>=n)break e;t[a+o]=e[r+o]}return t.buffer}async function Lt(e){let n=new Uint8Array(e),t=Math.ceil(Math.sqrt(n.length/3+1)),r=new Uint8ClampedArray(t*t*4);return Mn(n,r),(await Ri({width:t,height:t,data:new Uint8Array(r.buffer)})).data.buffer}async function Ln(e){let n=await Lt(e);return new Blob([n],{type:"image/png"})}async function Rn(e){if(!(e instanceof ArrayBuffer))throw new Error("Expected ArrayBuffer but got "+typeof e);let n=await Li(new Uint8Array(e));return Un(new Uint8ClampedArray(n.image.data.buffer))}var{CompressionStream:Js,DecompressionStream:Qs,Response:Rt}=globalThis,lt="gzip";async function Bt(e,n=lt){let t=new Js(n),r=new Rt(e).body?.pipeThrough(t);return await new Rt(r).arrayBuffer()}async function Bi(e,n=lt){let t=new Qs(n),r=new Rt(e).body?.pipeThrough(t);return new Rt(r)}async function zt(e,n=lt){return(await Bi(e,n)).arrayBuffer()}async function el(e,n=lt){return(await Bi(e,n)).text()}var tl=zt;function Ot(e){return new TextEncoder().encode(JSON.stringify(e)).buffer}function ft(e){return JSON.parse(new TextDecoder().decode(e))}async function nl(e){return await Oi(Ot(e))}async function zi(e){return await Ln(await Bt(Ot(e)))}async function rl(e,n){return An(await zi(e),n)}async function Oi(e){return await Lt(await Bt(e))}async function al(e){return ft(await Nt(e))}async function Nt(e){return await zt(await Rn(e))}function il(e,n="compressed.png"){let t=URL.createObjectURL(e),r=document.createElement("a");r.download=n,r.href=t,document.body.appendChild(r),r.click(),document.body.removeChild(r),URL.revokeObjectURL(t)}async function Ni(e){let n=await Hi(e);return await Nt(n)}async function ol(e){return ft(await Ni(e))}async function Hi(e){return new Promise((n,t)=>{let r=new FileReader;r.addEventListener("load",()=>{n(r.result)}),r.addEventListener("error",t),r.readAsArrayBuffer(e)})}window.PNGCompressor=Bn;})();
+(() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __esm = (fn, res) => function __init() {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  };
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+
+  // src/png-codec/api.ts
+  var ColorType, InterlaceMethod, KnownChunkTypes, RenderingIntent;
+  var init_api = __esm({
+    "src/png-codec/api.ts"() {
+      ColorType = /* @__PURE__ */ ((ColorType2) => {
+        ColorType2[ColorType2["Grayscale"] = 0] = "Grayscale";
+        ColorType2[ColorType2["Truecolor"] = 2] = "Truecolor";
+        ColorType2[ColorType2["Indexed"] = 3] = "Indexed";
+        ColorType2[ColorType2["GrayscaleAndAlpha"] = 4] = "GrayscaleAndAlpha";
+        ColorType2[ColorType2["TruecolorAndAlpha"] = 6] = "TruecolorAndAlpha";
+        return ColorType2;
+      })(ColorType || {});
+      InterlaceMethod = /* @__PURE__ */ ((InterlaceMethod2) => {
+        InterlaceMethod2[InterlaceMethod2["None"] = 0] = "None";
+        InterlaceMethod2[InterlaceMethod2["Adam7"] = 1] = "Adam7";
+        return InterlaceMethod2;
+      })(InterlaceMethod || {});
+      KnownChunkTypes = /* @__PURE__ */ ((KnownChunkTypes5) => {
+        KnownChunkTypes5["IHDR"] = "IHDR";
+        KnownChunkTypes5["PLTE"] = "PLTE";
+        KnownChunkTypes5["IDAT"] = "IDAT";
+        KnownChunkTypes5["IEND"] = "IEND";
+        KnownChunkTypes5["bKGD"] = "bKGD";
+        KnownChunkTypes5["cHRM"] = "cHRM";
+        KnownChunkTypes5["eXIf"] = "eXIf";
+        KnownChunkTypes5["gAMA"] = "gAMA";
+        KnownChunkTypes5["hIST"] = "hIST";
+        KnownChunkTypes5["iCCP"] = "iCCP";
+        KnownChunkTypes5["iTXt"] = "iTXt";
+        KnownChunkTypes5["oFFs"] = "oFFs";
+        KnownChunkTypes5["pCAL"] = "pCAL";
+        KnownChunkTypes5["pHYs"] = "pHYs";
+        KnownChunkTypes5["sBIT"] = "sBIT";
+        KnownChunkTypes5["sCAL"] = "sCAL";
+        KnownChunkTypes5["sPLT"] = "sPLT";
+        KnownChunkTypes5["sRGB"] = "sRGB";
+        KnownChunkTypes5["sTER"] = "sTER";
+        KnownChunkTypes5["tEXt"] = "tEXt";
+        KnownChunkTypes5["tIME"] = "tIME";
+        KnownChunkTypes5["tRNS"] = "tRNS";
+        KnownChunkTypes5["zTXt"] = "zTXt";
+        return KnownChunkTypes5;
+      })(KnownChunkTypes || {});
+      RenderingIntent = /* @__PURE__ */ ((RenderingIntent2) => {
+        RenderingIntent2[RenderingIntent2["Perceptual"] = 0] = "Perceptual";
+        RenderingIntent2[RenderingIntent2["RelativeColorimetric"] = 1] = "RelativeColorimetric";
+        RenderingIntent2[RenderingIntent2["Saturation"] = 2] = "Saturation";
+        RenderingIntent2[RenderingIntent2["AbsoluteColorimetric"] = 3] = "AbsoluteColorimetric";
+        return RenderingIntent2;
+      })(RenderingIntent || {});
+    }
+  });
+
+  // src/png-codec/shared/types.ts
+  var ChunkPartByteLength, FilterMethod, FilterType;
+  var init_types = __esm({
+    "src/png-codec/shared/types.ts"() {
+      init_api();
+      ChunkPartByteLength = /* @__PURE__ */ ((ChunkPartByteLength2) => {
+        ChunkPartByteLength2[ChunkPartByteLength2["Length"] = 4] = "Length";
+        ChunkPartByteLength2[ChunkPartByteLength2["Type"] = 4] = "Type";
+        ChunkPartByteLength2[ChunkPartByteLength2["CRC"] = 4] = "CRC";
+        return ChunkPartByteLength2;
+      })(ChunkPartByteLength || {});
+      FilterMethod = /* @__PURE__ */ ((FilterMethod2) => {
+        FilterMethod2[FilterMethod2["Adaptive"] = 0] = "Adaptive";
+        return FilterMethod2;
+      })(FilterMethod || {});
+      FilterType = /* @__PURE__ */ ((FilterType2) => {
+        FilterType2[FilterType2["None"] = 0] = "None";
+        FilterType2[FilterType2["Sub"] = 1] = "Sub";
+        FilterType2[FilterType2["Up"] = 2] = "Up";
+        FilterType2[FilterType2["Average"] = 3] = "Average";
+        FilterType2[FilterType2["Paeth"] = 4] = "Paeth";
+        return FilterType2;
+      })(FilterType || {});
+    }
+  });
+
+  // src/png-codec/decode/assert.ts
+  function assertChunkSinglular(ctx, chunk) {
+    if (ctx.parsedChunks.has(chunk.type)) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Multiple ${chunk.type} chunks not allowed`,
+          chunk.offset + 4 /* Length */
+        )
+      );
+    }
+  }
+  function assertChunkDataLengthEquals(ctx, chunk, expected) {
+    if (chunk.dataLength !== expected) {
+      const error = createChunkDecodeWarning(
+        chunk,
+        `Invalid data length: ${chunk.dataLength} !== ${expected}`,
+        chunk.offset
+      );
+      if (chunk.dataLength > expected) {
+        handleWarning(ctx, error);
+      } else {
+        throw error;
+      }
+    }
+  }
+  function assertChunkDataLengthGte(ctx, chunk, expected) {
+    if (chunk.dataLength < expected) {
+      throw createChunkDecodeError(
+        ctx,
+        chunk,
+        `Invalid data length: ${chunk.dataLength} < ${expected}`,
+        chunk.offset
+      );
+    }
+  }
+  function assertChunkPrecedes(ctx, chunk, typeAfter) {
+    if (ctx.parsedChunks.has(typeAfter)) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Must precede ${typeAfter}`,
+          chunk.offset + 4 /* Length */
+        )
+      );
+    }
+  }
+  function assertChunkFollows(ctx, chunk, typeAfter) {
+    if (!ctx.parsedChunks.has(typeAfter)) {
+      throw createChunkDecodeError(
+        ctx,
+        chunk,
+        `Must follow ${typeAfter}`,
+        chunk.offset + 4 /* Length */
+      );
+    }
+  }
+  function assertChunkMutualExclusion(ctx, chunk, otherType) {
+    if (ctx.parsedChunks.has(otherType)) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Should not be present alongside ${otherType}`,
+          chunk.offset + 4 /* Length */
+        )
+      );
+    }
+  }
+  function assertChunkCompressionMethod(ctx, chunk, compressionMethod, offset) {
+    if (compressionMethod !== 0) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Unknown compression method "${compressionMethod}"`,
+          offset
+        )
+      );
+    }
+  }
+  function createChunkDecodeError(ctx, chunk, message, offset) {
+    return new DecodeError(ctx, `${chunk.type}: ${message}`, offset);
+  }
+  function createChunkDecodeWarning(chunk, message, offset) {
+    return new DecodeWarning(`${chunk.type}: ${message}`, offset);
+  }
+  function handleWarning(ctx, warning) {
+    if (ctx.options.strictMode) {
+      throw warning;
+    }
+    ctx.warnings.push(warning);
+  }
+  var DecodeError, DecodeWarning;
+  var init_assert = __esm({
+    "src/png-codec/decode/assert.ts"() {
+      init_types();
+      DecodeError = class extends Error {
+        constructor(ctx, message, offset) {
+          super(message);
+          this.offset = offset;
+          this.partiallyDecodedImage = {
+            details: "header" in ctx && ctx.header ? {
+              width: ctx.header.width,
+              height: ctx.header.height,
+              bitDepth: ctx.header.bitDepth,
+              colorType: ctx.header.colorType,
+              interlaceMethod: ctx.header.interlaceMethod
+            } : void 0,
+            info: ctx.info,
+            metadata: ctx.metadata,
+            rawChunks: ctx.rawChunks,
+            warnings: ctx.warnings
+          };
+        }
+      };
+      DecodeWarning = class extends Error {
+        constructor(message, offset) {
+          super(message);
+          this.offset = offset;
+        }
+      };
+    }
+  });
+
+  // src/png-codec/encode/assert.ts
+  function handleWarning2(ctx, warning) {
+    if (ctx.options.strictMode) {
+      throw warning;
+    }
+    ctx.warnings.push(warning);
+  }
+  var EncodeError, EncodeWarning;
+  var init_assert2 = __esm({
+    "src/png-codec/encode/assert.ts"() {
+      EncodeError = class extends Error {
+        constructor(message, offset) {
+          super(message);
+          this.offset = offset;
+        }
+      };
+      EncodeWarning = class extends Error {
+        constructor(message, offset) {
+          super(message);
+          this.offset = offset;
+        }
+      };
+    }
+  });
+
+  // src/png-codec/decode/array.ts
+  function convert16BitTo8BitData(data) {
+    const view8Bit = new Uint8Array(data.buffer);
+    const result = new Uint8Array(data.length);
+    for (let i = 0; i < result.length; i++) {
+      result[i] = view8Bit[i * 2 + 1];
+    }
+    return result;
+  }
+  var init_array = __esm({
+    "src/png-codec/decode/array.ts"() {
+    }
+  });
+
+  // src/pako/zlib/trees.ts
+  function zero(buf) {
+    let len = buf.length;
+    while (--len >= 0) {
+      buf[len] = 0;
+    }
+  }
+  function StaticTreeDesc(static_tree, extra_bits, extra_base, elems, max_length) {
+    this.static_tree = static_tree;
+    this.extra_bits = extra_bits;
+    this.extra_base = extra_base;
+    this.elems = elems;
+    this.max_length = max_length;
+    this.has_stree = static_tree && static_tree.length;
+  }
+  function TreeDesc(dyn_tree, stat_desc) {
+    this.dyn_tree = dyn_tree;
+    this.max_code = 0;
+    this.stat_desc = stat_desc;
+  }
+  var Z_FIXED, Z_BINARY, Z_TEXT, Z_UNKNOWN, STORED_BLOCK, STATIC_TREES, DYN_TREES, MIN_MATCH, MAX_MATCH, LENGTH_CODES, LITERALS, L_CODES, D_CODES, BL_CODES, HEAP_SIZE, MAX_BITS, Buf_size, MAX_BL_BITS, END_BLOCK, REP_3_6, REPZ_3_10, REPZ_11_138, extra_lbits, extra_dbits, extra_blbits, bl_order, DIST_CODE_LEN, static_ltree, static_dtree, _dist_code, _length_code, base_length, base_dist, static_l_desc, static_d_desc, static_bl_desc, d_code, put_short, send_bits, send_code, bi_reverse, bi_flush, gen_bitlen, gen_codes, tr_static_init, init_block, bi_windup, smaller, pqdownheap, compress_block, build_tree, scan_tree, send_tree, build_bl_tree, send_all_trees, detect_data_type, static_init_done, _tr_init, _tr_stored_block, _tr_align, _tr_flush_block, _tr_tally, __tr_init, __tr_stored_block, __tr_flush_block, __tr_tally, __tr_align;
+  var init_trees = __esm({
+    "src/pako/zlib/trees.ts"() {
+      Z_FIXED = 4;
+      Z_BINARY = 0;
+      Z_TEXT = 1;
+      Z_UNKNOWN = 2;
+      STORED_BLOCK = 0;
+      STATIC_TREES = 1;
+      DYN_TREES = 2;
+      MIN_MATCH = 3;
+      MAX_MATCH = 258;
+      LENGTH_CODES = 29;
+      LITERALS = 256;
+      L_CODES = LITERALS + 1 + LENGTH_CODES;
+      D_CODES = 30;
+      BL_CODES = 19;
+      HEAP_SIZE = 2 * L_CODES + 1;
+      MAX_BITS = 15;
+      Buf_size = 16;
+      MAX_BL_BITS = 7;
+      END_BLOCK = 256;
+      REP_3_6 = 16;
+      REPZ_3_10 = 17;
+      REPZ_11_138 = 18;
+      extra_lbits = /* extra bits for each length code */
+      new Uint8Array([
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        0
+      ]);
+      extra_dbits = /* extra bits for each distance code */
+      new Uint8Array([
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11,
+        11,
+        12,
+        12,
+        13,
+        13
+      ]);
+      extra_blbits = /* extra bits for each bit length code */
+      new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7]);
+      bl_order = new Uint8Array([
+        16,
+        17,
+        18,
+        0,
+        8,
+        7,
+        9,
+        6,
+        10,
+        5,
+        11,
+        4,
+        12,
+        3,
+        13,
+        2,
+        14,
+        1,
+        15
+      ]);
+      DIST_CODE_LEN = 512;
+      static_ltree = new Array((L_CODES + 2) * 2);
+      zero(static_ltree);
+      static_dtree = new Array(D_CODES * 2);
+      zero(static_dtree);
+      _dist_code = new Array(DIST_CODE_LEN);
+      zero(_dist_code);
+      _length_code = new Array(MAX_MATCH - MIN_MATCH + 1);
+      zero(_length_code);
+      base_length = new Array(LENGTH_CODES);
+      zero(base_length);
+      base_dist = new Array(D_CODES);
+      zero(base_dist);
+      d_code = (dist) => {
+        return dist < 256 ? _dist_code[dist] : _dist_code[256 + (dist >>> 7)];
+      };
+      put_short = (s, w) => {
+        s.pending_buf[s.pending++] = w & 255;
+        s.pending_buf[s.pending++] = w >>> 8 & 255;
+      };
+      send_bits = (s, value, length) => {
+        if (s.bi_valid > Buf_size - length) {
+          s.bi_buf |= value << s.bi_valid & 65535;
+          put_short(s, s.bi_buf);
+          s.bi_buf = value >> Buf_size - s.bi_valid;
+          s.bi_valid += length - Buf_size;
+        } else {
+          s.bi_buf |= value << s.bi_valid & 65535;
+          s.bi_valid += length;
+        }
+      };
+      send_code = (s, c, tree) => {
+        send_bits(
+          s,
+          tree[c * 2],
+          tree[c * 2 + 1]
+          /*.Len*/
+        );
+      };
+      bi_reverse = (code, len) => {
+        let res = 0;
+        do {
+          res |= code & 1;
+          code >>>= 1;
+          res <<= 1;
+        } while (--len > 0);
+        return res >>> 1;
+      };
+      bi_flush = (s) => {
+        if (s.bi_valid === 16) {
+          put_short(s, s.bi_buf);
+          s.bi_buf = 0;
+          s.bi_valid = 0;
+        } else if (s.bi_valid >= 8) {
+          s.pending_buf[s.pending++] = s.bi_buf & 255;
+          s.bi_buf >>= 8;
+          s.bi_valid -= 8;
+        }
+      };
+      gen_bitlen = (s, desc) => {
+        const tree = desc.dyn_tree;
+        const max_code = desc.max_code;
+        const stree = desc.stat_desc.static_tree;
+        const has_stree = desc.stat_desc.has_stree;
+        const extra = desc.stat_desc.extra_bits;
+        const base = desc.stat_desc.extra_base;
+        const max_length = desc.stat_desc.max_length;
+        let h;
+        let n, m;
+        let bits;
+        let xbits;
+        let f;
+        let overflow = 0;
+        for (bits = 0; bits <= MAX_BITS; bits++) {
+          s.bl_count[bits] = 0;
+        }
+        tree[s.heap[s.heap_max] * 2 + 1] = 0;
+        for (h = s.heap_max + 1; h < HEAP_SIZE; h++) {
+          n = s.heap[h];
+          bits = tree[tree[n * 2 + 1] * 2 + 1] + 1;
+          if (bits > max_length) {
+            bits = max_length;
+            overflow++;
+          }
+          tree[n * 2 + 1] = bits;
+          if (n > max_code) {
+            continue;
+          }
+          s.bl_count[bits]++;
+          xbits = 0;
+          if (n >= base) {
+            xbits = extra[n - base];
+          }
+          f = tree[n * 2];
+          s.opt_len += f * (bits + xbits);
+          if (has_stree) {
+            s.static_len += f * (stree[n * 2 + 1] + xbits);
+          }
+        }
+        if (overflow === 0) {
+          return;
+        }
+        do {
+          bits = max_length - 1;
+          while (s.bl_count[bits] === 0) {
+            bits--;
+          }
+          s.bl_count[bits]--;
+          s.bl_count[bits + 1] += 2;
+          s.bl_count[max_length]--;
+          overflow -= 2;
+        } while (overflow > 0);
+        for (bits = max_length; bits !== 0; bits--) {
+          n = s.bl_count[bits];
+          while (n !== 0) {
+            m = s.heap[--h];
+            if (m > max_code) {
+              continue;
+            }
+            if (tree[m * 2 + 1] !== bits) {
+              s.opt_len += (bits - tree[m * 2 + 1]) * tree[m * 2];
+              tree[m * 2 + 1] = bits;
+            }
+            n--;
+          }
+        }
+      };
+      gen_codes = (tree, max_code, bl_count) => {
+        const next_code = new Array(
+          MAX_BITS + 1
+        );
+        let code = 0;
+        let bits;
+        let n;
+        for (bits = 1; bits <= MAX_BITS; bits++) {
+          code = code + bl_count[bits - 1] << 1;
+          next_code[bits] = code;
+        }
+        for (n = 0; n <= max_code; n++) {
+          let len = tree[n * 2 + 1];
+          if (len === 0) {
+            continue;
+          }
+          tree[n * 2] = bi_reverse(next_code[len]++, len);
+        }
+      };
+      tr_static_init = () => {
+        let n;
+        let bits;
+        let length;
+        let code;
+        let dist;
+        const bl_count = new Array(MAX_BITS + 1);
+        length = 0;
+        for (code = 0; code < LENGTH_CODES - 1; code++) {
+          base_length[code] = length;
+          for (n = 0; n < 1 << extra_lbits[code]; n++) {
+            _length_code[length++] = code;
+          }
+        }
+        _length_code[length - 1] = code;
+        dist = 0;
+        for (code = 0; code < 16; code++) {
+          base_dist[code] = dist;
+          for (n = 0; n < 1 << extra_dbits[code]; n++) {
+            _dist_code[dist++] = code;
+          }
+        }
+        dist >>= 7;
+        for (; code < D_CODES; code++) {
+          base_dist[code] = dist << 7;
+          for (n = 0; n < 1 << extra_dbits[code] - 7; n++) {
+            _dist_code[256 + dist++] = code;
+          }
+        }
+        for (bits = 0; bits <= MAX_BITS; bits++) {
+          bl_count[bits] = 0;
+        }
+        n = 0;
+        while (n <= 143) {
+          static_ltree[n * 2 + 1] = 8;
+          n++;
+          bl_count[8]++;
+        }
+        while (n <= 255) {
+          static_ltree[n * 2 + 1] = 9;
+          n++;
+          bl_count[9]++;
+        }
+        while (n <= 279) {
+          static_ltree[n * 2 + 1] = 7;
+          n++;
+          bl_count[7]++;
+        }
+        while (n <= 287) {
+          static_ltree[n * 2 + 1] = 8;
+          n++;
+          bl_count[8]++;
+        }
+        gen_codes(static_ltree, L_CODES + 1, bl_count);
+        for (n = 0; n < D_CODES; n++) {
+          static_dtree[n * 2 + 1] = 5;
+          static_dtree[n * 2] = bi_reverse(n, 5);
+        }
+        static_l_desc = new StaticTreeDesc(
+          static_ltree,
+          extra_lbits,
+          LITERALS + 1,
+          L_CODES,
+          MAX_BITS
+        );
+        static_d_desc = new StaticTreeDesc(
+          static_dtree,
+          extra_dbits,
+          0,
+          D_CODES,
+          MAX_BITS
+        );
+        static_bl_desc = new StaticTreeDesc(
+          new Array(0),
+          extra_blbits,
+          0,
+          BL_CODES,
+          MAX_BL_BITS
+        );
+      };
+      init_block = (s) => {
+        let n;
+        for (n = 0; n < L_CODES; n++) {
+          s.dyn_ltree[n * 2] = 0;
+        }
+        for (n = 0; n < D_CODES; n++) {
+          s.dyn_dtree[n * 2] = 0;
+        }
+        for (n = 0; n < BL_CODES; n++) {
+          s.bl_tree[n * 2] = 0;
+        }
+        s.dyn_ltree[END_BLOCK * 2] = 1;
+        s.opt_len = s.static_len = 0;
+        s.sym_next = s.matches = 0;
+      };
+      bi_windup = (s) => {
+        if (s.bi_valid > 8) {
+          put_short(s, s.bi_buf);
+        } else if (s.bi_valid > 0) {
+          s.pending_buf[s.pending++] = s.bi_buf;
+        }
+        s.bi_buf = 0;
+        s.bi_valid = 0;
+      };
+      smaller = (tree, n, m, depth) => {
+        const _n2 = n * 2;
+        const _m2 = m * 2;
+        return tree[_n2] < tree[_m2] || tree[_n2] === tree[_m2] && depth[n] <= depth[m];
+      };
+      pqdownheap = (s, tree, k) => {
+        const v = s.heap[k];
+        let j = k << 1;
+        while (j <= s.heap_len) {
+          if (j < s.heap_len && smaller(tree, s.heap[j + 1], s.heap[j], s.depth)) {
+            j++;
+          }
+          if (smaller(tree, v, s.heap[j], s.depth)) {
+            break;
+          }
+          s.heap[k] = s.heap[j];
+          k = j;
+          j <<= 1;
+        }
+        s.heap[k] = v;
+      };
+      compress_block = (s, ltree, dtree) => {
+        let dist;
+        let lc;
+        let sx = 0;
+        let code;
+        let extra;
+        if (s.sym_next !== 0) {
+          do {
+            dist = s.pending_buf[s.sym_buf + sx++] & 255;
+            dist += (s.pending_buf[s.sym_buf + sx++] & 255) << 8;
+            lc = s.pending_buf[s.sym_buf + sx++];
+            if (dist === 0) {
+              send_code(s, lc, ltree);
+            } else {
+              code = _length_code[lc];
+              send_code(s, code + LITERALS + 1, ltree);
+              extra = extra_lbits[code];
+              if (extra !== 0) {
+                lc -= base_length[code];
+                send_bits(s, lc, extra);
+              }
+              dist--;
+              code = d_code(dist);
+              send_code(s, code, dtree);
+              extra = extra_dbits[code];
+              if (extra !== 0) {
+                dist -= base_dist[code];
+                send_bits(s, dist, extra);
+              }
+            }
+          } while (sx < s.sym_next);
+        }
+        send_code(s, END_BLOCK, ltree);
+      };
+      build_tree = (s, desc) => {
+        const tree = desc.dyn_tree;
+        const stree = desc.stat_desc.static_tree;
+        const has_stree = desc.stat_desc.has_stree;
+        const elems = desc.stat_desc.elems;
+        let n, m;
+        let max_code = -1;
+        let node;
+        s.heap_len = 0;
+        s.heap_max = HEAP_SIZE;
+        for (n = 0; n < elems; n++) {
+          if (tree[n * 2] !== 0) {
+            s.heap[++s.heap_len] = max_code = n;
+            s.depth[n] = 0;
+          } else {
+            tree[n * 2 + 1] = 0;
+          }
+        }
+        while (s.heap_len < 2) {
+          node = s.heap[++s.heap_len] = max_code < 2 ? ++max_code : 0;
+          tree[node * 2] = 1;
+          s.depth[node] = 0;
+          s.opt_len--;
+          if (has_stree) {
+            s.static_len -= stree[node * 2 + 1];
+          }
+        }
+        desc.max_code = max_code;
+        for (n = s.heap_len >> 1; n >= 1; n--) {
+          pqdownheap(s, tree, n);
+        }
+        node = elems;
+        do {
+          n = s.heap[
+            1
+            /*SMALLEST*/
+          ];
+          s.heap[
+            1
+            /*SMALLEST*/
+          ] = s.heap[s.heap_len--];
+          pqdownheap(
+            s,
+            tree,
+            1
+            /*SMALLEST*/
+          );
+          m = s.heap[
+            1
+            /*SMALLEST*/
+          ];
+          s.heap[--s.heap_max] = n;
+          s.heap[--s.heap_max] = m;
+          tree[node * 2] = tree[n * 2] + tree[m * 2];
+          s.depth[node] = (s.depth[n] >= s.depth[m] ? s.depth[n] : s.depth[m]) + 1;
+          tree[n * 2 + 1] = tree[m * 2 + 1] = node;
+          s.heap[
+            1
+            /*SMALLEST*/
+          ] = node++;
+          pqdownheap(
+            s,
+            tree,
+            1
+            /*SMALLEST*/
+          );
+        } while (s.heap_len >= 2);
+        s.heap[--s.heap_max] = s.heap[
+          1
+          /*SMALLEST*/
+        ];
+        gen_bitlen(s, desc);
+        gen_codes(tree, max_code, s.bl_count);
+      };
+      scan_tree = (s, tree, max_code) => {
+        let n;
+        let prevlen = -1;
+        let curlen;
+        let nextlen = tree[0 * 2 + 1];
+        let count = 0;
+        let max_count = 7;
+        let min_count = 4;
+        if (nextlen === 0) {
+          max_count = 138;
+          min_count = 3;
+        }
+        tree[(max_code + 1) * 2 + 1] = 65535;
+        for (n = 0; n <= max_code; n++) {
+          curlen = nextlen;
+          nextlen = tree[(n + 1) * 2 + 1];
+          if (++count < max_count && curlen === nextlen) {
+            continue;
+          } else if (count < min_count) {
+            s.bl_tree[curlen * 2] += count;
+          } else if (curlen !== 0) {
+            if (curlen !== prevlen) {
+              s.bl_tree[curlen * 2]++;
+            }
+            s.bl_tree[REP_3_6 * 2]++;
+          } else if (count <= 10) {
+            s.bl_tree[REPZ_3_10 * 2]++;
+          } else {
+            s.bl_tree[REPZ_11_138 * 2]++;
+          }
+          count = 0;
+          prevlen = curlen;
+          if (nextlen === 0) {
+            max_count = 138;
+            min_count = 3;
+          } else if (curlen === nextlen) {
+            max_count = 6;
+            min_count = 3;
+          } else {
+            max_count = 7;
+            min_count = 4;
+          }
+        }
+      };
+      send_tree = (s, tree, max_code) => {
+        let n;
+        let prevlen = -1;
+        let curlen;
+        let nextlen = tree[0 * 2 + 1];
+        let count = 0;
+        let max_count = 7;
+        let min_count = 4;
+        if (nextlen === 0) {
+          max_count = 138;
+          min_count = 3;
+        }
+        for (n = 0; n <= max_code; n++) {
+          curlen = nextlen;
+          nextlen = tree[(n + 1) * 2 + 1];
+          if (++count < max_count && curlen === nextlen) {
+            continue;
+          } else if (count < min_count) {
+            do {
+              send_code(s, curlen, s.bl_tree);
+            } while (--count !== 0);
+          } else if (curlen !== 0) {
+            if (curlen !== prevlen) {
+              send_code(s, curlen, s.bl_tree);
+              count--;
+            }
+            send_code(s, REP_3_6, s.bl_tree);
+            send_bits(s, count - 3, 2);
+          } else if (count <= 10) {
+            send_code(s, REPZ_3_10, s.bl_tree);
+            send_bits(s, count - 3, 3);
+          } else {
+            send_code(s, REPZ_11_138, s.bl_tree);
+            send_bits(s, count - 11, 7);
+          }
+          count = 0;
+          prevlen = curlen;
+          if (nextlen === 0) {
+            max_count = 138;
+            min_count = 3;
+          } else if (curlen === nextlen) {
+            max_count = 6;
+            min_count = 3;
+          } else {
+            max_count = 7;
+            min_count = 4;
+          }
+        }
+      };
+      build_bl_tree = (s) => {
+        let max_blindex;
+        scan_tree(s, s.dyn_ltree, s.l_desc.max_code);
+        scan_tree(s, s.dyn_dtree, s.d_desc.max_code);
+        build_tree(s, s.bl_desc);
+        for (max_blindex = BL_CODES - 1; max_blindex >= 3; max_blindex--) {
+          if (s.bl_tree[bl_order[max_blindex] * 2 + 1] !== 0) {
+            break;
+          }
+        }
+        s.opt_len += 3 * (max_blindex + 1) + 5 + 5 + 4;
+        return max_blindex;
+      };
+      send_all_trees = (s, lcodes, dcodes, blcodes) => {
+        let rank2;
+        send_bits(s, lcodes - 257, 5);
+        send_bits(s, dcodes - 1, 5);
+        send_bits(s, blcodes - 4, 4);
+        for (rank2 = 0; rank2 < blcodes; rank2++) {
+          send_bits(s, s.bl_tree[bl_order[rank2] * 2 + 1], 3);
+        }
+        send_tree(s, s.dyn_ltree, lcodes - 1);
+        send_tree(s, s.dyn_dtree, dcodes - 1);
+      };
+      detect_data_type = (s) => {
+        let block_mask = 4093624447;
+        let n;
+        for (n = 0; n <= 31; n++, block_mask >>>= 1) {
+          if (block_mask & 1 && s.dyn_ltree[n * 2] !== 0) {
+            return Z_BINARY;
+          }
+        }
+        if (s.dyn_ltree[9 * 2] !== 0 || s.dyn_ltree[10 * 2] !== 0 || s.dyn_ltree[13 * 2] !== 0) {
+          return Z_TEXT;
+        }
+        for (n = 32; n < LITERALS; n++) {
+          if (s.dyn_ltree[n * 2] !== 0) {
+            return Z_TEXT;
+          }
+        }
+        return Z_BINARY;
+      };
+      static_init_done = false;
+      _tr_init = (s) => {
+        if (!static_init_done) {
+          tr_static_init();
+          static_init_done = true;
+        }
+        s.l_desc = new TreeDesc(s.dyn_ltree, static_l_desc);
+        s.d_desc = new TreeDesc(s.dyn_dtree, static_d_desc);
+        s.bl_desc = new TreeDesc(s.bl_tree, static_bl_desc);
+        s.bi_buf = 0;
+        s.bi_valid = 0;
+        init_block(s);
+      };
+      _tr_stored_block = (s, buf, stored_len, last) => {
+        send_bits(s, (STORED_BLOCK << 1) + (last ? 1 : 0), 3);
+        bi_windup(s);
+        put_short(s, stored_len);
+        put_short(s, ~stored_len);
+        if (stored_len) {
+          s.pending_buf.set(s.window.subarray(buf, buf + stored_len), s.pending);
+        }
+        s.pending += stored_len;
+      };
+      _tr_align = (s) => {
+        send_bits(s, STATIC_TREES << 1, 3);
+        send_code(s, END_BLOCK, static_ltree);
+        bi_flush(s);
+      };
+      _tr_flush_block = (s, buf, stored_len, last) => {
+        let opt_lenb, static_lenb;
+        let max_blindex = 0;
+        if (s.level > 0) {
+          if (s.strm.data_type === Z_UNKNOWN) {
+            s.strm.data_type = detect_data_type(s);
+          }
+          build_tree(s, s.l_desc);
+          build_tree(s, s.d_desc);
+          max_blindex = build_bl_tree(s);
+          opt_lenb = s.opt_len + 3 + 7 >>> 3;
+          static_lenb = s.static_len + 3 + 7 >>> 3;
+          if (static_lenb <= opt_lenb) {
+            opt_lenb = static_lenb;
+          }
+        } else {
+          opt_lenb = static_lenb = stored_len + 5;
+        }
+        if (stored_len + 4 <= opt_lenb && buf !== -1) {
+          _tr_stored_block(s, buf, stored_len, last);
+        } else if (s.strategy === Z_FIXED || static_lenb === opt_lenb) {
+          send_bits(s, (STATIC_TREES << 1) + (last ? 1 : 0), 3);
+          compress_block(s, static_ltree, static_dtree);
+        } else {
+          send_bits(s, (DYN_TREES << 1) + (last ? 1 : 0), 3);
+          send_all_trees(
+            s,
+            s.l_desc.max_code + 1,
+            s.d_desc.max_code + 1,
+            max_blindex + 1
+          );
+          compress_block(s, s.dyn_ltree, s.dyn_dtree);
+        }
+        init_block(s);
+        if (last) {
+          bi_windup(s);
+        }
+      };
+      _tr_tally = (s, dist, lc) => {
+        s.pending_buf[s.sym_buf + s.sym_next++] = dist;
+        s.pending_buf[s.sym_buf + s.sym_next++] = dist >> 8;
+        s.pending_buf[s.sym_buf + s.sym_next++] = lc;
+        if (dist === 0) {
+          s.dyn_ltree[lc * 2]++;
+        } else {
+          s.matches++;
+          dist--;
+          s.dyn_ltree[(_length_code[lc] + LITERALS + 1) * 2]++;
+          s.dyn_dtree[d_code(dist) * 2]++;
+        }
+        return s.sym_next === s.sym_end;
+      };
+      __tr_init = _tr_init;
+      __tr_stored_block = _tr_stored_block;
+      __tr_flush_block = _tr_flush_block;
+      __tr_tally = _tr_tally;
+      __tr_align = _tr_align;
+    }
+  });
+
+  // src/pako/zlib/adler32.ts
+  var adler32, adler32_default;
+  var init_adler32 = __esm({
+    "src/pako/zlib/adler32.ts"() {
+      adler32 = (adler, buf, len, pos) => {
+        let s1 = adler & 65535 | 0, s2 = adler >>> 16 & 65535 | 0, n = 0;
+        while (len !== 0) {
+          n = len > 2e3 ? 2e3 : len;
+          len -= n;
+          do {
+            s1 = s1 + buf[pos++] | 0;
+            s2 = s2 + s1 | 0;
+          } while (--n);
+          s1 %= 65521;
+          s2 %= 65521;
+        }
+        return s1 | s2 << 16 | 0;
+      };
+      adler32_default = adler32;
+    }
+  });
+
+  // src/pako/zlib/crc32.ts
+  var makeTable, crcTable, crc32, crc32_default;
+  var init_crc32 = __esm({
+    "src/pako/zlib/crc32.ts"() {
+      makeTable = () => {
+        let c, table = [];
+        for (var n = 0; n < 256; n++) {
+          c = n;
+          for (var k = 0; k < 8; k++) {
+            c = c & 1 ? 3988292384 ^ c >>> 1 : c >>> 1;
+          }
+          table[n] = c;
+        }
+        return table;
+      };
+      crcTable = new Uint32Array(makeTable());
+      crc32 = (crc, buf, len, pos) => {
+        const t = crcTable;
+        const end = pos + len;
+        crc ^= -1;
+        for (let i = pos; i < end; i++) {
+          crc = crc >>> 8 ^ t[(crc ^ buf[i]) & 255];
+        }
+        return crc ^ -1;
+      };
+      crc32_default = crc32;
+    }
+  });
+
+  // src/pako/zlib/messages.ts
+  var messages_default;
+  var init_messages = __esm({
+    "src/pako/zlib/messages.ts"() {
+      "use strict";
+      messages_default = {
+        2: "need dictionary",
+        1: "stream end",
+        0: "",
+        "-1": "file error",
+        "-2": "stream error",
+        "-3": "data error",
+        "-4": "insufficient memory",
+        "-5": "buffer error",
+        "-6": "incompatible version"
+      };
+    }
+  });
+
+  // src/pako/zlib/constants.ts
+  var Z_NO_FLUSH, Z_PARTIAL_FLUSH, Z_SYNC_FLUSH, Z_FULL_FLUSH, Z_FINISH, Z_BLOCK, Z_TREES, Z_OK, Z_STREAM_END, Z_NEED_DICT, Z_STREAM_ERROR, Z_DATA_ERROR, Z_MEM_ERROR, Z_BUF_ERROR, Z_DEFAULT_COMPRESSION, Z_FILTERED, Z_HUFFMAN_ONLY, Z_RLE, Z_FIXED2, Z_DEFAULT_STRATEGY, Z_UNKNOWN2, Z_DEFLATED;
+  var init_constants = __esm({
+    "src/pako/zlib/constants.ts"() {
+      Z_NO_FLUSH = 0;
+      Z_PARTIAL_FLUSH = 1;
+      Z_SYNC_FLUSH = 2;
+      Z_FULL_FLUSH = 3;
+      Z_FINISH = 4;
+      Z_BLOCK = 5;
+      Z_TREES = 6;
+      Z_OK = 0;
+      Z_STREAM_END = 1;
+      Z_NEED_DICT = 2;
+      Z_STREAM_ERROR = -2;
+      Z_DATA_ERROR = -3;
+      Z_MEM_ERROR = -4;
+      Z_BUF_ERROR = -5;
+      Z_DEFAULT_COMPRESSION = -1;
+      Z_FILTERED = 1;
+      Z_HUFFMAN_ONLY = 2;
+      Z_RLE = 3;
+      Z_FIXED2 = 4;
+      Z_DEFAULT_STRATEGY = 0;
+      Z_UNKNOWN2 = 2;
+      Z_DEFLATED = 8;
+    }
+  });
+
+  // src/pako/zlib/deflate.ts
+  function Config(good_length, max_lazy, nice_length, max_chain, func) {
+    this.good_length = good_length;
+    this.max_lazy = max_lazy;
+    this.nice_length = nice_length;
+    this.max_chain = max_chain;
+    this.func = func;
+  }
+  function DeflateState() {
+    this.strm = null;
+    this.status = 0;
+    this.pending_buf = null;
+    this.pending_buf_size = 0;
+    this.pending_out = 0;
+    this.pending = 0;
+    this.wrap = 0;
+    this.gzhead = null;
+    this.gzindex = 0;
+    this.method = Z_DEFLATED;
+    this.last_flush = -1;
+    this.w_size = 0;
+    this.w_bits = 0;
+    this.w_mask = 0;
+    this.window = null;
+    this.window_size = 0;
+    this.prev = null;
+    this.head = null;
+    this.ins_h = 0;
+    this.hash_size = 0;
+    this.hash_bits = 0;
+    this.hash_mask = 0;
+    this.hash_shift = 0;
+    this.block_start = 0;
+    this.match_length = 0;
+    this.prev_match = 0;
+    this.match_available = 0;
+    this.strstart = 0;
+    this.match_start = 0;
+    this.lookahead = 0;
+    this.prev_length = 0;
+    this.max_chain_length = 0;
+    this.max_lazy_match = 0;
+    this.level = 0;
+    this.strategy = 0;
+    this.good_match = 0;
+    this.nice_match = 0;
+    this.dyn_ltree = new Uint16Array(HEAP_SIZE2 * 2);
+    this.dyn_dtree = new Uint16Array((2 * D_CODES2 + 1) * 2);
+    this.bl_tree = new Uint16Array((2 * BL_CODES2 + 1) * 2);
+    zero2(this.dyn_ltree);
+    zero2(this.dyn_dtree);
+    zero2(this.bl_tree);
+    this.l_desc = null;
+    this.d_desc = null;
+    this.bl_desc = null;
+    this.bl_count = new Uint16Array(MAX_BITS2 + 1);
+    this.heap = new Uint16Array(
+      2 * L_CODES2 + 1
+    );
+    zero2(this.heap);
+    this.heap_len = 0;
+    this.heap_max = 0;
+    this.depth = new Uint16Array(2 * L_CODES2 + 1);
+    zero2(this.depth);
+    this.sym_buf = 0;
+    this.lit_bufsize = 0;
+    this.sym_next = 0;
+    this.sym_end = 0;
+    this.opt_len = 0;
+    this.static_len = 0;
+    this.matches = 0;
+    this.insert = 0;
+    this.bi_buf = 0;
+    this.bi_valid = 0;
+  }
+  var MAX_MEM_LEVEL, LENGTH_CODES2, LITERALS2, L_CODES2, D_CODES2, BL_CODES2, HEAP_SIZE2, MAX_BITS2, MIN_MATCH2, MAX_MATCH2, MIN_LOOKAHEAD, PRESET_DICT, INIT_STATE, GZIP_STATE, EXTRA_STATE, NAME_STATE, COMMENT_STATE, HCRC_STATE, BUSY_STATE, FINISH_STATE, BS_NEED_MORE, BS_BLOCK_DONE, BS_FINISH_STARTED, BS_FINISH_DONE, OS_CODE, err, rank, zero2, slide_hash, HASH_ZLIB, HASH, flush_pending, flush_block_only, put_byte, putShortMSB, read_buf, longest_match, fill_window, deflate_stored, deflate_fast, deflate_slow, deflate_rle, deflate_huff, configuration_table, lm_init, deflateStateCheck, deflateResetKeep, deflateReset, deflateSetHeader, deflateInit2, deflate, deflateEnd, deflateSetDictionary, _deflateInit2, _deflateSetHeader, _deflate, _deflateEnd, _deflateSetDictionary;
+  var init_deflate = __esm({
+    "src/pako/zlib/deflate.ts"() {
+      init_trees();
+      init_adler32();
+      init_crc32();
+      init_messages();
+      init_constants();
+      MAX_MEM_LEVEL = 9;
+      LENGTH_CODES2 = 29;
+      LITERALS2 = 256;
+      L_CODES2 = LITERALS2 + 1 + LENGTH_CODES2;
+      D_CODES2 = 30;
+      BL_CODES2 = 19;
+      HEAP_SIZE2 = 2 * L_CODES2 + 1;
+      MAX_BITS2 = 15;
+      MIN_MATCH2 = 3;
+      MAX_MATCH2 = 258;
+      MIN_LOOKAHEAD = MAX_MATCH2 + MIN_MATCH2 + 1;
+      PRESET_DICT = 32;
+      INIT_STATE = 42;
+      GZIP_STATE = 57;
+      EXTRA_STATE = 69;
+      NAME_STATE = 73;
+      COMMENT_STATE = 91;
+      HCRC_STATE = 103;
+      BUSY_STATE = 113;
+      FINISH_STATE = 666;
+      BS_NEED_MORE = 1;
+      BS_BLOCK_DONE = 2;
+      BS_FINISH_STARTED = 3;
+      BS_FINISH_DONE = 4;
+      OS_CODE = 3;
+      err = (strm, errorCode) => {
+        strm.msg = messages_default[errorCode];
+        return errorCode;
+      };
+      rank = (f) => {
+        return f * 2 - (f > 4 ? 9 : 0);
+      };
+      zero2 = (buf) => {
+        let len = buf.length;
+        while (--len >= 0) {
+          buf[len] = 0;
+        }
+      };
+      slide_hash = (s) => {
+        let n, m;
+        let p;
+        let wsize = s.w_size;
+        n = s.hash_size;
+        p = n;
+        do {
+          m = s.head[--p];
+          s.head[p] = m >= wsize ? m - wsize : 0;
+        } while (--n);
+        n = wsize;
+        p = n;
+        do {
+          m = s.prev[--p];
+          s.prev[p] = m >= wsize ? m - wsize : 0;
+        } while (--n);
+      };
+      HASH_ZLIB = (s, prev, data) => (prev << s.hash_shift ^ data) & s.hash_mask;
+      HASH = HASH_ZLIB;
+      flush_pending = (strm) => {
+        const s = strm.state;
+        let len = s.pending;
+        if (len > strm.avail_out) {
+          len = strm.avail_out;
+        }
+        if (len === 0) {
+          return;
+        }
+        strm.output.set(
+          s.pending_buf.subarray(s.pending_out, s.pending_out + len),
+          strm.next_out
+        );
+        strm.next_out += len;
+        s.pending_out += len;
+        strm.total_out += len;
+        strm.avail_out -= len;
+        s.pending -= len;
+        if (s.pending === 0) {
+          s.pending_out = 0;
+        }
+      };
+      flush_block_only = (s, last) => {
+        __tr_flush_block(
+          s,
+          s.block_start >= 0 ? s.block_start : -1,
+          s.strstart - s.block_start,
+          last
+        );
+        s.block_start = s.strstart;
+        flush_pending(s.strm);
+      };
+      put_byte = (s, b) => {
+        s.pending_buf[s.pending++] = b;
+      };
+      putShortMSB = (s, b) => {
+        s.pending_buf[s.pending++] = b >>> 8 & 255;
+        s.pending_buf[s.pending++] = b & 255;
+      };
+      read_buf = (strm, buf, start, size) => {
+        let len = strm.avail_in;
+        if (len > size) {
+          len = size;
+        }
+        if (len === 0) {
+          return 0;
+        }
+        strm.avail_in -= len;
+        buf.set(strm.input.subarray(strm.next_in, strm.next_in + len), start);
+        if (strm.state.wrap === 1) {
+          strm.adler = adler32_default(strm.adler, buf, len, start);
+        } else if (strm.state.wrap === 2) {
+          strm.adler = crc32_default(strm.adler, buf, len, start);
+        }
+        strm.next_in += len;
+        strm.total_in += len;
+        return len;
+      };
+      longest_match = (s, cur_match) => {
+        let chain_length = s.max_chain_length;
+        let scan = s.strstart;
+        let match;
+        let len;
+        let best_len = s.prev_length;
+        let nice_match = s.nice_match;
+        const limit = s.strstart > s.w_size - MIN_LOOKAHEAD ? s.strstart - (s.w_size - MIN_LOOKAHEAD) : 0;
+        const _win = s.window;
+        const wmask = s.w_mask;
+        const prev = s.prev;
+        const strend = s.strstart + MAX_MATCH2;
+        let scan_end1 = _win[scan + best_len - 1];
+        let scan_end = _win[scan + best_len];
+        if (s.prev_length >= s.good_match) {
+          chain_length >>= 2;
+        }
+        if (nice_match > s.lookahead) {
+          nice_match = s.lookahead;
+        }
+        do {
+          match = cur_match;
+          if (_win[match + best_len] !== scan_end || _win[match + best_len - 1] !== scan_end1 || _win[match] !== _win[scan] || _win[++match] !== _win[scan + 1]) {
+            continue;
+          }
+          scan += 2;
+          match++;
+          do {
+          } while (_win[++scan] === _win[++match] && _win[++scan] === _win[++match] && _win[++scan] === _win[++match] && _win[++scan] === _win[++match] && _win[++scan] === _win[++match] && _win[++scan] === _win[++match] && _win[++scan] === _win[++match] && _win[++scan] === _win[++match] && scan < strend);
+          len = MAX_MATCH2 - (strend - scan);
+          scan = strend - MAX_MATCH2;
+          if (len > best_len) {
+            s.match_start = cur_match;
+            best_len = len;
+            if (len >= nice_match) {
+              break;
+            }
+            scan_end1 = _win[scan + best_len - 1];
+            scan_end = _win[scan + best_len];
+          }
+        } while ((cur_match = prev[cur_match & wmask]) > limit && --chain_length !== 0);
+        if (best_len <= s.lookahead) {
+          return best_len;
+        }
+        return s.lookahead;
+      };
+      fill_window = (s) => {
+        const _w_size = s.w_size;
+        let n, more, str;
+        do {
+          more = s.window_size - s.lookahead - s.strstart;
+          if (s.strstart >= _w_size + (_w_size - MIN_LOOKAHEAD)) {
+            s.window.set(s.window.subarray(_w_size, _w_size + _w_size - more), 0);
+            s.match_start -= _w_size;
+            s.strstart -= _w_size;
+            s.block_start -= _w_size;
+            if (s.insert > s.strstart) {
+              s.insert = s.strstart;
+            }
+            slide_hash(s);
+            more += _w_size;
+          }
+          if (s.strm.avail_in === 0) {
+            break;
+          }
+          n = read_buf(s.strm, s.window, s.strstart + s.lookahead, more);
+          s.lookahead += n;
+          if (s.lookahead + s.insert >= MIN_MATCH2) {
+            str = s.strstart - s.insert;
+            s.ins_h = s.window[str];
+            s.ins_h = HASH(s, s.ins_h, s.window[str + 1]);
+            while (s.insert) {
+              s.ins_h = HASH(s, s.ins_h, s.window[str + MIN_MATCH2 - 1]);
+              s.prev[str & s.w_mask] = s.head[s.ins_h];
+              s.head[s.ins_h] = str;
+              str++;
+              s.insert--;
+              if (s.lookahead + s.insert < MIN_MATCH2) {
+                break;
+              }
+            }
+          }
+        } while (s.lookahead < MIN_LOOKAHEAD && s.strm.avail_in !== 0);
+      };
+      deflate_stored = (s, flush) => {
+        let min_block = s.pending_buf_size - 5 > s.w_size ? s.w_size : s.pending_buf_size - 5;
+        let len, left, have, last = 0;
+        let used = s.strm.avail_in;
+        do {
+          len = 65535;
+          have = s.bi_valid + 42 >> 3;
+          if (s.strm.avail_out < have) {
+            break;
+          }
+          have = s.strm.avail_out - have;
+          left = s.strstart - s.block_start;
+          if (len > left + s.strm.avail_in) {
+            len = left + s.strm.avail_in;
+          }
+          if (len > have) {
+            len = have;
+          }
+          if (len < min_block && (len === 0 && flush !== Z_FINISH || flush === Z_NO_FLUSH || len !== left + s.strm.avail_in)) {
+            break;
+          }
+          last = flush === Z_FINISH && len === left + s.strm.avail_in ? 1 : 0;
+          __tr_stored_block(s, 0, 0, last);
+          s.pending_buf[s.pending - 4] = len;
+          s.pending_buf[s.pending - 3] = len >> 8;
+          s.pending_buf[s.pending - 2] = ~len;
+          s.pending_buf[s.pending - 1] = ~len >> 8;
+          flush_pending(s.strm);
+          if (left) {
+            if (left > len) {
+              left = len;
+            }
+            s.strm.output.set(
+              s.window.subarray(s.block_start, s.block_start + left),
+              s.strm.next_out
+            );
+            s.strm.next_out += left;
+            s.strm.avail_out -= left;
+            s.strm.total_out += left;
+            s.block_start += left;
+            len -= left;
+          }
+          if (len) {
+            read_buf(s.strm, s.strm.output, s.strm.next_out, len);
+            s.strm.next_out += len;
+            s.strm.avail_out -= len;
+            s.strm.total_out += len;
+          }
+        } while (last === 0);
+        used -= s.strm.avail_in;
+        if (used) {
+          if (used >= s.w_size) {
+            s.matches = 2;
+            s.window.set(
+              s.strm.input.subarray(s.strm.next_in - s.w_size, s.strm.next_in),
+              0
+            );
+            s.strstart = s.w_size;
+            s.insert = s.strstart;
+          } else {
+            if (s.window_size - s.strstart <= used) {
+              s.strstart -= s.w_size;
+              s.window.set(s.window.subarray(s.w_size, s.w_size + s.strstart), 0);
+              if (s.matches < 2) {
+                s.matches++;
+              }
+              if (s.insert > s.strstart) {
+                s.insert = s.strstart;
+              }
+            }
+            s.window.set(
+              s.strm.input.subarray(s.strm.next_in - used, s.strm.next_in),
+              s.strstart
+            );
+            s.strstart += used;
+            s.insert += used > s.w_size - s.insert ? s.w_size - s.insert : used;
+          }
+          s.block_start = s.strstart;
+        }
+        if (s.high_water < s.strstart) {
+          s.high_water = s.strstart;
+        }
+        if (last) {
+          return BS_FINISH_DONE;
+        }
+        if (flush !== Z_NO_FLUSH && flush !== Z_FINISH && s.strm.avail_in === 0 && s.strstart === s.block_start) {
+          return BS_BLOCK_DONE;
+        }
+        have = s.window_size - s.strstart;
+        if (s.strm.avail_in > have && s.block_start >= s.w_size) {
+          s.block_start -= s.w_size;
+          s.strstart -= s.w_size;
+          s.window.set(s.window.subarray(s.w_size, s.w_size + s.strstart), 0);
+          if (s.matches < 2) {
+            s.matches++;
+          }
+          have += s.w_size;
+          if (s.insert > s.strstart) {
+            s.insert = s.strstart;
+          }
+        }
+        if (have > s.strm.avail_in) {
+          have = s.strm.avail_in;
+        }
+        if (have) {
+          read_buf(s.strm, s.window, s.strstart, have);
+          s.strstart += have;
+          s.insert += have > s.w_size - s.insert ? s.w_size - s.insert : have;
+        }
+        if (s.high_water < s.strstart) {
+          s.high_water = s.strstart;
+        }
+        have = s.bi_valid + 42 >> 3;
+        have = s.pending_buf_size - have > 65535 ? 65535 : s.pending_buf_size - have;
+        min_block = have > s.w_size ? s.w_size : have;
+        left = s.strstart - s.block_start;
+        if (left >= min_block || (left || flush === Z_FINISH) && flush !== Z_NO_FLUSH && s.strm.avail_in === 0 && left <= have) {
+          len = left > have ? have : left;
+          last = flush === Z_FINISH && s.strm.avail_in === 0 && len === left ? 1 : 0;
+          __tr_stored_block(s, s.block_start, len, last);
+          s.block_start += len;
+          flush_pending(s.strm);
+        }
+        return last ? BS_FINISH_STARTED : BS_NEED_MORE;
+      };
+      deflate_fast = (s, flush) => {
+        let hash_head;
+        let bflush;
+        for (; ; ) {
+          if (s.lookahead < MIN_LOOKAHEAD) {
+            fill_window(s);
+            if (s.lookahead < MIN_LOOKAHEAD && flush === Z_NO_FLUSH) {
+              return BS_NEED_MORE;
+            }
+            if (s.lookahead === 0) {
+              break;
+            }
+          }
+          hash_head = 0;
+          if (s.lookahead >= MIN_MATCH2) {
+            s.ins_h = HASH(s, s.ins_h, s.window[s.strstart + MIN_MATCH2 - 1]);
+            hash_head = s.prev[s.strstart & s.w_mask] = s.head[s.ins_h];
+            s.head[s.ins_h] = s.strstart;
+          }
+          if (hash_head !== 0 && s.strstart - hash_head <= s.w_size - MIN_LOOKAHEAD) {
+            s.match_length = longest_match(s, hash_head);
+          }
+          if (s.match_length >= MIN_MATCH2) {
+            bflush = __tr_tally(
+              s,
+              s.strstart - s.match_start,
+              s.match_length - MIN_MATCH2
+            );
+            s.lookahead -= s.match_length;
+            if (s.match_length <= s.max_lazy_match && s.lookahead >= MIN_MATCH2) {
+              s.match_length--;
+              do {
+                s.strstart++;
+                s.ins_h = HASH(s, s.ins_h, s.window[s.strstart + MIN_MATCH2 - 1]);
+                hash_head = s.prev[s.strstart & s.w_mask] = s.head[s.ins_h];
+                s.head[s.ins_h] = s.strstart;
+              } while (--s.match_length !== 0);
+              s.strstart++;
+            } else {
+              s.strstart += s.match_length;
+              s.match_length = 0;
+              s.ins_h = s.window[s.strstart];
+              s.ins_h = HASH(s, s.ins_h, s.window[s.strstart + 1]);
+            }
+          } else {
+            bflush = __tr_tally(s, 0, s.window[s.strstart]);
+            s.lookahead--;
+            s.strstart++;
+          }
+          if (bflush) {
+            flush_block_only(s, false);
+            if (s.strm.avail_out === 0) {
+              return BS_NEED_MORE;
+            }
+          }
+        }
+        s.insert = s.strstart < MIN_MATCH2 - 1 ? s.strstart : MIN_MATCH2 - 1;
+        if (flush === Z_FINISH) {
+          flush_block_only(s, true);
+          if (s.strm.avail_out === 0) {
+            return BS_FINISH_STARTED;
+          }
+          return BS_FINISH_DONE;
+        }
+        if (s.sym_next) {
+          flush_block_only(s, false);
+          if (s.strm.avail_out === 0) {
+            return BS_NEED_MORE;
+          }
+        }
+        return BS_BLOCK_DONE;
+      };
+      deflate_slow = (s, flush) => {
+        let hash_head;
+        let bflush;
+        let max_insert;
+        for (; ; ) {
+          if (s.lookahead < MIN_LOOKAHEAD) {
+            fill_window(s);
+            if (s.lookahead < MIN_LOOKAHEAD && flush === Z_NO_FLUSH) {
+              return BS_NEED_MORE;
+            }
+            if (s.lookahead === 0) {
+              break;
+            }
+          }
+          hash_head = 0;
+          if (s.lookahead >= MIN_MATCH2) {
+            s.ins_h = HASH(s, s.ins_h, s.window[s.strstart + MIN_MATCH2 - 1]);
+            hash_head = s.prev[s.strstart & s.w_mask] = s.head[s.ins_h];
+            s.head[s.ins_h] = s.strstart;
+          }
+          s.prev_length = s.match_length;
+          s.prev_match = s.match_start;
+          s.match_length = MIN_MATCH2 - 1;
+          if (hash_head !== 0 && s.prev_length < s.max_lazy_match && s.strstart - hash_head <= s.w_size - MIN_LOOKAHEAD) {
+            s.match_length = longest_match(s, hash_head);
+            if (s.match_length <= 5 && (s.strategy === Z_FILTERED || s.match_length === MIN_MATCH2 && s.strstart - s.match_start > 4096)) {
+              s.match_length = MIN_MATCH2 - 1;
+            }
+          }
+          if (s.prev_length >= MIN_MATCH2 && s.match_length <= s.prev_length) {
+            max_insert = s.strstart + s.lookahead - MIN_MATCH2;
+            bflush = __tr_tally(
+              s,
+              s.strstart - 1 - s.prev_match,
+              s.prev_length - MIN_MATCH2
+            );
+            s.lookahead -= s.prev_length - 1;
+            s.prev_length -= 2;
+            do {
+              if (++s.strstart <= max_insert) {
+                s.ins_h = HASH(s, s.ins_h, s.window[s.strstart + MIN_MATCH2 - 1]);
+                hash_head = s.prev[s.strstart & s.w_mask] = s.head[s.ins_h];
+                s.head[s.ins_h] = s.strstart;
+              }
+            } while (--s.prev_length !== 0);
+            s.match_available = 0;
+            s.match_length = MIN_MATCH2 - 1;
+            s.strstart++;
+            if (bflush) {
+              flush_block_only(s, false);
+              if (s.strm.avail_out === 0) {
+                return BS_NEED_MORE;
+              }
+            }
+          } else if (s.match_available) {
+            bflush = __tr_tally(s, 0, s.window[s.strstart - 1]);
+            if (bflush) {
+              flush_block_only(s, false);
+            }
+            s.strstart++;
+            s.lookahead--;
+            if (s.strm.avail_out === 0) {
+              return BS_NEED_MORE;
+            }
+          } else {
+            s.match_available = 1;
+            s.strstart++;
+            s.lookahead--;
+          }
+        }
+        if (s.match_available) {
+          bflush = __tr_tally(s, 0, s.window[s.strstart - 1]);
+          s.match_available = 0;
+        }
+        s.insert = s.strstart < MIN_MATCH2 - 1 ? s.strstart : MIN_MATCH2 - 1;
+        if (flush === Z_FINISH) {
+          flush_block_only(s, true);
+          if (s.strm.avail_out === 0) {
+            return BS_FINISH_STARTED;
+          }
+          return BS_FINISH_DONE;
+        }
+        if (s.sym_next) {
+          flush_block_only(s, false);
+          if (s.strm.avail_out === 0) {
+            return BS_NEED_MORE;
+          }
+        }
+        return BS_BLOCK_DONE;
+      };
+      deflate_rle = (s, flush) => {
+        let bflush;
+        let prev;
+        let scan, strend;
+        const _win = s.window;
+        for (; ; ) {
+          if (s.lookahead <= MAX_MATCH2) {
+            fill_window(s);
+            if (s.lookahead <= MAX_MATCH2 && flush === Z_NO_FLUSH) {
+              return BS_NEED_MORE;
+            }
+            if (s.lookahead === 0) {
+              break;
+            }
+          }
+          s.match_length = 0;
+          if (s.lookahead >= MIN_MATCH2 && s.strstart > 0) {
+            scan = s.strstart - 1;
+            prev = _win[scan];
+            if (prev === _win[++scan] && prev === _win[++scan] && prev === _win[++scan]) {
+              strend = s.strstart + MAX_MATCH2;
+              do {
+              } while (prev === _win[++scan] && prev === _win[++scan] && prev === _win[++scan] && prev === _win[++scan] && prev === _win[++scan] && prev === _win[++scan] && prev === _win[++scan] && prev === _win[++scan] && scan < strend);
+              s.match_length = MAX_MATCH2 - (strend - scan);
+              if (s.match_length > s.lookahead) {
+                s.match_length = s.lookahead;
+              }
+            }
+          }
+          if (s.match_length >= MIN_MATCH2) {
+            bflush = __tr_tally(s, 1, s.match_length - MIN_MATCH2);
+            s.lookahead -= s.match_length;
+            s.strstart += s.match_length;
+            s.match_length = 0;
+          } else {
+            bflush = __tr_tally(s, 0, s.window[s.strstart]);
+            s.lookahead--;
+            s.strstart++;
+          }
+          if (bflush) {
+            flush_block_only(s, false);
+            if (s.strm.avail_out === 0) {
+              return BS_NEED_MORE;
+            }
+          }
+        }
+        s.insert = 0;
+        if (flush === Z_FINISH) {
+          flush_block_only(s, true);
+          if (s.strm.avail_out === 0) {
+            return BS_FINISH_STARTED;
+          }
+          return BS_FINISH_DONE;
+        }
+        if (s.sym_next) {
+          flush_block_only(s, false);
+          if (s.strm.avail_out === 0) {
+            return BS_NEED_MORE;
+          }
+        }
+        return BS_BLOCK_DONE;
+      };
+      deflate_huff = (s, flush) => {
+        let bflush;
+        for (; ; ) {
+          if (s.lookahead === 0) {
+            fill_window(s);
+            if (s.lookahead === 0) {
+              if (flush === Z_NO_FLUSH) {
+                return BS_NEED_MORE;
+              }
+              break;
+            }
+          }
+          s.match_length = 0;
+          bflush = __tr_tally(s, 0, s.window[s.strstart]);
+          s.lookahead--;
+          s.strstart++;
+          if (bflush) {
+            flush_block_only(s, false);
+            if (s.strm.avail_out === 0) {
+              return BS_NEED_MORE;
+            }
+          }
+        }
+        s.insert = 0;
+        if (flush === Z_FINISH) {
+          flush_block_only(s, true);
+          if (s.strm.avail_out === 0) {
+            return BS_FINISH_STARTED;
+          }
+          return BS_FINISH_DONE;
+        }
+        if (s.sym_next) {
+          flush_block_only(s, false);
+          if (s.strm.avail_out === 0) {
+            return BS_NEED_MORE;
+          }
+        }
+        return BS_BLOCK_DONE;
+      };
+      configuration_table = [
+        /*      good lazy nice chain */
+        new Config(0, 0, 0, 0, deflate_stored),
+        new Config(4, 4, 8, 4, deflate_fast),
+        new Config(4, 5, 16, 8, deflate_fast),
+        new Config(4, 6, 32, 32, deflate_fast),
+        new Config(4, 4, 16, 16, deflate_slow),
+        new Config(8, 16, 32, 32, deflate_slow),
+        new Config(8, 16, 128, 128, deflate_slow),
+        new Config(8, 32, 128, 256, deflate_slow),
+        new Config(32, 128, 258, 1024, deflate_slow),
+        new Config(32, 258, 258, 4096, deflate_slow)
+      ];
+      lm_init = (s) => {
+        s.window_size = 2 * s.w_size;
+        zero2(s.head);
+        s.max_lazy_match = configuration_table[s.level].max_lazy;
+        s.good_match = configuration_table[s.level].good_length;
+        s.nice_match = configuration_table[s.level].nice_length;
+        s.max_chain_length = configuration_table[s.level].max_chain;
+        s.strstart = 0;
+        s.block_start = 0;
+        s.lookahead = 0;
+        s.insert = 0;
+        s.match_length = s.prev_length = MIN_MATCH2 - 1;
+        s.match_available = 0;
+        s.ins_h = 0;
+      };
+      deflateStateCheck = (strm) => {
+        if (!strm) {
+          return 1;
+        }
+        const s = strm.state;
+        if (!s || s.strm !== strm || s.status !== INIT_STATE && //#ifdef GZIP
+        s.status !== GZIP_STATE && //#endif
+        s.status !== EXTRA_STATE && s.status !== NAME_STATE && s.status !== COMMENT_STATE && s.status !== HCRC_STATE && s.status !== BUSY_STATE && s.status !== FINISH_STATE) {
+          return 1;
+        }
+        return 0;
+      };
+      deflateResetKeep = (strm) => {
+        if (deflateStateCheck(strm)) {
+          return err(strm, Z_STREAM_ERROR);
+        }
+        strm.total_in = strm.total_out = 0;
+        strm.data_type = Z_UNKNOWN2;
+        const s = strm.state;
+        s.pending = 0;
+        s.pending_out = 0;
+        if (s.wrap < 0) {
+          s.wrap = -s.wrap;
+        }
+        s.status = //#ifdef GZIP
+        s.wrap === 2 ? GZIP_STATE : (
+          //#endif
+          s.wrap ? INIT_STATE : BUSY_STATE
+        );
+        strm.adler = s.wrap === 2 ? 0 : 1;
+        s.last_flush = -2;
+        __tr_init(s);
+        return Z_OK;
+      };
+      deflateReset = (strm) => {
+        const ret = deflateResetKeep(strm);
+        if (ret === Z_OK) {
+          lm_init(strm.state);
+        }
+        return ret;
+      };
+      deflateSetHeader = (strm, head) => {
+        if (deflateStateCheck(strm) || strm.state.wrap !== 2) {
+          return Z_STREAM_ERROR;
+        }
+        strm.state.gzhead = head;
+        return Z_OK;
+      };
+      deflateInit2 = (strm, level, method, windowBits, memLevel, strategy) => {
+        if (!strm) {
+          return Z_STREAM_ERROR;
+        }
+        let wrap = 1;
+        if (level === Z_DEFAULT_COMPRESSION) {
+          level = 6;
+        }
+        if (windowBits < 0) {
+          wrap = 0;
+          windowBits = -windowBits;
+        } else if (windowBits > 15) {
+          wrap = 2;
+          windowBits -= 16;
+        }
+        if (memLevel < 1 || memLevel > MAX_MEM_LEVEL || method !== Z_DEFLATED || windowBits < 8 || windowBits > 15 || level < 0 || level > 9 || strategy < 0 || strategy > Z_FIXED2 || windowBits === 8 && wrap !== 1) {
+          return err(strm, Z_STREAM_ERROR);
+        }
+        if (windowBits === 8) {
+          windowBits = 9;
+        }
+        const s = new DeflateState();
+        strm.state = s;
+        s.strm = strm;
+        s.status = INIT_STATE;
+        s.wrap = wrap;
+        s.gzhead = null;
+        s.w_bits = windowBits;
+        s.w_size = 1 << s.w_bits;
+        s.w_mask = s.w_size - 1;
+        s.hash_bits = memLevel + 7;
+        s.hash_size = 1 << s.hash_bits;
+        s.hash_mask = s.hash_size - 1;
+        s.hash_shift = ~~((s.hash_bits + MIN_MATCH2 - 1) / MIN_MATCH2);
+        s.window = new Uint8Array(s.w_size * 2);
+        s.head = new Uint16Array(s.hash_size);
+        s.prev = new Uint16Array(s.w_size);
+        s.lit_bufsize = 1 << memLevel + 6;
+        s.pending_buf_size = s.lit_bufsize * 4;
+        s.pending_buf = new Uint8Array(s.pending_buf_size);
+        s.sym_buf = s.lit_bufsize;
+        s.sym_end = (s.lit_bufsize - 1) * 3;
+        s.level = level;
+        s.strategy = strategy;
+        s.method = method;
+        return deflateReset(strm);
+      };
+      deflate = (strm, flush) => {
+        if (deflateStateCheck(strm) || flush > Z_BLOCK || flush < 0) {
+          return strm ? err(strm, Z_STREAM_ERROR) : Z_STREAM_ERROR;
+        }
+        const s = strm.state;
+        if (!strm.output || strm.avail_in !== 0 && !strm.input || s.status === FINISH_STATE && flush !== Z_FINISH) {
+          return err(strm, strm.avail_out === 0 ? Z_BUF_ERROR : Z_STREAM_ERROR);
+        }
+        const old_flush = s.last_flush;
+        s.last_flush = flush;
+        if (s.pending !== 0) {
+          flush_pending(strm);
+          if (strm.avail_out === 0) {
+            s.last_flush = -1;
+            return Z_OK;
+          }
+        } else if (strm.avail_in === 0 && rank(flush) <= rank(old_flush) && flush !== Z_FINISH) {
+          return err(strm, Z_BUF_ERROR);
+        }
+        if (s.status === FINISH_STATE && strm.avail_in !== 0) {
+          return err(strm, Z_BUF_ERROR);
+        }
+        if (s.status === INIT_STATE && s.wrap === 0) {
+          s.status = BUSY_STATE;
+        }
+        if (s.status === INIT_STATE) {
+          let header = Z_DEFLATED + (s.w_bits - 8 << 4) << 8;
+          let level_flags = -1;
+          if (s.strategy >= Z_HUFFMAN_ONLY || s.level < 2) {
+            level_flags = 0;
+          } else if (s.level < 6) {
+            level_flags = 1;
+          } else if (s.level === 6) {
+            level_flags = 2;
+          } else {
+            level_flags = 3;
+          }
+          header |= level_flags << 6;
+          if (s.strstart !== 0) {
+            header |= PRESET_DICT;
+          }
+          header += 31 - header % 31;
+          putShortMSB(s, header);
+          if (s.strstart !== 0) {
+            putShortMSB(s, strm.adler >>> 16);
+            putShortMSB(s, strm.adler & 65535);
+          }
+          strm.adler = 1;
+          s.status = BUSY_STATE;
+          flush_pending(strm);
+          if (s.pending !== 0) {
+            s.last_flush = -1;
+            return Z_OK;
+          }
+        }
+        if (s.status === GZIP_STATE) {
+          strm.adler = 0;
+          put_byte(s, 31);
+          put_byte(s, 139);
+          put_byte(s, 8);
+          if (!s.gzhead) {
+            put_byte(s, 0);
+            put_byte(s, 0);
+            put_byte(s, 0);
+            put_byte(s, 0);
+            put_byte(s, 0);
+            put_byte(
+              s,
+              s.level === 9 ? 2 : s.strategy >= Z_HUFFMAN_ONLY || s.level < 2 ? 4 : 0
+            );
+            put_byte(s, OS_CODE);
+            s.status = BUSY_STATE;
+            flush_pending(strm);
+            if (s.pending !== 0) {
+              s.last_flush = -1;
+              return Z_OK;
+            }
+          } else {
+            put_byte(
+              s,
+              (s.gzhead.text ? 1 : 0) + (s.gzhead.hcrc ? 2 : 0) + (!s.gzhead.extra ? 0 : 4) + (!s.gzhead.name ? 0 : 8) + (!s.gzhead.comment ? 0 : 16)
+            );
+            put_byte(s, s.gzhead.time & 255);
+            put_byte(s, s.gzhead.time >> 8 & 255);
+            put_byte(s, s.gzhead.time >> 16 & 255);
+            put_byte(s, s.gzhead.time >> 24 & 255);
+            put_byte(
+              s,
+              s.level === 9 ? 2 : s.strategy >= Z_HUFFMAN_ONLY || s.level < 2 ? 4 : 0
+            );
+            put_byte(s, s.gzhead.os & 255);
+            if (s.gzhead.extra && s.gzhead.extra.length) {
+              put_byte(s, s.gzhead.extra.length & 255);
+              put_byte(s, s.gzhead.extra.length >> 8 & 255);
+            }
+            if (s.gzhead.hcrc) {
+              strm.adler = crc32_default(strm.adler, s.pending_buf, s.pending, 0);
+            }
+            s.gzindex = 0;
+            s.status = EXTRA_STATE;
+          }
+        }
+        if (s.status === EXTRA_STATE) {
+          if (s.gzhead.extra) {
+            let beg = s.pending;
+            let left = (s.gzhead.extra.length & 65535) - s.gzindex;
+            while (s.pending + left > s.pending_buf_size) {
+              let copy = s.pending_buf_size - s.pending;
+              s.pending_buf.set(
+                s.gzhead.extra.subarray(s.gzindex, s.gzindex + copy),
+                s.pending
+              );
+              s.pending = s.pending_buf_size;
+              if (s.gzhead.hcrc && s.pending > beg) {
+                strm.adler = crc32_default(strm.adler, s.pending_buf, s.pending - beg, beg);
+              }
+              s.gzindex += copy;
+              flush_pending(strm);
+              if (s.pending !== 0) {
+                s.last_flush = -1;
+                return Z_OK;
+              }
+              beg = 0;
+              left -= copy;
+            }
+            let gzhead_extra = new Uint8Array(s.gzhead.extra);
+            s.pending_buf.set(
+              gzhead_extra.subarray(s.gzindex, s.gzindex + left),
+              s.pending
+            );
+            s.pending += left;
+            if (s.gzhead.hcrc && s.pending > beg) {
+              strm.adler = crc32_default(strm.adler, s.pending_buf, s.pending - beg, beg);
+            }
+            s.gzindex = 0;
+          }
+          s.status = NAME_STATE;
+        }
+        if (s.status === NAME_STATE) {
+          if (s.gzhead.name) {
+            let beg = s.pending;
+            let val;
+            do {
+              if (s.pending === s.pending_buf_size) {
+                if (s.gzhead.hcrc && s.pending > beg) {
+                  strm.adler = crc32_default(strm.adler, s.pending_buf, s.pending - beg, beg);
+                }
+                flush_pending(strm);
+                if (s.pending !== 0) {
+                  s.last_flush = -1;
+                  return Z_OK;
+                }
+                beg = 0;
+              }
+              if (s.gzindex < s.gzhead.name.length) {
+                val = s.gzhead.name.charCodeAt(s.gzindex++) & 255;
+              } else {
+                val = 0;
+              }
+              put_byte(s, val);
+            } while (val !== 0);
+            if (s.gzhead.hcrc && s.pending > beg) {
+              strm.adler = crc32_default(strm.adler, s.pending_buf, s.pending - beg, beg);
+            }
+            s.gzindex = 0;
+          }
+          s.status = COMMENT_STATE;
+        }
+        if (s.status === COMMENT_STATE) {
+          if (s.gzhead.comment) {
+            let beg = s.pending;
+            let val;
+            do {
+              if (s.pending === s.pending_buf_size) {
+                if (s.gzhead.hcrc && s.pending > beg) {
+                  strm.adler = crc32_default(strm.adler, s.pending_buf, s.pending - beg, beg);
+                }
+                flush_pending(strm);
+                if (s.pending !== 0) {
+                  s.last_flush = -1;
+                  return Z_OK;
+                }
+                beg = 0;
+              }
+              if (s.gzindex < s.gzhead.comment.length) {
+                val = s.gzhead.comment.charCodeAt(s.gzindex++) & 255;
+              } else {
+                val = 0;
+              }
+              put_byte(s, val);
+            } while (val !== 0);
+            if (s.gzhead.hcrc && s.pending > beg) {
+              strm.adler = crc32_default(strm.adler, s.pending_buf, s.pending - beg, beg);
+            }
+          }
+          s.status = HCRC_STATE;
+        }
+        if (s.status === HCRC_STATE) {
+          if (s.gzhead.hcrc) {
+            if (s.pending + 2 > s.pending_buf_size) {
+              flush_pending(strm);
+              if (s.pending !== 0) {
+                s.last_flush = -1;
+                return Z_OK;
+              }
+            }
+            put_byte(s, strm.adler & 255);
+            put_byte(s, strm.adler >> 8 & 255);
+            strm.adler = 0;
+          }
+          s.status = BUSY_STATE;
+          flush_pending(strm);
+          if (s.pending !== 0) {
+            s.last_flush = -1;
+            return Z_OK;
+          }
+        }
+        if (strm.avail_in !== 0 || s.lookahead !== 0 || flush !== Z_NO_FLUSH && s.status !== FINISH_STATE) {
+          let bstate = s.level === 0 ? deflate_stored(s, flush) : s.strategy === Z_HUFFMAN_ONLY ? deflate_huff(s, flush) : s.strategy === Z_RLE ? deflate_rle(s, flush) : configuration_table[s.level].func(s, flush);
+          if (bstate === BS_FINISH_STARTED || bstate === BS_FINISH_DONE) {
+            s.status = FINISH_STATE;
+          }
+          if (bstate === BS_NEED_MORE || bstate === BS_FINISH_STARTED) {
+            if (strm.avail_out === 0) {
+              s.last_flush = -1;
+            }
+            return Z_OK;
+          }
+          if (bstate === BS_BLOCK_DONE) {
+            if (flush === Z_PARTIAL_FLUSH) {
+              __tr_align(s);
+            } else if (flush !== Z_BLOCK) {
+              __tr_stored_block(s, 0, 0, false);
+              if (flush === Z_FULL_FLUSH) {
+                zero2(s.head);
+                if (s.lookahead === 0) {
+                  s.strstart = 0;
+                  s.block_start = 0;
+                  s.insert = 0;
+                }
+              }
+            }
+            flush_pending(strm);
+            if (strm.avail_out === 0) {
+              s.last_flush = -1;
+              return Z_OK;
+            }
+          }
+        }
+        if (flush !== Z_FINISH) {
+          return Z_OK;
+        }
+        if (s.wrap <= 0) {
+          return Z_STREAM_END;
+        }
+        if (s.wrap === 2) {
+          put_byte(s, strm.adler & 255);
+          put_byte(s, strm.adler >> 8 & 255);
+          put_byte(s, strm.adler >> 16 & 255);
+          put_byte(s, strm.adler >> 24 & 255);
+          put_byte(s, strm.total_in & 255);
+          put_byte(s, strm.total_in >> 8 & 255);
+          put_byte(s, strm.total_in >> 16 & 255);
+          put_byte(s, strm.total_in >> 24 & 255);
+        } else {
+          putShortMSB(s, strm.adler >>> 16);
+          putShortMSB(s, strm.adler & 65535);
+        }
+        flush_pending(strm);
+        if (s.wrap > 0) {
+          s.wrap = -s.wrap;
+        }
+        return s.pending !== 0 ? Z_OK : Z_STREAM_END;
+      };
+      deflateEnd = (strm) => {
+        if (deflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        const status = strm.state.status;
+        strm.state = null;
+        return status === BUSY_STATE ? err(strm, Z_DATA_ERROR) : Z_OK;
+      };
+      deflateSetDictionary = (strm, dictionary) => {
+        let dictLength = dictionary.length;
+        if (deflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        const s = strm.state;
+        const wrap = s.wrap;
+        if (wrap === 2 || wrap === 1 && s.status !== INIT_STATE || s.lookahead) {
+          return Z_STREAM_ERROR;
+        }
+        if (wrap === 1) {
+          strm.adler = adler32_default(strm.adler, dictionary, dictLength, 0);
+        }
+        s.wrap = 0;
+        if (dictLength >= s.w_size) {
+          if (wrap === 0) {
+            zero2(s.head);
+            s.strstart = 0;
+            s.block_start = 0;
+            s.insert = 0;
+          }
+          let tmpDict = new Uint8Array(s.w_size);
+          tmpDict.set(dictionary.subarray(dictLength - s.w_size, dictLength), 0);
+          dictionary = tmpDict;
+          dictLength = s.w_size;
+        }
+        const avail = strm.avail_in;
+        const next = strm.next_in;
+        const input = strm.input;
+        strm.avail_in = dictLength;
+        strm.next_in = 0;
+        strm.input = dictionary;
+        fill_window(s);
+        while (s.lookahead >= MIN_MATCH2) {
+          let str = s.strstart;
+          let n = s.lookahead - (MIN_MATCH2 - 1);
+          do {
+            s.ins_h = HASH(s, s.ins_h, s.window[str + MIN_MATCH2 - 1]);
+            s.prev[str & s.w_mask] = s.head[s.ins_h];
+            s.head[s.ins_h] = str;
+            str++;
+          } while (--n);
+          s.strstart = str;
+          s.lookahead = MIN_MATCH2 - 1;
+          fill_window(s);
+        }
+        s.strstart += s.lookahead;
+        s.block_start = s.strstart;
+        s.insert = s.lookahead;
+        s.lookahead = 0;
+        s.match_length = s.prev_length = MIN_MATCH2 - 1;
+        s.match_available = 0;
+        strm.next_in = next;
+        strm.input = input;
+        strm.avail_in = avail;
+        s.wrap = wrap;
+        return Z_OK;
+      };
+      _deflateInit2 = deflateInit2;
+      _deflateSetHeader = deflateSetHeader;
+      _deflate = deflate;
+      _deflateEnd = deflateEnd;
+      _deflateSetDictionary = deflateSetDictionary;
+    }
+  });
+
+  // src/pako/utils/common.ts
+  function assign(obj, ...sources) {
+    while (sources.length) {
+      const source = sources.shift();
+      if (!source) {
+        continue;
+      }
+      if (typeof source !== "object") {
+        throw new TypeError(source + "must be non-object");
+      }
+      for (const p in source) {
+        if (_has(source, p)) {
+          obj[p] = source[p];
+        }
+      }
+    }
+    return obj;
+  }
+  function flattenChunks(chunks) {
+    let len = 0;
+    for (let i = 0, l = chunks.length; i < l; i++) {
+      len += chunks[i].length;
+    }
+    const result = new Uint8Array(len);
+    for (let i = 0, pos = 0, l = chunks.length; i < l; i++) {
+      let chunk = chunks[i];
+      result.set(chunk, pos);
+      pos += chunk.length;
+    }
+    return result;
+  }
+  var _has;
+  var init_common = __esm({
+    "src/pako/utils/common.ts"() {
+      _has = (obj, key) => {
+        return Object.prototype.hasOwnProperty.call(obj, key);
+      };
+    }
+  });
+
+  // src/pako/utils/strings.ts
+  function string2buf(str) {
+    if (typeof TextEncoder === "function" && TextEncoder.prototype.encode) {
+      return new TextEncoder().encode(str);
+    }
+    let buf, c, c2, m_pos, i, str_len = str.length, buf_len = 0;
+    for (m_pos = 0; m_pos < str_len; m_pos++) {
+      c = str.charCodeAt(m_pos);
+      if ((c & 64512) === 55296 && m_pos + 1 < str_len) {
+        c2 = str.charCodeAt(m_pos + 1);
+        if ((c2 & 64512) === 56320) {
+          c = 65536 + (c - 55296 << 10) + (c2 - 56320);
+          m_pos++;
+        }
+      }
+      buf_len += c < 128 ? 1 : c < 2048 ? 2 : c < 65536 ? 3 : 4;
+    }
+    buf = new Uint8Array(buf_len);
+    for (i = 0, m_pos = 0; i < buf_len; m_pos++) {
+      c = str.charCodeAt(m_pos);
+      if ((c & 64512) === 55296 && m_pos + 1 < str_len) {
+        c2 = str.charCodeAt(m_pos + 1);
+        if ((c2 & 64512) === 56320) {
+          c = 65536 + (c - 55296 << 10) + (c2 - 56320);
+          m_pos++;
+        }
+      }
+      if (c < 128) {
+        buf[i++] = c;
+      } else if (c < 2048) {
+        buf[i++] = 192 | c >>> 6;
+        buf[i++] = 128 | c & 63;
+      } else if (c < 65536) {
+        buf[i++] = 224 | c >>> 12;
+        buf[i++] = 128 | c >>> 6 & 63;
+        buf[i++] = 128 | c & 63;
+      } else {
+        buf[i++] = 240 | c >>> 18;
+        buf[i++] = 128 | c >>> 12 & 63;
+        buf[i++] = 128 | c >>> 6 & 63;
+        buf[i++] = 128 | c & 63;
+      }
+    }
+    return buf;
+  }
+  function buf2string(buf, max) {
+    const len = max || buf.length;
+    if (typeof TextDecoder === "function" && TextDecoder.prototype.decode) {
+      return new TextDecoder().decode(buf.subarray(0, max));
+    }
+    let i, out;
+    const utf16buf = new Array(len * 2);
+    for (out = 0, i = 0; i < len; ) {
+      let c = buf[i++];
+      if (c < 128) {
+        utf16buf[out++] = c;
+        continue;
+      }
+      let c_len = _utf8len[c];
+      if (c_len > 4) {
+        utf16buf[out++] = 65533;
+        i += c_len - 1;
+        continue;
+      }
+      c &= c_len === 2 ? 31 : c_len === 3 ? 15 : 7;
+      while (c_len > 1 && i < len) {
+        c = c << 6 | buf[i++] & 63;
+        c_len--;
+      }
+      if (c_len > 1) {
+        utf16buf[out++] = 65533;
+        continue;
+      }
+      if (c < 65536) {
+        utf16buf[out++] = c;
+      } else {
+        c -= 65536;
+        utf16buf[out++] = 55296 | c >> 10 & 1023;
+        utf16buf[out++] = 56320 | c & 1023;
+      }
+    }
+    return buf2binstring(utf16buf, out);
+  }
+  function utf8border(buf, max) {
+    max = max || buf.length;
+    if (max > buf.length) {
+      max = buf.length;
+    }
+    let pos = max - 1;
+    while (pos >= 0 && (buf[pos] & 192) === 128) {
+      pos--;
+    }
+    if (pos < 0) {
+      return max;
+    }
+    if (pos === 0) {
+      return max;
+    }
+    return pos + _utf8len[buf[pos]] > max ? pos : max;
+  }
+  var STR_APPLY_UIA_OK, _utf8len, buf2binstring;
+  var init_strings = __esm({
+    "src/pako/utils/strings.ts"() {
+      STR_APPLY_UIA_OK = true;
+      try {
+        String.fromCharCode.apply(null, new Uint8Array(1));
+      } catch (__) {
+        STR_APPLY_UIA_OK = false;
+      }
+      _utf8len = new Uint8Array(256);
+      for (let q = 0; q < 256; q++) {
+        _utf8len[q] = q >= 252 ? 6 : q >= 248 ? 5 : q >= 240 ? 4 : q >= 224 ? 3 : q >= 192 ? 2 : 1;
+      }
+      _utf8len[254] = _utf8len[254] = 1;
+      buf2binstring = (buf, len) => {
+        if (len < 65534) {
+          if (buf.subarray && STR_APPLY_UIA_OK) {
+            return String.fromCharCode.apply(
+              null,
+              buf.length === len ? buf : buf.subarray(0, len)
+            );
+          }
+        }
+        let result = "";
+        for (let i = 0; i < len; i++) {
+          result += String.fromCharCode(buf[i]);
+        }
+        return result;
+      };
+    }
+  });
+
+  // src/pako/zlib/zstream.ts
+  function ZStream() {
+    this.input = null;
+    this.next_in = 0;
+    this.avail_in = 0;
+    this.total_in = 0;
+    this.output = null;
+    this.next_out = 0;
+    this.avail_out = 0;
+    this.total_out = 0;
+    this.msg = "";
+    this.state = null;
+    this.data_type = 2;
+    this.adler = 0;
+  }
+  var zstream_default;
+  var init_zstream = __esm({
+    "src/pako/zlib/zstream.ts"() {
+      zstream_default = ZStream;
+    }
+  });
+
+  // src/pako/deflate.ts
+  function Deflate(options) {
+    this.options = assign(
+      {
+        level: Z_DEFAULT_COMPRESSION,
+        method: Z_DEFLATED,
+        chunkSize: 16384,
+        windowBits: 15,
+        memLevel: 8,
+        strategy: Z_DEFAULT_STRATEGY
+      },
+      options || {}
+    );
+    let opt = this.options;
+    if (opt.raw && opt.windowBits > 0) {
+      opt.windowBits = -opt.windowBits;
+    } else if (opt.gzip && opt.windowBits > 0 && opt.windowBits < 16) {
+      opt.windowBits += 16;
+    }
+    this.err = 0;
+    this.msg = "";
+    this.ended = false;
+    this.chunks = [];
+    this.strm = new zstream_default();
+    this.strm.avail_out = 0;
+    let status = _deflateInit2(
+      this.strm,
+      opt.level,
+      opt.method,
+      opt.windowBits,
+      opt.memLevel,
+      opt.strategy
+    );
+    if (status !== Z_OK) {
+      throw new Error(messages_default[status]);
+    }
+    if (opt.header) {
+      _deflateSetHeader(this.strm, opt.header);
+    }
+    if (opt.dictionary) {
+      let dict;
+      if (typeof opt.dictionary === "string") {
+        dict = string2buf(opt.dictionary);
+      } else if (toString.call(opt.dictionary) === "[object ArrayBuffer]") {
+        dict = new Uint8Array(opt.dictionary);
+      } else {
+        dict = opt.dictionary;
+      }
+      status = _deflateSetDictionary(this.strm, dict);
+      if (status !== Z_OK) {
+        throw new Error(messages_default[status]);
+      }
+      this._dict_set = true;
+    }
+  }
+  function deflate2(input, options = {}) {
+    const deflator = new Deflate(options);
+    deflator.push(input, true);
+    if (deflator.err) {
+      throw deflator.msg || messages_default[deflator.err];
+    }
+    return deflator.result;
+  }
+  var toString;
+  var init_deflate2 = __esm({
+    "src/pako/deflate.ts"() {
+      init_deflate();
+      init_common();
+      init_strings();
+      init_messages();
+      init_zstream();
+      init_constants();
+      init_constants();
+      toString = Object.prototype.toString;
+      Deflate.prototype.push = function(data, flush_mode) {
+        const strm = this.strm;
+        const chunkSize = this.options.chunkSize;
+        let status, _flush_mode;
+        if (this.ended) {
+          return false;
+        }
+        if (flush_mode === ~~flush_mode) _flush_mode = flush_mode;
+        else _flush_mode = flush_mode === true ? Z_FINISH : Z_NO_FLUSH;
+        if (typeof data === "string") {
+          strm.input = string2buf(data);
+        } else if (toString.call(data) === "[object ArrayBuffer]") {
+          strm.input = new Uint8Array(data);
+        } else {
+          strm.input = data;
+        }
+        strm.next_in = 0;
+        strm.avail_in = strm.input.length;
+        for (; ; ) {
+          if (strm.avail_out === 0) {
+            strm.output = new Uint8Array(chunkSize);
+            strm.next_out = 0;
+            strm.avail_out = chunkSize;
+          }
+          if ((_flush_mode === Z_SYNC_FLUSH || _flush_mode === Z_FULL_FLUSH) && strm.avail_out <= 6) {
+            this.onData(strm.output.subarray(0, strm.next_out));
+            strm.avail_out = 0;
+            continue;
+          }
+          status = _deflate(strm, _flush_mode);
+          if (status === Z_STREAM_END) {
+            if (strm.next_out > 0) {
+              this.onData(strm.output.subarray(0, strm.next_out));
+            }
+            status = _deflateEnd(this.strm);
+            this.onEnd(status);
+            this.ended = true;
+            return status === Z_OK;
+          }
+          if (strm.avail_out === 0) {
+            this.onData(strm.output);
+            continue;
+          }
+          if (_flush_mode > 0 && strm.next_out > 0) {
+            this.onData(strm.output.subarray(0, strm.next_out));
+            strm.avail_out = 0;
+            continue;
+          }
+          if (strm.avail_in === 0) break;
+        }
+        return true;
+      };
+      Deflate.prototype.onData = function(chunk) {
+        this.chunks.push(chunk);
+      };
+      Deflate.prototype.onEnd = function(status) {
+        if (status === Z_OK) {
+          this.result = flattenChunks(this.chunks);
+        }
+        this.chunks = [];
+        this.err = status;
+        this.msg = this.strm.msg;
+      };
+    }
+  });
+
+  // src/pako/zlib/inffast.ts
+  function inflate_fast(strm, start) {
+    let _in;
+    let last;
+    let _out;
+    let beg;
+    let end;
+    let dmax;
+    let wsize;
+    let whave;
+    let wnext;
+    let s_window;
+    let hold;
+    let bits;
+    let lcode;
+    let dcode;
+    let lmask;
+    let dmask;
+    let here;
+    let op;
+    let len;
+    let dist;
+    let from;
+    let from_source;
+    let input, output;
+    const state = strm.state;
+    _in = strm.next_in;
+    input = strm.input;
+    last = _in + (strm.avail_in - 5);
+    _out = strm.next_out;
+    output = strm.output;
+    beg = _out - (start - strm.avail_out);
+    end = _out + (strm.avail_out - 257);
+    dmax = state.dmax;
+    wsize = state.wsize;
+    whave = state.whave;
+    wnext = state.wnext;
+    s_window = state.window;
+    hold = state.hold;
+    bits = state.bits;
+    lcode = state.lencode;
+    dcode = state.distcode;
+    lmask = (1 << state.lenbits) - 1;
+    dmask = (1 << state.distbits) - 1;
+    top: do {
+      if (bits < 15) {
+        hold += input[_in++] << bits;
+        bits += 8;
+        hold += input[_in++] << bits;
+        bits += 8;
+      }
+      here = lcode[hold & lmask];
+      dolen: for (; ; ) {
+        op = here >>> 24;
+        hold >>>= op;
+        bits -= op;
+        op = here >>> 16 & 255;
+        if (op === 0) {
+          output[_out++] = here & 65535;
+        } else if (op & 16) {
+          len = here & 65535;
+          op &= 15;
+          if (op) {
+            if (bits < op) {
+              hold += input[_in++] << bits;
+              bits += 8;
+            }
+            len += hold & (1 << op) - 1;
+            hold >>>= op;
+            bits -= op;
+          }
+          if (bits < 15) {
+            hold += input[_in++] << bits;
+            bits += 8;
+            hold += input[_in++] << bits;
+            bits += 8;
+          }
+          here = dcode[hold & dmask];
+          dodist: for (; ; ) {
+            op = here >>> 24;
+            hold >>>= op;
+            bits -= op;
+            op = here >>> 16 & 255;
+            if (op & 16) {
+              dist = here & 65535;
+              op &= 15;
+              if (bits < op) {
+                hold += input[_in++] << bits;
+                bits += 8;
+                if (bits < op) {
+                  hold += input[_in++] << bits;
+                  bits += 8;
+                }
+              }
+              dist += hold & (1 << op) - 1;
+              if (dist > dmax) {
+                strm.msg = "invalid distance too far back";
+                state.mode = BAD;
+                break top;
+              }
+              hold >>>= op;
+              bits -= op;
+              op = _out - beg;
+              if (dist > op) {
+                op = dist - op;
+                if (op > whave) {
+                  if (state.sane) {
+                    strm.msg = "invalid distance too far back";
+                    state.mode = BAD;
+                    break top;
+                  }
+                }
+                from = 0;
+                from_source = s_window;
+                if (wnext === 0) {
+                  from += wsize - op;
+                  if (op < len) {
+                    len -= op;
+                    do {
+                      output[_out++] = s_window[from++];
+                    } while (--op);
+                    from = _out - dist;
+                    from_source = output;
+                  }
+                } else if (wnext < op) {
+                  from += wsize + wnext - op;
+                  op -= wnext;
+                  if (op < len) {
+                    len -= op;
+                    do {
+                      output[_out++] = s_window[from++];
+                    } while (--op);
+                    from = 0;
+                    if (wnext < len) {
+                      op = wnext;
+                      len -= op;
+                      do {
+                        output[_out++] = s_window[from++];
+                      } while (--op);
+                      from = _out - dist;
+                      from_source = output;
+                    }
+                  }
+                } else {
+                  from += wnext - op;
+                  if (op < len) {
+                    len -= op;
+                    do {
+                      output[_out++] = s_window[from++];
+                    } while (--op);
+                    from = _out - dist;
+                    from_source = output;
+                  }
+                }
+                while (len > 2) {
+                  output[_out++] = from_source[from++];
+                  output[_out++] = from_source[from++];
+                  output[_out++] = from_source[from++];
+                  len -= 3;
+                }
+                if (len) {
+                  output[_out++] = from_source[from++];
+                  if (len > 1) {
+                    output[_out++] = from_source[from++];
+                  }
+                }
+              } else {
+                from = _out - dist;
+                do {
+                  output[_out++] = output[from++];
+                  output[_out++] = output[from++];
+                  output[_out++] = output[from++];
+                  len -= 3;
+                } while (len > 2);
+                if (len) {
+                  output[_out++] = output[from++];
+                  if (len > 1) {
+                    output[_out++] = output[from++];
+                  }
+                }
+              }
+            } else if ((op & 64) === 0) {
+              here = dcode[(here & 65535) + (hold & (1 << op) - 1)];
+              continue dodist;
+            } else {
+              strm.msg = "invalid distance code";
+              state.mode = BAD;
+              break top;
+            }
+            break;
+          }
+        } else if ((op & 64) === 0) {
+          here = lcode[(here & 65535) + (hold & (1 << op) - 1)];
+          continue dolen;
+        } else if (op & 32) {
+          state.mode = TYPE;
+          break top;
+        } else {
+          strm.msg = "invalid literal/length code";
+          state.mode = BAD;
+          break top;
+        }
+        break;
+      }
+    } while (_in < last && _out < end);
+    len = bits >> 3;
+    _in -= len;
+    bits -= len << 3;
+    hold &= (1 << bits) - 1;
+    strm.next_in = _in;
+    strm.next_out = _out;
+    strm.avail_in = _in < last ? 5 + (last - _in) : 5 - (_in - last);
+    strm.avail_out = _out < end ? 257 + (end - _out) : 257 - (_out - end);
+    state.hold = hold;
+    state.bits = bits;
+    return;
+  }
+  var BAD, TYPE;
+  var init_inffast = __esm({
+    "src/pako/zlib/inffast.ts"() {
+      BAD = 16209;
+      TYPE = 16191;
+    }
+  });
+
+  // src/pako/zlib/inftrees.ts
+  var MAXBITS, ENOUGH_LENS, ENOUGH_DISTS, CODES, LENS, DISTS, lbase, lext, dbase, dext, inflate_table, inftrees_default;
+  var init_inftrees = __esm({
+    "src/pako/zlib/inftrees.ts"() {
+      MAXBITS = 15;
+      ENOUGH_LENS = 852;
+      ENOUGH_DISTS = 592;
+      CODES = 0;
+      LENS = 1;
+      DISTS = 2;
+      lbase = new Uint16Array([
+        /* Length codes 257..285 base */
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        13,
+        15,
+        17,
+        19,
+        23,
+        27,
+        31,
+        35,
+        43,
+        51,
+        59,
+        67,
+        83,
+        99,
+        115,
+        131,
+        163,
+        195,
+        227,
+        258,
+        0,
+        0
+      ]);
+      lext = new Uint8Array([
+        /* Length codes 257..285 extra */
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        16,
+        17,
+        17,
+        17,
+        17,
+        18,
+        18,
+        18,
+        18,
+        19,
+        19,
+        19,
+        19,
+        20,
+        20,
+        20,
+        20,
+        21,
+        21,
+        21,
+        21,
+        16,
+        72,
+        78
+      ]);
+      dbase = new Uint16Array([
+        /* Distance codes 0..29 base */
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        9,
+        13,
+        17,
+        25,
+        33,
+        49,
+        65,
+        97,
+        129,
+        193,
+        257,
+        385,
+        513,
+        769,
+        1025,
+        1537,
+        2049,
+        3073,
+        4097,
+        6145,
+        8193,
+        12289,
+        16385,
+        24577,
+        0,
+        0
+      ]);
+      dext = new Uint8Array([
+        /* Distance codes 0..29 extra */
+        16,
+        16,
+        16,
+        16,
+        17,
+        17,
+        18,
+        18,
+        19,
+        19,
+        20,
+        20,
+        21,
+        21,
+        22,
+        22,
+        23,
+        23,
+        24,
+        24,
+        25,
+        25,
+        26,
+        26,
+        27,
+        27,
+        28,
+        28,
+        29,
+        29,
+        64,
+        64
+      ]);
+      inflate_table = (type, lens, lens_index, codes, table, table_index, work, opts) => {
+        const bits = opts.bits;
+        let len = 0;
+        let sym = 0;
+        let min = 0, max = 0;
+        let root = 0;
+        let curr = 0;
+        let drop = 0;
+        let left = 0;
+        let used = 0;
+        let huff = 0;
+        let incr;
+        let fill;
+        let low;
+        let mask;
+        let next;
+        let base = null;
+        let match;
+        const count = new Uint16Array(MAXBITS + 1);
+        const offs = new Uint16Array(MAXBITS + 1);
+        let extra = null;
+        let here_bits, here_op, here_val;
+        for (len = 0; len <= MAXBITS; len++) {
+          count[len] = 0;
+        }
+        for (sym = 0; sym < codes; sym++) {
+          count[lens[lens_index + sym]]++;
+        }
+        root = bits;
+        for (max = MAXBITS; max >= 1; max--) {
+          if (count[max] !== 0) {
+            break;
+          }
+        }
+        if (root > max) {
+          root = max;
+        }
+        if (max === 0) {
+          table[table_index++] = 1 << 24 | 64 << 16 | 0;
+          table[table_index++] = 1 << 24 | 64 << 16 | 0;
+          opts.bits = 1;
+          return 0;
+        }
+        for (min = 1; min < max; min++) {
+          if (count[min] !== 0) {
+            break;
+          }
+        }
+        if (root < min) {
+          root = min;
+        }
+        left = 1;
+        for (len = 1; len <= MAXBITS; len++) {
+          left <<= 1;
+          left -= count[len];
+          if (left < 0) {
+            return -1;
+          }
+        }
+        if (left > 0 && (type === CODES || max !== 1)) {
+          return -1;
+        }
+        offs[1] = 0;
+        for (len = 1; len < MAXBITS; len++) {
+          offs[len + 1] = offs[len] + count[len];
+        }
+        for (sym = 0; sym < codes; sym++) {
+          if (lens[lens_index + sym] !== 0) {
+            work[offs[lens[lens_index + sym]]++] = sym;
+          }
+        }
+        if (type === CODES) {
+          base = extra = work;
+          match = 20;
+        } else if (type === LENS) {
+          base = lbase;
+          extra = lext;
+          match = 257;
+        } else {
+          base = dbase;
+          extra = dext;
+          match = 0;
+        }
+        huff = 0;
+        sym = 0;
+        len = min;
+        next = table_index;
+        curr = root;
+        drop = 0;
+        low = -1;
+        used = 1 << root;
+        mask = used - 1;
+        if (type === LENS && used > ENOUGH_LENS || type === DISTS && used > ENOUGH_DISTS) {
+          return 1;
+        }
+        for (; ; ) {
+          here_bits = len - drop;
+          if (work[sym] + 1 < match) {
+            here_op = 0;
+            here_val = work[sym];
+          } else if (work[sym] >= match) {
+            here_op = extra[work[sym] - match];
+            here_val = base[work[sym] - match];
+          } else {
+            here_op = 32 + 64;
+            here_val = 0;
+          }
+          incr = 1 << len - drop;
+          fill = 1 << curr;
+          min = fill;
+          do {
+            fill -= incr;
+            table[next + (huff >> drop) + fill] = here_bits << 24 | here_op << 16 | here_val | 0;
+          } while (fill !== 0);
+          incr = 1 << len - 1;
+          while (huff & incr) {
+            incr >>= 1;
+          }
+          if (incr !== 0) {
+            huff &= incr - 1;
+            huff += incr;
+          } else {
+            huff = 0;
+          }
+          sym++;
+          if (--count[len] === 0) {
+            if (len === max) {
+              break;
+            }
+            len = lens[lens_index + work[sym]];
+          }
+          if (len > root && (huff & mask) !== low) {
+            if (drop === 0) {
+              drop = root;
+            }
+            next += min;
+            curr = len - drop;
+            left = 1 << curr;
+            while (curr + drop < max) {
+              left -= count[curr + drop];
+              if (left <= 0) {
+                break;
+              }
+              curr++;
+              left <<= 1;
+            }
+            used += 1 << curr;
+            if (type === LENS && used > ENOUGH_LENS || type === DISTS && used > ENOUGH_DISTS) {
+              return 1;
+            }
+            low = huff & mask;
+            table[low] = root << 24 | curr << 16 | next - table_index | 0;
+          }
+        }
+        if (huff !== 0) {
+          table[next + huff] = len - drop << 24 | 64 << 16 | 0;
+        }
+        opts.bits = root;
+        return 0;
+      };
+      inftrees_default = inflate_table;
+    }
+  });
+
+  // src/pako/zlib/inflate.ts
+  function InflateState() {
+    this.strm = null;
+    this.mode = 0;
+    this.last = false;
+    this.wrap = 0;
+    this.havedict = false;
+    this.flags = 0;
+    this.dmax = 0;
+    this.check = 0;
+    this.total = 0;
+    this.head = null;
+    this.wbits = 0;
+    this.wsize = 0;
+    this.whave = 0;
+    this.wnext = 0;
+    this.window = null;
+    this.hold = 0;
+    this.bits = 0;
+    this.length = 0;
+    this.offset = 0;
+    this.extra = 0;
+    this.lencode = null;
+    this.distcode = null;
+    this.lenbits = 0;
+    this.distbits = 0;
+    this.ncode = 0;
+    this.nlen = 0;
+    this.ndist = 0;
+    this.have = 0;
+    this.next = null;
+    this.lens = new Uint16Array(320);
+    this.work = new Uint16Array(288);
+    this.lendyn = null;
+    this.distdyn = null;
+    this.sane = 0;
+    this.back = 0;
+    this.was = 0;
+  }
+  var CODES2, LENS2, DISTS2, HEAD, FLAGS, TIME, OS, EXLEN, EXTRA, NAME, COMMENT, HCRC, DICTID, DICT, TYPE2, TYPEDO, STORED, COPY_, COPY, TABLE, LENLENS, CODELENS, LEN_, LEN, LENEXT, DIST, DISTEXT, MATCH, LIT, CHECK, LENGTH, DONE, BAD2, MEM, SYNC, ENOUGH_LENS2, ENOUGH_DISTS2, zswap32, inflateStateCheck, inflateResetKeep, inflateReset, inflateReset2, inflateInit2, virgin, lenfix, distfix, fixedtables, updatewindow, inflate, inflateEnd, inflateGetHeader, inflateSetDictionary, _inflateReset, _inflateInit2, _inflate, _inflateEnd, _inflateGetHeader, _inflateSetDictionary;
+  var init_inflate = __esm({
+    "src/pako/zlib/inflate.ts"() {
+      init_adler32();
+      init_crc32();
+      init_inffast();
+      init_inftrees();
+      init_constants();
+      CODES2 = 0;
+      LENS2 = 1;
+      DISTS2 = 2;
+      HEAD = 16180;
+      FLAGS = 16181;
+      TIME = 16182;
+      OS = 16183;
+      EXLEN = 16184;
+      EXTRA = 16185;
+      NAME = 16186;
+      COMMENT = 16187;
+      HCRC = 16188;
+      DICTID = 16189;
+      DICT = 16190;
+      TYPE2 = 16191;
+      TYPEDO = 16192;
+      STORED = 16193;
+      COPY_ = 16194;
+      COPY = 16195;
+      TABLE = 16196;
+      LENLENS = 16197;
+      CODELENS = 16198;
+      LEN_ = 16199;
+      LEN = 16200;
+      LENEXT = 16201;
+      DIST = 16202;
+      DISTEXT = 16203;
+      MATCH = 16204;
+      LIT = 16205;
+      CHECK = 16206;
+      LENGTH = 16207;
+      DONE = 16208;
+      BAD2 = 16209;
+      MEM = 16210;
+      SYNC = 16211;
+      ENOUGH_LENS2 = 852;
+      ENOUGH_DISTS2 = 592;
+      zswap32 = (q) => {
+        return (q >>> 24 & 255) + (q >>> 8 & 65280) + ((q & 65280) << 8) + ((q & 255) << 24);
+      };
+      inflateStateCheck = (strm) => {
+        if (!strm) {
+          return 1;
+        }
+        const state = strm.state;
+        if (!state || state.strm !== strm || state.mode < HEAD || state.mode > SYNC) {
+          return 1;
+        }
+        return 0;
+      };
+      inflateResetKeep = (strm) => {
+        if (inflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        const state = strm.state;
+        strm.total_in = strm.total_out = state.total = 0;
+        strm.msg = "";
+        if (state.wrap) {
+          strm.adler = state.wrap & 1;
+        }
+        state.mode = HEAD;
+        state.last = 0;
+        state.havedict = 0;
+        state.flags = -1;
+        state.dmax = 32768;
+        state.head = null;
+        state.hold = 0;
+        state.bits = 0;
+        state.lencode = state.lendyn = new Int32Array(ENOUGH_LENS2);
+        state.distcode = state.distdyn = new Int32Array(ENOUGH_DISTS2);
+        state.sane = 1;
+        state.back = -1;
+        return Z_OK;
+      };
+      inflateReset = (strm) => {
+        if (inflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        const state = strm.state;
+        state.wsize = 0;
+        state.whave = 0;
+        state.wnext = 0;
+        return inflateResetKeep(strm);
+      };
+      inflateReset2 = (strm, windowBits) => {
+        let wrap;
+        if (inflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        const state = strm.state;
+        if (windowBits < 0) {
+          wrap = 0;
+          windowBits = -windowBits;
+        } else {
+          wrap = (windowBits >> 4) + 5;
+          if (windowBits < 48) {
+            windowBits &= 15;
+          }
+        }
+        if (windowBits && (windowBits < 8 || windowBits > 15)) {
+          return Z_STREAM_ERROR;
+        }
+        if (state.window !== null && state.wbits !== windowBits) {
+          state.window = null;
+        }
+        state.wrap = wrap;
+        state.wbits = windowBits;
+        return inflateReset(strm);
+      };
+      inflateInit2 = (strm, windowBits) => {
+        if (!strm) {
+          return Z_STREAM_ERROR;
+        }
+        const state = new InflateState();
+        strm.state = state;
+        state.strm = strm;
+        state.window = null;
+        state.mode = HEAD;
+        const ret = inflateReset2(strm, windowBits);
+        if (ret !== Z_OK) {
+          strm.state = null;
+        }
+        return ret;
+      };
+      virgin = true;
+      fixedtables = (state) => {
+        if (virgin) {
+          lenfix = new Int32Array(512);
+          distfix = new Int32Array(32);
+          let sym = 0;
+          while (sym < 144) {
+            state.lens[sym++] = 8;
+          }
+          while (sym < 256) {
+            state.lens[sym++] = 9;
+          }
+          while (sym < 280) {
+            state.lens[sym++] = 7;
+          }
+          while (sym < 288) {
+            state.lens[sym++] = 8;
+          }
+          inftrees_default(LENS2, state.lens, 0, 288, lenfix, 0, state.work, { bits: 9 });
+          sym = 0;
+          while (sym < 32) {
+            state.lens[sym++] = 5;
+          }
+          inftrees_default(DISTS2, state.lens, 0, 32, distfix, 0, state.work, { bits: 5 });
+          virgin = false;
+        }
+        state.lencode = lenfix;
+        state.lenbits = 9;
+        state.distcode = distfix;
+        state.distbits = 5;
+      };
+      updatewindow = (strm, src, end, copy) => {
+        let dist;
+        const state = strm.state;
+        if (state.window === null) {
+          state.wsize = 1 << state.wbits;
+          state.wnext = 0;
+          state.whave = 0;
+          state.window = new Uint8Array(state.wsize);
+        }
+        if (copy >= state.wsize) {
+          state.window.set(src.subarray(end - state.wsize, end), 0);
+          state.wnext = 0;
+          state.whave = state.wsize;
+        } else {
+          dist = state.wsize - state.wnext;
+          if (dist > copy) {
+            dist = copy;
+          }
+          state.window.set(src.subarray(end - copy, end - copy + dist), state.wnext);
+          copy -= dist;
+          if (copy) {
+            state.window.set(src.subarray(end - copy, end), 0);
+            state.wnext = copy;
+            state.whave = state.wsize;
+          } else {
+            state.wnext += dist;
+            if (state.wnext === state.wsize) {
+              state.wnext = 0;
+            }
+            if (state.whave < state.wsize) {
+              state.whave += dist;
+            }
+          }
+        }
+        return 0;
+      };
+      inflate = (strm, flush) => {
+        let state;
+        let input, output;
+        let next;
+        let put;
+        let have, left;
+        let hold;
+        let bits;
+        let _in, _out;
+        let copy;
+        let from;
+        let from_source;
+        let here = 0;
+        let here_bits, here_op, here_val;
+        let last_bits, last_op, last_val;
+        let len;
+        let ret;
+        const hbuf = new Uint8Array(4);
+        let opts;
+        let n;
+        const order = (
+          /* permutation of code lengths */
+          new Uint8Array([
+            16,
+            17,
+            18,
+            0,
+            8,
+            7,
+            9,
+            6,
+            10,
+            5,
+            11,
+            4,
+            12,
+            3,
+            13,
+            2,
+            14,
+            1,
+            15
+          ])
+        );
+        if (inflateStateCheck(strm) || !strm.output || !strm.input && strm.avail_in !== 0) {
+          return Z_STREAM_ERROR;
+        }
+        state = strm.state;
+        if (state.mode === TYPE2) {
+          state.mode = TYPEDO;
+        }
+        put = strm.next_out;
+        output = strm.output;
+        left = strm.avail_out;
+        next = strm.next_in;
+        input = strm.input;
+        have = strm.avail_in;
+        hold = state.hold;
+        bits = state.bits;
+        _in = have;
+        _out = left;
+        ret = Z_OK;
+        inf_leave: for (; ; ) {
+          switch (state.mode) {
+            case HEAD:
+              if (state.wrap === 0) {
+                state.mode = TYPEDO;
+                break;
+              }
+              while (bits < 16) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              if (state.wrap & 2 && hold === 35615) {
+                if (state.wbits === 0) {
+                  state.wbits = 15;
+                }
+                state.check = 0;
+                hbuf[0] = hold & 255;
+                hbuf[1] = hold >>> 8 & 255;
+                state.check = crc32_default(state.check, hbuf, 2, 0);
+                hold = 0;
+                bits = 0;
+                state.mode = FLAGS;
+                break;
+              }
+              if (state.head) {
+                state.head.done = false;
+              }
+              if (!(state.wrap & 1) || (((hold & 255) << 8) + (hold >> 8)) % 31) {
+                strm.msg = "incorrect header check";
+                state.mode = BAD2;
+                break;
+              }
+              if ((hold & 15) !== Z_DEFLATED) {
+                strm.msg = "unknown compression method";
+                state.mode = BAD2;
+                break;
+              }
+              hold >>>= 4;
+              bits -= 4;
+              len = (hold & 15) + 8;
+              if (state.wbits === 0) {
+                state.wbits = len;
+              }
+              if (len > 15 || len > state.wbits) {
+                strm.msg = "invalid window size";
+                state.mode = BAD2;
+                break;
+              }
+              state.dmax = 1 << state.wbits;
+              state.flags = 0;
+              strm.adler = state.check = 1;
+              state.mode = hold & 512 ? DICTID : TYPE2;
+              hold = 0;
+              bits = 0;
+              break;
+            case FLAGS:
+              while (bits < 16) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              state.flags = hold;
+              if ((state.flags & 255) !== Z_DEFLATED) {
+                strm.msg = "unknown compression method";
+                state.mode = BAD2;
+                break;
+              }
+              if (state.flags & 57344) {
+                strm.msg = "unknown header flags set";
+                state.mode = BAD2;
+                break;
+              }
+              if (state.head) {
+                state.head.text = hold >> 8 & 1;
+              }
+              if (state.flags & 512 && state.wrap & 4) {
+                hbuf[0] = hold & 255;
+                hbuf[1] = hold >>> 8 & 255;
+                state.check = crc32_default(state.check, hbuf, 2, 0);
+              }
+              hold = 0;
+              bits = 0;
+              state.mode = TIME;
+            /* falls through */
+            case TIME:
+              while (bits < 32) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              if (state.head) {
+                state.head.time = hold;
+              }
+              if (state.flags & 512 && state.wrap & 4) {
+                hbuf[0] = hold & 255;
+                hbuf[1] = hold >>> 8 & 255;
+                hbuf[2] = hold >>> 16 & 255;
+                hbuf[3] = hold >>> 24 & 255;
+                state.check = crc32_default(state.check, hbuf, 4, 0);
+              }
+              hold = 0;
+              bits = 0;
+              state.mode = OS;
+            /* falls through */
+            case OS:
+              while (bits < 16) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              if (state.head) {
+                state.head.xflags = hold & 255;
+                state.head.os = hold >> 8;
+              }
+              if (state.flags & 512 && state.wrap & 4) {
+                hbuf[0] = hold & 255;
+                hbuf[1] = hold >>> 8 & 255;
+                state.check = crc32_default(state.check, hbuf, 2, 0);
+              }
+              hold = 0;
+              bits = 0;
+              state.mode = EXLEN;
+            /* falls through */
+            case EXLEN:
+              if (state.flags & 1024) {
+                while (bits < 16) {
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                state.length = hold;
+                if (state.head) {
+                  state.head.extra_len = hold;
+                }
+                if (state.flags & 512 && state.wrap & 4) {
+                  hbuf[0] = hold & 255;
+                  hbuf[1] = hold >>> 8 & 255;
+                  state.check = crc32_default(state.check, hbuf, 2, 0);
+                }
+                hold = 0;
+                bits = 0;
+              } else if (state.head) {
+                state.head.extra = null;
+              }
+              state.mode = EXTRA;
+            /* falls through */
+            case EXTRA:
+              if (state.flags & 1024) {
+                copy = state.length;
+                if (copy > have) {
+                  copy = have;
+                }
+                if (copy) {
+                  if (state.head) {
+                    len = state.head.extra_len - state.length;
+                    if (!state.head.extra) {
+                      state.head.extra = new Uint8Array(state.head.extra_len);
+                    }
+                    state.head.extra.set(
+                      input.subarray(
+                        next,
+                        // extra field is limited to 65536 bytes
+                        // - no need for additional size check
+                        next + copy
+                      ),
+                      /*len + copy > state.head.extra_max - len ? state.head.extra_max : copy,*/
+                      len
+                    );
+                  }
+                  if (state.flags & 512 && state.wrap & 4) {
+                    state.check = crc32_default(state.check, input, copy, next);
+                  }
+                  have -= copy;
+                  next += copy;
+                  state.length -= copy;
+                }
+                if (state.length) {
+                  break inf_leave;
+                }
+              }
+              state.length = 0;
+              state.mode = NAME;
+            /* falls through */
+            case NAME:
+              if (state.flags & 2048) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                copy = 0;
+                do {
+                  len = input[next + copy++];
+                  if (state.head && len && state.length < 65536) {
+                    state.head.name += String.fromCharCode(len);
+                  }
+                } while (len && copy < have);
+                if (state.flags & 512 && state.wrap & 4) {
+                  state.check = crc32_default(state.check, input, copy, next);
+                }
+                have -= copy;
+                next += copy;
+                if (len) {
+                  break inf_leave;
+                }
+              } else if (state.head) {
+                state.head.name = null;
+              }
+              state.length = 0;
+              state.mode = COMMENT;
+            /* falls through */
+            case COMMENT:
+              if (state.flags & 4096) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                copy = 0;
+                do {
+                  len = input[next + copy++];
+                  if (state.head && len && state.length < 65536) {
+                    state.head.comment += String.fromCharCode(len);
+                  }
+                } while (len && copy < have);
+                if (state.flags & 512 && state.wrap & 4) {
+                  state.check = crc32_default(state.check, input, copy, next);
+                }
+                have -= copy;
+                next += copy;
+                if (len) {
+                  break inf_leave;
+                }
+              } else if (state.head) {
+                state.head.comment = null;
+              }
+              state.mode = HCRC;
+            /* falls through */
+            case HCRC:
+              if (state.flags & 512) {
+                while (bits < 16) {
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                if (state.wrap & 4 && hold !== (state.check & 65535)) {
+                  strm.msg = "header crc mismatch";
+                  state.mode = BAD2;
+                  break;
+                }
+                hold = 0;
+                bits = 0;
+              }
+              if (state.head) {
+                state.head.hcrc = state.flags >> 9 & 1;
+                state.head.done = true;
+              }
+              strm.adler = state.check = 0;
+              state.mode = TYPE2;
+              break;
+            case DICTID:
+              while (bits < 32) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              strm.adler = state.check = zswap32(hold);
+              hold = 0;
+              bits = 0;
+              state.mode = DICT;
+            /* falls through */
+            case DICT:
+              if (state.havedict === 0) {
+                strm.next_out = put;
+                strm.avail_out = left;
+                strm.next_in = next;
+                strm.avail_in = have;
+                state.hold = hold;
+                state.bits = bits;
+                return Z_NEED_DICT;
+              }
+              strm.adler = state.check = 1;
+              state.mode = TYPE2;
+            /* falls through */
+            case TYPE2:
+              if (flush === Z_BLOCK || flush === Z_TREES) {
+                break inf_leave;
+              }
+            /* falls through */
+            case TYPEDO:
+              if (state.last) {
+                hold >>>= bits & 7;
+                bits -= bits & 7;
+                state.mode = CHECK;
+                break;
+              }
+              while (bits < 3) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              state.last = hold & 1;
+              hold >>>= 1;
+              bits -= 1;
+              switch (hold & 3) {
+                case 0:
+                  state.mode = STORED;
+                  break;
+                case 1:
+                  fixedtables(state);
+                  state.mode = LEN_;
+                  if (flush === Z_TREES) {
+                    hold >>>= 2;
+                    bits -= 2;
+                    break inf_leave;
+                  }
+                  break;
+                case 2:
+                  state.mode = TABLE;
+                  break;
+                case 3:
+                  strm.msg = "invalid block type";
+                  state.mode = BAD2;
+              }
+              hold >>>= 2;
+              bits -= 2;
+              break;
+            case STORED:
+              hold >>>= bits & 7;
+              bits -= bits & 7;
+              while (bits < 32) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              if ((hold & 65535) !== (hold >>> 16 ^ 65535)) {
+                strm.msg = "invalid stored block lengths";
+                state.mode = BAD2;
+                break;
+              }
+              state.length = hold & 65535;
+              hold = 0;
+              bits = 0;
+              state.mode = COPY_;
+              if (flush === Z_TREES) {
+                break inf_leave;
+              }
+            /* falls through */
+            case COPY_:
+              state.mode = COPY;
+            /* falls through */
+            case COPY:
+              copy = state.length;
+              if (copy) {
+                if (copy > have) {
+                  copy = have;
+                }
+                if (copy > left) {
+                  copy = left;
+                }
+                if (copy === 0) {
+                  break inf_leave;
+                }
+                output.set(input.subarray(next, next + copy), put);
+                have -= copy;
+                next += copy;
+                left -= copy;
+                put += copy;
+                state.length -= copy;
+                break;
+              }
+              state.mode = TYPE2;
+              break;
+            case TABLE:
+              while (bits < 14) {
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              state.nlen = (hold & 31) + 257;
+              hold >>>= 5;
+              bits -= 5;
+              state.ndist = (hold & 31) + 1;
+              hold >>>= 5;
+              bits -= 5;
+              state.ncode = (hold & 15) + 4;
+              hold >>>= 4;
+              bits -= 4;
+              if (state.nlen > 286 || state.ndist > 30) {
+                strm.msg = "too many length or distance symbols";
+                state.mode = BAD2;
+                break;
+              }
+              state.have = 0;
+              state.mode = LENLENS;
+            /* falls through */
+            case LENLENS:
+              while (state.have < state.ncode) {
+                while (bits < 3) {
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                state.lens[order[state.have++]] = hold & 7;
+                hold >>>= 3;
+                bits -= 3;
+              }
+              while (state.have < 19) {
+                state.lens[order[state.have++]] = 0;
+              }
+              state.lencode = state.lendyn;
+              state.lenbits = 7;
+              opts = { bits: state.lenbits };
+              ret = inftrees_default(
+                CODES2,
+                state.lens,
+                0,
+                19,
+                state.lencode,
+                0,
+                state.work,
+                opts
+              );
+              state.lenbits = opts.bits;
+              if (ret) {
+                strm.msg = "invalid code lengths set";
+                state.mode = BAD2;
+                break;
+              }
+              state.have = 0;
+              state.mode = CODELENS;
+            /* falls through */
+            case CODELENS:
+              while (state.have < state.nlen + state.ndist) {
+                for (; ; ) {
+                  here = state.lencode[hold & (1 << state.lenbits) - 1];
+                  here_bits = here >>> 24;
+                  here_op = here >>> 16 & 255;
+                  here_val = here & 65535;
+                  if (here_bits <= bits) {
+                    break;
+                  }
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                if (here_val < 16) {
+                  hold >>>= here_bits;
+                  bits -= here_bits;
+                  state.lens[state.have++] = here_val;
+                } else {
+                  if (here_val === 16) {
+                    n = here_bits + 2;
+                    while (bits < n) {
+                      if (have === 0) {
+                        break inf_leave;
+                      }
+                      have--;
+                      hold += input[next++] << bits;
+                      bits += 8;
+                    }
+                    hold >>>= here_bits;
+                    bits -= here_bits;
+                    if (state.have === 0) {
+                      strm.msg = "invalid bit length repeat";
+                      state.mode = BAD2;
+                      break;
+                    }
+                    len = state.lens[state.have - 1];
+                    copy = 3 + (hold & 3);
+                    hold >>>= 2;
+                    bits -= 2;
+                  } else if (here_val === 17) {
+                    n = here_bits + 3;
+                    while (bits < n) {
+                      if (have === 0) {
+                        break inf_leave;
+                      }
+                      have--;
+                      hold += input[next++] << bits;
+                      bits += 8;
+                    }
+                    hold >>>= here_bits;
+                    bits -= here_bits;
+                    len = 0;
+                    copy = 3 + (hold & 7);
+                    hold >>>= 3;
+                    bits -= 3;
+                  } else {
+                    n = here_bits + 7;
+                    while (bits < n) {
+                      if (have === 0) {
+                        break inf_leave;
+                      }
+                      have--;
+                      hold += input[next++] << bits;
+                      bits += 8;
+                    }
+                    hold >>>= here_bits;
+                    bits -= here_bits;
+                    len = 0;
+                    copy = 11 + (hold & 127);
+                    hold >>>= 7;
+                    bits -= 7;
+                  }
+                  if (state.have + copy > state.nlen + state.ndist) {
+                    strm.msg = "invalid bit length repeat";
+                    state.mode = BAD2;
+                    break;
+                  }
+                  while (copy--) {
+                    state.lens[state.have++] = len;
+                  }
+                }
+              }
+              if (state.mode === BAD2) {
+                break;
+              }
+              if (state.lens[256] === 0) {
+                strm.msg = "invalid code -- missing end-of-block";
+                state.mode = BAD2;
+                break;
+              }
+              state.lenbits = 9;
+              opts = { bits: state.lenbits };
+              ret = inftrees_default(
+                LENS2,
+                state.lens,
+                0,
+                state.nlen,
+                state.lencode,
+                0,
+                state.work,
+                opts
+              );
+              state.lenbits = opts.bits;
+              if (ret) {
+                strm.msg = "invalid literal/lengths set";
+                state.mode = BAD2;
+                break;
+              }
+              state.distbits = 6;
+              state.distcode = state.distdyn;
+              opts = { bits: state.distbits };
+              ret = inftrees_default(
+                DISTS2,
+                state.lens,
+                state.nlen,
+                state.ndist,
+                state.distcode,
+                0,
+                state.work,
+                opts
+              );
+              state.distbits = opts.bits;
+              if (ret) {
+                strm.msg = "invalid distances set";
+                state.mode = BAD2;
+                break;
+              }
+              state.mode = LEN_;
+              if (flush === Z_TREES) {
+                break inf_leave;
+              }
+            /* falls through */
+            case LEN_:
+              state.mode = LEN;
+            /* falls through */
+            case LEN:
+              if (have >= 6 && left >= 258) {
+                strm.next_out = put;
+                strm.avail_out = left;
+                strm.next_in = next;
+                strm.avail_in = have;
+                state.hold = hold;
+                state.bits = bits;
+                inflate_fast(strm, _out);
+                put = strm.next_out;
+                output = strm.output;
+                left = strm.avail_out;
+                next = strm.next_in;
+                input = strm.input;
+                have = strm.avail_in;
+                hold = state.hold;
+                bits = state.bits;
+                if (state.mode === TYPE2) {
+                  state.back = -1;
+                }
+                break;
+              }
+              state.back = 0;
+              for (; ; ) {
+                here = state.lencode[hold & (1 << state.lenbits) - 1];
+                here_bits = here >>> 24;
+                here_op = here >>> 16 & 255;
+                here_val = here & 65535;
+                if (here_bits <= bits) {
+                  break;
+                }
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              if (here_op && (here_op & 240) === 0) {
+                last_bits = here_bits;
+                last_op = here_op;
+                last_val = here_val;
+                for (; ; ) {
+                  here = state.lencode[last_val + ((hold & (1 << last_bits + last_op) - 1) >> last_bits)];
+                  here_bits = here >>> 24;
+                  here_op = here >>> 16 & 255;
+                  here_val = here & 65535;
+                  if (last_bits + here_bits <= bits) {
+                    break;
+                  }
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                hold >>>= last_bits;
+                bits -= last_bits;
+                state.back += last_bits;
+              }
+              hold >>>= here_bits;
+              bits -= here_bits;
+              state.back += here_bits;
+              state.length = here_val;
+              if (here_op === 0) {
+                state.mode = LIT;
+                break;
+              }
+              if (here_op & 32) {
+                state.back = -1;
+                state.mode = TYPE2;
+                break;
+              }
+              if (here_op & 64) {
+                strm.msg = "invalid literal/length code";
+                state.mode = BAD2;
+                break;
+              }
+              state.extra = here_op & 15;
+              state.mode = LENEXT;
+            /* falls through */
+            case LENEXT:
+              if (state.extra) {
+                n = state.extra;
+                while (bits < n) {
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                state.length += hold & (1 << state.extra) - 1;
+                hold >>>= state.extra;
+                bits -= state.extra;
+                state.back += state.extra;
+              }
+              state.was = state.length;
+              state.mode = DIST;
+            /* falls through */
+            case DIST:
+              for (; ; ) {
+                here = state.distcode[hold & (1 << state.distbits) - 1];
+                here_bits = here >>> 24;
+                here_op = here >>> 16 & 255;
+                here_val = here & 65535;
+                if (here_bits <= bits) {
+                  break;
+                }
+                if (have === 0) {
+                  break inf_leave;
+                }
+                have--;
+                hold += input[next++] << bits;
+                bits += 8;
+              }
+              if ((here_op & 240) === 0) {
+                last_bits = here_bits;
+                last_op = here_op;
+                last_val = here_val;
+                for (; ; ) {
+                  here = state.distcode[last_val + ((hold & (1 << last_bits + last_op) - 1) >> last_bits)];
+                  here_bits = here >>> 24;
+                  here_op = here >>> 16 & 255;
+                  here_val = here & 65535;
+                  if (last_bits + here_bits <= bits) {
+                    break;
+                  }
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                hold >>>= last_bits;
+                bits -= last_bits;
+                state.back += last_bits;
+              }
+              hold >>>= here_bits;
+              bits -= here_bits;
+              state.back += here_bits;
+              if (here_op & 64) {
+                strm.msg = "invalid distance code";
+                state.mode = BAD2;
+                break;
+              }
+              state.offset = here_val;
+              state.extra = here_op & 15;
+              state.mode = DISTEXT;
+            /* falls through */
+            case DISTEXT:
+              if (state.extra) {
+                n = state.extra;
+                while (bits < n) {
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                state.offset += hold & (1 << state.extra) - 1;
+                hold >>>= state.extra;
+                bits -= state.extra;
+                state.back += state.extra;
+              }
+              if (state.offset > state.dmax) {
+                strm.msg = "invalid distance too far back";
+                state.mode = BAD2;
+                break;
+              }
+              state.mode = MATCH;
+            /* falls through */
+            case MATCH:
+              if (left === 0) {
+                break inf_leave;
+              }
+              copy = _out - left;
+              if (state.offset > copy) {
+                copy = state.offset - copy;
+                if (copy > state.whave) {
+                  if (state.sane) {
+                    strm.msg = "invalid distance too far back";
+                    state.mode = BAD2;
+                    break;
+                  }
+                }
+                if (copy > state.wnext) {
+                  copy -= state.wnext;
+                  from = state.wsize - copy;
+                } else {
+                  from = state.wnext - copy;
+                }
+                if (copy > state.length) {
+                  copy = state.length;
+                }
+                from_source = state.window;
+              } else {
+                from_source = output;
+                from = put - state.offset;
+                copy = state.length;
+              }
+              if (copy > left) {
+                copy = left;
+              }
+              left -= copy;
+              state.length -= copy;
+              do {
+                output[put++] = from_source[from++];
+              } while (--copy);
+              if (state.length === 0) {
+                state.mode = LEN;
+              }
+              break;
+            case LIT:
+              if (left === 0) {
+                break inf_leave;
+              }
+              output[put++] = state.length;
+              left--;
+              state.mode = LEN;
+              break;
+            case CHECK:
+              if (state.wrap) {
+                while (bits < 32) {
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold |= input[next++] << bits;
+                  bits += 8;
+                }
+                _out -= left;
+                strm.total_out += _out;
+                state.total += _out;
+                if (state.wrap & 4 && _out) {
+                  strm.adler = state.check = /*UPDATE_CHECK(state.check, put - _out, _out);*/
+                  state.flags ? crc32_default(state.check, output, _out, put - _out) : adler32_default(state.check, output, _out, put - _out);
+                }
+                _out = left;
+                if (state.wrap & 4 && (state.flags ? hold : zswap32(hold)) !== state.check) {
+                  strm.msg = "incorrect data check";
+                  state.mode = BAD2;
+                  break;
+                }
+                hold = 0;
+                bits = 0;
+              }
+              state.mode = LENGTH;
+            /* falls through */
+            case LENGTH:
+              if (state.wrap && state.flags) {
+                while (bits < 32) {
+                  if (have === 0) {
+                    break inf_leave;
+                  }
+                  have--;
+                  hold += input[next++] << bits;
+                  bits += 8;
+                }
+                if (state.wrap & 4 && hold !== (state.total & 4294967295)) {
+                  strm.msg = "incorrect length check";
+                  state.mode = BAD2;
+                  break;
+                }
+                hold = 0;
+                bits = 0;
+              }
+              state.mode = DONE;
+            /* falls through */
+            case DONE:
+              ret = Z_STREAM_END;
+              break inf_leave;
+            case BAD2:
+              ret = Z_DATA_ERROR;
+              break inf_leave;
+            case MEM:
+              return Z_MEM_ERROR;
+            case SYNC:
+            /* falls through */
+            default:
+              return Z_STREAM_ERROR;
+          }
+        }
+        strm.next_out = put;
+        strm.avail_out = left;
+        strm.next_in = next;
+        strm.avail_in = have;
+        state.hold = hold;
+        state.bits = bits;
+        if (state.wsize || _out !== strm.avail_out && state.mode < BAD2 && (state.mode < CHECK || flush !== Z_FINISH)) {
+          if (updatewindow(strm, strm.output, strm.next_out, _out - strm.avail_out)) {
+            state.mode = MEM;
+            return Z_MEM_ERROR;
+          }
+        }
+        _in -= strm.avail_in;
+        _out -= strm.avail_out;
+        strm.total_in += _in;
+        strm.total_out += _out;
+        state.total += _out;
+        if (state.wrap & 4 && _out) {
+          strm.adler = state.check = /*UPDATE_CHECK(state.check, strm.next_out - _out, _out);*/
+          state.flags ? crc32_default(state.check, output, _out, strm.next_out - _out) : adler32_default(state.check, output, _out, strm.next_out - _out);
+        }
+        strm.data_type = state.bits + (state.last ? 64 : 0) + (state.mode === TYPE2 ? 128 : 0) + (state.mode === LEN_ || state.mode === COPY_ ? 256 : 0);
+        if ((_in === 0 && _out === 0 || flush === Z_FINISH) && ret === Z_OK) {
+          ret = Z_BUF_ERROR;
+        }
+        return ret;
+      };
+      inflateEnd = (strm) => {
+        if (inflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        let state = strm.state;
+        if (state.window) {
+          state.window = null;
+        }
+        strm.state = null;
+        return Z_OK;
+      };
+      inflateGetHeader = (strm, head) => {
+        if (inflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        const state = strm.state;
+        if ((state.wrap & 2) === 0) {
+          return Z_STREAM_ERROR;
+        }
+        state.head = head;
+        head.done = false;
+        return Z_OK;
+      };
+      inflateSetDictionary = (strm, dictionary) => {
+        const dictLength = dictionary.length;
+        let state;
+        let dictid;
+        let ret;
+        if (inflateStateCheck(strm)) {
+          return Z_STREAM_ERROR;
+        }
+        state = strm.state;
+        if (state.wrap !== 0 && state.mode !== DICT) {
+          return Z_STREAM_ERROR;
+        }
+        if (state.mode === DICT) {
+          dictid = 1;
+          dictid = adler32_default(dictid, dictionary, dictLength, 0);
+          if (dictid !== state.check) {
+            return Z_DATA_ERROR;
+          }
+        }
+        ret = updatewindow(strm, dictionary, dictLength, dictLength);
+        if (ret) {
+          state.mode = MEM;
+          return Z_MEM_ERROR;
+        }
+        state.havedict = 1;
+        return Z_OK;
+      };
+      _inflateReset = inflateReset;
+      _inflateInit2 = inflateInit2;
+      _inflate = inflate;
+      _inflateEnd = inflateEnd;
+      _inflateGetHeader = inflateGetHeader;
+      _inflateSetDictionary = inflateSetDictionary;
+    }
+  });
+
+  // src/pako/zlib/gzheader.ts
+  function GZheader() {
+    this.text = 0;
+    this.time = 0;
+    this.xflags = 0;
+    this.os = 0;
+    this.extra = null;
+    this.extra_len = 0;
+    this.name = "";
+    this.comment = "";
+    this.hcrc = 0;
+    this.done = false;
+  }
+  var gzheader_default;
+  var init_gzheader = __esm({
+    "src/pako/zlib/gzheader.ts"() {
+      gzheader_default = GZheader;
+    }
+  });
+
+  // src/pako/inflate.ts
+  function Inflate(options = {}) {
+    this.options = assign(
+      {
+        chunkSize: 1024 * 64,
+        windowBits: 15,
+        to: ""
+      },
+      options
+    );
+    const opt = this.options;
+    if (opt.raw && opt.windowBits >= 0 && opt.windowBits < 16) {
+      opt.windowBits = -opt.windowBits;
+      if (opt.windowBits === 0) {
+        opt.windowBits = -15;
+      }
+    }
+    if (opt.windowBits >= 0 && opt.windowBits < 16 && !(options && options.windowBits)) {
+      opt.windowBits += 32;
+    }
+    if (opt.windowBits > 15 && opt.windowBits < 48) {
+      if ((opt.windowBits & 15) === 0) {
+        opt.windowBits |= 15;
+      }
+    }
+    this.err = 0;
+    this.msg = "";
+    this.ended = false;
+    this.chunks = [];
+    this.strm = new zstream_default();
+    this.strm.avail_out = 0;
+    let status = _inflateInit2(this.strm, opt.windowBits);
+    if (status !== Z_OK) {
+      throw new Error(messages_default[status]);
+    }
+    this.header = new gzheader_default();
+    _inflateGetHeader(this.strm, this.header);
+    if (opt.dictionary) {
+      if (typeof opt.dictionary === "string") {
+        opt.dictionary = string2buf(opt.dictionary);
+      } else if (toString2.call(opt.dictionary) === "[object ArrayBuffer]") {
+        opt.dictionary = new Uint8Array(opt.dictionary);
+      }
+      if (opt.raw) {
+        status = _inflateSetDictionary(this.strm, opt.dictionary);
+        if (status !== Z_OK) {
+          throw new Error(messages_default[status]);
+        }
+      }
+    }
+  }
+  var toString2;
+  var init_inflate2 = __esm({
+    "src/pako/inflate.ts"() {
+      init_inflate();
+      init_common();
+      init_strings();
+      init_messages();
+      init_zstream();
+      init_gzheader();
+      init_constants();
+      init_constants();
+      toString2 = Object.prototype.toString;
+      Inflate.prototype.push = function(data, flush_mode) {
+        const strm = this.strm;
+        const chunkSize = this.options.chunkSize;
+        const dictionary = this.options.dictionary;
+        let status, _flush_mode, last_avail_out;
+        if (this.ended) return false;
+        if (flush_mode === ~~flush_mode) _flush_mode = flush_mode;
+        else _flush_mode = flush_mode === true ? Z_FINISH : Z_NO_FLUSH;
+        if (toString2.call(data) === "[object ArrayBuffer]") {
+          strm.input = new Uint8Array(data);
+        } else {
+          strm.input = data;
+        }
+        strm.next_in = 0;
+        strm.avail_in = strm.input.length;
+        for (; ; ) {
+          if (strm.avail_out === 0) {
+            strm.output = new Uint8Array(chunkSize);
+            strm.next_out = 0;
+            strm.avail_out = chunkSize;
+          }
+          status = _inflate(strm, _flush_mode);
+          if (status === Z_NEED_DICT && dictionary) {
+            status = _inflateSetDictionary(strm, dictionary);
+            if (status === Z_OK) {
+              status = _inflate(strm, _flush_mode);
+            } else if (status === Z_DATA_ERROR) {
+              status = Z_NEED_DICT;
+            }
+          }
+          while (strm.avail_in > 0 && status === Z_STREAM_END && strm.state.wrap > 0 && data[strm.next_in] !== 0) {
+            _inflateReset(strm);
+            status = _inflate(strm, _flush_mode);
+          }
+          switch (status) {
+            case Z_STREAM_ERROR:
+            case Z_DATA_ERROR:
+            case Z_NEED_DICT:
+            case Z_MEM_ERROR:
+              this.onEnd(status);
+              this.ended = true;
+              return false;
+          }
+          last_avail_out = strm.avail_out;
+          if (strm.next_out) {
+            if (strm.avail_out === 0 || status === Z_STREAM_END) {
+              if (this.options.to === "string") {
+                let next_out_utf8 = utf8border(strm.output, strm.next_out);
+                let tail = strm.next_out - next_out_utf8;
+                let utf8str = buf2string(strm.output, next_out_utf8);
+                strm.next_out = tail;
+                strm.avail_out = chunkSize - tail;
+                if (tail)
+                  strm.output.set(
+                    strm.output.subarray(next_out_utf8, next_out_utf8 + tail),
+                    0
+                  );
+                this.onData(utf8str);
+              } else {
+                this.onData(
+                  strm.output.length === strm.next_out ? strm.output : strm.output.subarray(0, strm.next_out)
+                );
+              }
+            }
+          }
+          if (status === Z_OK && last_avail_out === 0) continue;
+          if (status === Z_STREAM_END) {
+            status = _inflateEnd(this.strm);
+            this.onEnd(status);
+            this.ended = true;
+            return true;
+          }
+          if (strm.avail_in === 0) break;
+        }
+        return true;
+      };
+      Inflate.prototype.onData = function(chunk) {
+        this.chunks.push(chunk);
+      };
+      Inflate.prototype.onEnd = function(status) {
+        if (status === Z_OK) {
+          if (this.options.to === "string") {
+            this.result = this.chunks.join("");
+          } else {
+            this.result = flattenChunks(this.chunks);
+          }
+        }
+        this.chunks = [];
+        this.err = status;
+        this.msg = this.strm.msg;
+      };
+    }
+  });
+
+  // src/pako/index.ts
+  var init_pako = __esm({
+    "src/pako/index.ts"() {
+      init_deflate2();
+      init_inflate2();
+      init_constants();
+    }
+  });
+
+  // src/png-codec/shared/paeth.ts
+  function paethPredicator(a, b, c) {
+    const p = a + b - c;
+    const pa = Math.abs(p - a);
+    const pb = Math.abs(p - b);
+    const pc = Math.abs(p - c);
+    if (pa <= pb && pa <= pc) {
+      return a;
+    }
+    if (pb <= pc) {
+      return b;
+    }
+    return c;
+  }
+  var init_paeth = __esm({
+    "src/png-codec/shared/paeth.ts"() {
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_IDAT.ts
+  function parseChunk(ctx, header, chunks) {
+    const decompressed = decompress(ctx, chunks);
+    let packed;
+    if (header.interlaceMethod === 1 /* Adam7 */) {
+      packed = deinterlaceAdam7(ctx, header, decompressed);
+    } else {
+      packed = defilter(ctx, header, decompressed);
+    }
+    const trnsChunk = ctx.metadata.find((e) => e.type === "tRNS");
+    const result = mapPackedDataToRgba(
+      ctx,
+      header,
+      packed,
+      ctx.palette,
+      trnsChunk
+    );
+    if (trnsChunk && (header.colorType === 0 /* Grayscale */ || header.colorType === 2 /* Truecolor */)) {
+      applyTransparency(header, result, trnsChunk);
+    }
+    return result;
+  }
+  function decompress(ctx, chunks) {
+    const inflator = new Inflate();
+    let offset = 0;
+    for (const chunk of chunks) {
+      offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+      inflator.push(
+        ctx.view.buffer.slice(
+          ctx.view.byteOffset + offset,
+          ctx.view.byteOffset + offset + chunk.dataLength
+        )
+      );
+    }
+    if (inflator.err) {
+      throw createChunkDecodeError(
+        ctx,
+        chunks[0],
+        `Inflate error: ${inflator.msg}`,
+        chunks[0].offset
+      );
+    }
+    if (inflator.result === void 0) {
+      throw new DecodeError(ctx, "IDAT: Failed to decompress data chunks", 0);
+    }
+    return inflator.result;
+  }
+  function defilter(ctx, header, decompressed, start = 0, width = header.width, height = header.height) {
+    let i = 0;
+    const bpp = getBytesPerPixel(header);
+    const bppFloat = getBytesPerPixelFloat(header);
+    const bpl = getBytesPerLine(header, width);
+    const bplCeiled = Math.ceil(width * bppFloat);
+    const result = new Uint8Array(height * bplCeiled);
+    const filterFnCache = /* @__PURE__ */ new Map();
+    for (let y = 0; y < height; y++) {
+      let lineOffset = start + y * (bpl + 1);
+      const filterType = decompressed[lineOffset++];
+      if (!isValidFilterType) {
+        throw new DecodeError(ctx, `IDAT: Invalid filter type ${filterType}`, 0);
+      }
+      let filterFn = filterFnCache.get(filterType);
+      if (!filterFn) {
+        filterFn = buildDefilterFunction(bppFloat, bpl, width, filterType);
+        filterFnCache.set(filterType, filterFn);
+      }
+      let pixel = 1;
+      let x = 0;
+      switch (filterType) {
+        case 0 /* None */:
+        case 1 /* Sub */: {
+          for (; x < bpp; x++) {
+            result[i] = decompressed[lineOffset + x];
+            i++;
+          }
+          break;
+        }
+        case 3 /* Average */: {
+          let bi = 0;
+          for (; x < bpp; x++) {
+            bi = i - width * bpp;
+            result[i] = decompressed[lineOffset + x] + Math.floor(0 + (bi < 0 ? 0 : result[bi])) / 2;
+            i++;
+          }
+          break;
+        }
+        case 2 /* Up */: {
+          pixel = 0;
+          break;
+        }
+        case 4 /* Paeth */: {
+          for (; x < bpp; x++) {
+            const bi = Math.floor(i - bpl);
+            result[i] = (decompressed[lineOffset + x] + paethPredicator(0, bi < 0 ? 0 : result[bi], 0)) % 256;
+            i++;
+          }
+          break;
+        }
+      }
+      if (header.bitDepth >= 8) {
+        for (; pixel < width; pixel++) {
+          for (let x2 = 0; x2 < bpp; x2++) {
+            result[i] = filterFn(
+              decompressed,
+              lineOffset + pixel * bpp + x2,
+              result,
+              i
+            );
+            i++;
+          }
+        }
+      } else {
+        if (pixel) {
+          i -= pixel;
+        }
+        for (x = pixel; x < bpl; x++) {
+          result[i + x] = filterFn(decompressed, lineOffset + x, result, i + x);
+        }
+        i += bpl;
+      }
+    }
+    return result;
+  }
+  function isValidFilterType(filterType) {
+    return filterType % 1 === 0 && filterType >= 0 && filterType <= 4;
+  }
+  function buildDefilterFunction(bpp, bpl, width, filterType) {
+    let ai = 0, bi = 0, ci = 0;
+    switch (filterType) {
+      case 0 /* None */:
+        return (filt, filtX) => filt[filtX];
+      case 1 /* Sub */:
+        return (filt, filtX, recon, reconX) => (filt[filtX] + recon[Math.floor(reconX - bpp)]) % 256;
+      case 2 /* Up */:
+        return (filt, filtX, recon, reconX) => {
+          bi = Math.floor(reconX - width * bpp);
+          return bi < 0 ? filt[filtX] : (filt[filtX] + recon[bi]) % 256;
+        };
+      case 3 /* Average */:
+        return (filt, filtX, recon, reconX) => {
+          ai = Math.floor(reconX - bpp);
+          bi = Math.floor(reconX - width * bpp);
+          return filt[filtX] + Math.floor((ai < 0 ? 0 : recon[ai]) + (bi < 0 ? 0 : recon[bi])) / 2;
+        };
+      case 4 /* Paeth */:
+        return (filt, filtX, recon, reconX) => {
+          ai = Math.floor(reconX - Math.ceil(bpp));
+          bi = Math.floor(reconX - bpl);
+          ci = Math.floor(reconX - bpl - Math.ceil(bpp));
+          return (filt[filtX] + paethPredicator(
+            ai < 0 ? 0 : recon[ai],
+            bi < 0 ? 0 : recon[bi],
+            ci < 0 ? 0 : recon[ci]
+          )) % 256;
+        };
+    }
+  }
+  function getBytesPerPixel(header) {
+    return Math.ceil(getBytesPerPixelFloat(header));
+  }
+  function getBytesPerPixelFloat(header) {
+    return getChannelCount(header.colorType) * header.bitDepth / 8;
+  }
+  function getBytesPerLine(header, width) {
+    return Math.ceil(
+      getChannelCount(header.colorType) * header.bitDepth * width / 8
+    );
+  }
+  function getChannelCount(colorType) {
+    switch (colorType) {
+      case 0 /* Grayscale */:
+        return 1;
+      case 2 /* Truecolor */:
+        return 3;
+      case 3 /* Indexed */:
+        return 1;
+      case 4 /* GrayscaleAndAlpha */:
+        return 2;
+      case 6 /* TruecolorAndAlpha */:
+        return 4;
+    }
+  }
+  function deinterlaceAdam7(ctx, header, decompressed) {
+    const bppFloat = getBytesPerPixelFloat(header);
+    const bplCeiled = Math.ceil(header.width * bppFloat);
+    const result = new Uint8Array(bplCeiled * header.height);
+    const bpp = getBytesPerPixel(header);
+    const pixelsPerByte = 8 / header.bitDepth;
+    const maxValue = (1 << header.bitDepth) - 1;
+    const xStart = [0, 4, 0, 2, 0, 1, 0];
+    const yStart = [0, 0, 4, 0, 2, 0, 1];
+    const xGap = [8, 8, 4, 4, 2, 2, 1];
+    const yGap = [8, 8, 8, 4, 4, 2, 2];
+    let dataPointer = 0;
+    for (let pass = 0; pass < 7; pass++) {
+      const passXStart = xStart[pass];
+      const passYStart = yStart[pass];
+      const passXGap = xGap[pass];
+      const passYGap = yGap[pass];
+      const passWidth = Math.ceil((header.width - passXStart) / passXGap);
+      const passHeight = Math.ceil((header.height - passYStart) / passYGap);
+      const passBplCeiled = Math.ceil(bppFloat * passWidth);
+      if (passWidth === 0 || passHeight === 0) {
+        continue;
+      }
+      const passPacked = defilter(
+        ctx,
+        header,
+        decompressed,
+        dataPointer,
+        passWidth,
+        passHeight
+      );
+      let i = 0;
+      for (let y = 0; y < passHeight; y++) {
+        i = (passYStart + y * passYGap) * bplCeiled + passXStart * bppFloat;
+        for (let x = 0; x < passWidth; x++) {
+          if (header.bitDepth < 8) {
+            let value = passPacked[y * passBplCeiled + Math.floor(x * bppFloat)];
+            value >>= (pixelsPerByte - x % pixelsPerByte - 1) * header.bitDepth;
+            value &= maxValue;
+            const resultPosition = (pixelsPerByte - 1 - i % 1 * pixelsPerByte) * header.bitDepth;
+            value <<= resultPosition;
+            result[Math.floor(i)] |= value;
+          } else {
+            for (let j = 0; j < bpp; j++) {
+              result[i + j] = passPacked[(y * passWidth + x) * bpp + j];
+            }
+          }
+          i += passXGap * bppFloat;
+        }
+      }
+      dataPointer += passHeight * (1 + getBytesPerLine(header, passWidth));
+    }
+    return result;
+  }
+  function mapPackedDataToRgba(ctx, header, packed, palette, trnsChunk) {
+    const result = new (header.bitDepth === 16 ? Uint16Array : Uint8Array)(
+      header.width * header.height * 4
+    );
+    let i = 0;
+    const bpp = getBytesPerPixel(header);
+    const bppFloat = getBytesPerPixelFloat(header);
+    const bplCeiled = Math.ceil(header.width * bppFloat);
+    switch (header.colorType) {
+      case 0 /* Grayscale */: {
+        switch (header.bitDepth) {
+          case 1:
+          case 2:
+          case 4: {
+            const pixelsPerByte = 8 / header.bitDepth;
+            const maxValue = (1 << header.bitDepth) - 1;
+            const bytesPerPixel = header.bitDepth / 8;
+            for (let y = 0; y < header.height; y++) {
+              for (let x = 0; x < header.width; x++) {
+                i = (y * header.width + x) * 4;
+                result[i] = packed[y * bplCeiled + Math.floor(x * bytesPerPixel)];
+                result[i] >>= (pixelsPerByte - x % pixelsPerByte - 1) * header.bitDepth;
+                result[i] &= maxValue;
+                result[i] *= 255 / maxValue;
+                result[i + 1] = result[i];
+                result[i + 2] = result[i];
+                result[i + 3] = 255;
+              }
+            }
+            break;
+          }
+          case 8:
+          case 16: {
+            for (let y = 0; y < header.height; y++) {
+              for (let x = 0; x < header.width; x++) {
+                i = (y * header.width + x) * 4;
+                if (header.bitDepth === 16) {
+                  result[i] = packed[(y * header.width + x) * bpp] << 8 | packed[(y * header.width + x) * bpp + 1];
+                } else {
+                  result[i] = packed[(y * header.width + x) * bpp];
+                }
+                result[i + 1] = result[i];
+                result[i + 2] = result[i];
+                result[i + 3] = header.bitDepth === 16 ? 65535 : 255;
+              }
+            }
+            break;
+          }
+        }
+        break;
+      }
+      case 4 /* GrayscaleAndAlpha */: {
+        for (let y = 0; y < header.height; y++) {
+          for (let x = 0; x < header.width; x++) {
+            i = (y * header.width + x) * 4;
+            if (header.bitDepth === 16) {
+              result[i] = packed[(y * header.width + x) * bpp] << 8 | packed[(y * header.width + x) * bpp + 1];
+            } else {
+              result[i] = packed[(y * header.width + x) * bpp];
+            }
+            result[i + 1] = result[i];
+            result[i + 2] = result[i];
+            if (header.bitDepth === 16) {
+              result[i + 3] = packed[(y * header.width + x) * bpp + 2] << 8 | packed[(y * header.width + x) * bpp + 3];
+            } else {
+              result[i + 3] = packed[(y * header.width + x) * bpp + 1];
+            }
+          }
+        }
+        break;
+      }
+      case 3 /* Indexed */: {
+        if (!palette) {
+          throw new DecodeError(
+            ctx,
+            "IDAT: Cannot decode indexed color type without a palette",
+            0
+          );
+        }
+        switch (header.bitDepth) {
+          case 1:
+          case 2:
+          case 4: {
+            const pixelsPerByte = 8 / header.bitDepth;
+            const maxValue = (1 << header.bitDepth) - 1;
+            const bytesPerPixel = header.bitDepth / 8;
+            for (let y = 0; y < header.height; y++) {
+              for (let x = 0; x < header.width; x++) {
+                i = (y * header.width + x) * 4;
+                let colorId = packed[y * bplCeiled + Math.floor(x * bytesPerPixel)];
+                colorId >>= (pixelsPerByte - x % pixelsPerByte - 1) * header.bitDepth;
+                colorId &= maxValue;
+                palette.setRgba(result, i, colorId);
+                if (trnsChunk && trnsChunk.transparency.length > colorId) {
+                  result[i + 3] = trnsChunk.transparency[colorId];
+                }
+              }
+            }
+            break;
+          }
+          case 8: {
+            let colorId = 0;
+            for (let y = 0; y < header.height; y++) {
+              for (let x = 0; x < header.width; x++) {
+                i = (y * header.width + x) * 4;
+                colorId = packed[y * header.width + x];
+                palette.setRgba(result, i, colorId);
+                if (trnsChunk && trnsChunk.transparency.length > colorId) {
+                  result[i + 3] = trnsChunk.transparency[colorId];
+                }
+              }
+            }
+            break;
+          }
+        }
+        break;
+      }
+      case 2 /* Truecolor */: {
+        for (let y = 0; y < header.height; y++) {
+          for (let x = 0; x < header.width; x++) {
+            i = (y * header.width + x) * 4;
+            if (header.bitDepth === 16) {
+              result[i] = packed[(y * header.width + x) * bpp] << 8 | packed[(y * header.width + x) * bpp + 1];
+              result[i + 1] = packed[(y * header.width + x) * bpp + 2] << 8 | packed[(y * header.width + x) * bpp + 3];
+              result[i + 2] = packed[(y * header.width + x) * bpp + 4] << 8 | packed[(y * header.width + x) * bpp + 5];
+            } else {
+              result[i] = packed[(y * header.width + x) * bpp];
+              result[i + 1] = packed[(y * header.width + x) * bpp + 1];
+              result[i + 2] = packed[(y * header.width + x) * bpp + 2];
+            }
+            result[i + 3] = header.bitDepth === 16 ? 65535 : 255;
+          }
+        }
+        break;
+      }
+      case 6 /* TruecolorAndAlpha */: {
+        for (let y = 0; y < header.height; y++) {
+          for (let x = 0; x < header.width; x++) {
+            i = (y * header.width + x) * 4;
+            if (header.bitDepth === 16) {
+              result[i] = packed[(y * header.width + x) * bpp] << 8 | packed[(y * header.width + x) * bpp + 1];
+              result[i + 1] = packed[(y * header.width + x) * bpp + 2] << 8 | packed[(y * header.width + x) * bpp + 3];
+              result[i + 2] = packed[(y * header.width + x) * bpp + 4] << 8 | packed[(y * header.width + x) * bpp + 5];
+              result[i + 3] = packed[(y * header.width + x) * bpp + 6] << 8 | packed[(y * header.width + x) * bpp + 7];
+            } else {
+              result[i] = packed[(y * header.width + x) * bpp];
+              result[i + 1] = packed[(y * header.width + x) * bpp + 1];
+              result[i + 2] = packed[(y * header.width + x) * bpp + 2];
+              result[i + 3] = packed[(y * header.width + x) * bpp + 3];
+            }
+          }
+        }
+        break;
+      }
+    }
+    return result;
+  }
+  function applyTransparency(header, data, trnsChunk) {
+    const maxEncodedValue = (1 << header.bitDepth) - 1;
+    const maxDataValue = header.bitDepth === 16 ? 65535 : 255;
+    if (header.colorType === 0 /* Grayscale */) {
+      const shade = maxDataValue / maxEncodedValue * trnsChunk.transparency;
+      for (let i = 0; i < data.length; i += 4) {
+        if (data[i] === shade) {
+          data[i + 3] = 0;
+        }
+      }
+      return;
+    }
+    if (header.colorType === 2 /* Truecolor */) {
+      const channels = [
+        maxDataValue / maxEncodedValue * trnsChunk.transparency[0],
+        maxDataValue / maxEncodedValue * trnsChunk.transparency[1],
+        maxDataValue / maxEncodedValue * trnsChunk.transparency[2]
+      ];
+      for (let i = 0; i < data.length; i += 4) {
+        if (data[i] === channels[0] && data[i + 1] === channels[1] && data[i + 2] === channels[2]) {
+          data[i + 3] = 0;
+        }
+      }
+      return;
+    }
+  }
+  var init_chunk_IDAT = __esm({
+    "src/png-codec/decode/chunks/chunk_IDAT.ts"() {
+      init_pako();
+      init_assert();
+      init_paeth();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_IEND.ts
+  function parseChunk2(ctx, header, chunk) {
+    assertChunkFollows(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, 0);
+  }
+  var init_chunk_IEND = __esm({
+    "src/png-codec/decode/chunks/chunk_IEND.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/validate.ts
+  function isValidBitDepth(bitDepth) {
+    return bitDepth === 1 || bitDepth === 2 || bitDepth === 4 || bitDepth === 8 || bitDepth === 16;
+  }
+  function isValidColorType(colorType, bitDepth) {
+    return colorType === 0 /* Grayscale */ && bitDepth >= 1 && bitDepth <= 16 || colorType === 2 /* Truecolor */ && bitDepth >= 8 && bitDepth <= 16 || colorType === 3 /* Indexed */ && bitDepth >= 1 && bitDepth <= 8 || colorType === 4 /* GrayscaleAndAlpha */ && bitDepth >= 8 && bitDepth <= 16 || colorType === 6 /* TruecolorAndAlpha */ && bitDepth >= 8 && bitDepth <= 16;
+  }
+  function isValidFilterMethod(filterMethod) {
+    return filterMethod === 0 /* Adaptive */;
+  }
+  function isValidInterlaceMethod(interlaceMethod) {
+    return interlaceMethod === 0 /* None */ || interlaceMethod === 1 /* Adam7 */;
+  }
+  var init_validate = __esm({
+    "src/png-codec/decode/validate.ts"() {
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_IHDR.ts
+  function parseChunk3(ctx, chunk) {
+    assertChunkDataLengthEquals(ctx, chunk, 13);
+    let offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const width = ctx.view.getUint32(offset);
+    offset += 4;
+    const height = ctx.view.getUint32(offset);
+    offset += 4;
+    const bitDepth = ctx.view.getUint8(offset);
+    if (!isValidBitDepth(bitDepth)) {
+      throw createChunkDecodeError(
+        ctx,
+        chunk,
+        `Bit depth "${bitDepth}" is not valid`,
+        offset
+      );
+    }
+    offset++;
+    const colorType = ctx.view.getUint8(offset);
+    if (!isValidColorType(colorType, bitDepth)) {
+      throw createChunkDecodeError(
+        ctx,
+        chunk,
+        `Color type "${colorType}" is not valid with bit depth "${bitDepth}"`,
+        offset
+      );
+    }
+    offset++;
+    const compressionMethod = ctx.view.getUint8(offset);
+    assertChunkCompressionMethod(ctx, chunk, compressionMethod, offset);
+    offset++;
+    let filterMethod = ctx.view.getUint8(offset);
+    if (!isValidFilterMethod(filterMethod)) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Filter method "${filterMethod}" is not valid`,
+          offset
+        )
+      );
+      filterMethod = 0;
+    }
+    offset++;
+    let interlaceMethod = ctx.view.getUint8(offset);
+    if (!isValidInterlaceMethod(interlaceMethod)) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Interlace method "${interlaceMethod}" is not valid`,
+          offset
+        )
+      );
+      interlaceMethod = 0 /* None */;
+    }
+    offset++;
+    return {
+      width,
+      height,
+      bitDepth,
+      colorType,
+      interlaceMethod
+    };
+  }
+  var init_chunk_IHDR = __esm({
+    "src/png-codec/decode/chunks/chunk_IHDR.ts"() {
+      init_assert();
+      init_types();
+      init_validate();
+    }
+  });
+
+  // src/png-codec/shared/crc32.ts
+  function getCrcTable() {
+    if (tableInternal) {
+      return tableInternal;
+    }
+    tableInternal = [];
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) {
+        if (c & 1) {
+          c = 3988292384 ^ c >>> 1;
+        } else {
+          c = c >>> 1;
+        }
+      }
+      tableInternal[n] = c >>> 0;
+    }
+    return tableInternal;
+  }
+  function updateCrc(crc, dataView, offset, length) {
+    const table = getCrcTable();
+    let c = crc;
+    for (let n = 0; n < length; n++) {
+      c = table[(c ^ dataView.getUint8(offset + n)) & 255] ^ c >>> 8;
+    }
+    return c;
+  }
+  function crc322(dataView, offset, length) {
+    return (updateCrc(4294967295, dataView, offset, length) ^ 4294967295) >>> 0;
+  }
+  var tableInternal;
+  var init_crc322 = __esm({
+    "src/png-codec/shared/crc32.ts"() {
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_bKGD.ts
+  var chunk_bKGD_exports = {};
+  __export(chunk_bKGD_exports, {
+    parseChunk: () => parseChunk4
+  });
+  function parseChunk4(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    let color;
+    let expectedLength;
+    switch (header.colorType) {
+      case 0:
+      case 4: {
+        color = ctx.view.getUint16(offset);
+        expectedLength = 2;
+        break;
+      }
+      case 2:
+      case 6: {
+        color = [
+          ctx.view.getUint16(offset),
+          ctx.view.getUint16(offset + 2),
+          ctx.view.getUint16(offset + 4)
+        ];
+        expectedLength = 6;
+        break;
+      }
+      case 3: {
+        color = ctx.view.getUint8(offset);
+        expectedLength = 1;
+        break;
+      }
+      default:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Unrecognized color type "${header.colorType}"`,
+          offset
+        );
+    }
+    assertChunkDataLengthEquals(ctx, chunk, expectedLength);
+    return { type: "bKGD", color };
+  }
+  var init_chunk_bKGD = __esm({
+    "src/png-codec/decode/chunks/chunk_bKGD.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_cHRM.ts
+  var chunk_cHRM_exports = {};
+  __export(chunk_cHRM_exports, {
+    parseChunk: () => parseChunk5
+  });
+  function parseChunk5(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "PLTE" /* PLTE */);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, 32);
+    let offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const whitePoint = {
+      x: ctx.view.getUint32(offset) / 1e5,
+      y: ctx.view.getUint32(offset + 4) / 1e5
+    };
+    if (whitePoint.x > 1 || whitePoint.y > 1) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Invalid white point (${whitePoint.x},${whitePoint.y})`,
+        offset
+      );
+    }
+    offset += 8;
+    const red = {
+      x: ctx.view.getUint32(offset) / 1e5,
+      y: ctx.view.getUint32(offset + 4) / 1e5
+    };
+    if (red.x > 1 || red.y > 1) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Invalid red (${red.x},${red.y})`,
+        offset
+      );
+    }
+    offset += 8;
+    const green = {
+      x: ctx.view.getUint32(offset) / 1e5,
+      y: ctx.view.getUint32(offset + 4) / 1e5
+    };
+    if (green.x > 1 || green.y > 1) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Invalid green (${green.x},${green.y})`,
+        offset
+      );
+    }
+    offset += 8;
+    const blue = {
+      x: ctx.view.getUint32(offset) / 1e5,
+      y: ctx.view.getUint32(offset + 4) / 1e5
+    };
+    if (blue.x > 1 || blue.y > 1) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Invalid blue (${blue.x},${blue.y})`,
+        offset
+      );
+    }
+    return {
+      type: "cHRM",
+      whitePoint,
+      red,
+      green,
+      blue
+    };
+  }
+  var init_chunk_cHRM = __esm({
+    "src/png-codec/decode/chunks/chunk_cHRM.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_eXIf.ts
+  var chunk_eXIf_exports = {};
+  __export(chunk_eXIf_exports, {
+    parseChunk: () => parseChunk6
+  });
+  function parseChunk6(ctx, header, chunk) {
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    return {
+      type: "eXIf",
+      value: ctx.view.buffer.slice(
+        ctx.view.byteOffset + offset,
+        ctx.view.byteOffset + offset + chunk.dataLength
+      )
+    };
+  }
+  var init_chunk_eXIf = __esm({
+    "src/png-codec/decode/chunks/chunk_eXIf.ts"() {
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_gAMA.ts
+  var chunk_gAMA_exports = {};
+  __export(chunk_gAMA_exports, {
+    parseChunk: () => parseChunk7
+  });
+  function parseChunk7(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "PLTE" /* PLTE */);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, 4);
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const value = ctx.view.getUint32(offset) / 1e5;
+    if (value === 0) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(chunk, "A value of 0 is meaningless", offset)
+      );
+    }
+    return {
+      type: "gAMA",
+      value
+    };
+  }
+  var init_chunk_gAMA = __esm({
+    "src/png-codec/decode/chunks/chunk_gAMA.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_hIST.ts
+  var chunk_hIST_exports = {};
+  __export(chunk_hIST_exports, {
+    parseChunk: () => parseChunk8
+  });
+  function parseChunk8(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkFollows(ctx, chunk, "PLTE" /* PLTE */);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, ctx.palette.size * 2);
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const frequency = [];
+    for (let i = 0; i < ctx.palette.size * 2; i += 2) {
+      frequency.push(ctx.view.getUint16(offset + i));
+    }
+    return {
+      type: "hIST",
+      frequency
+    };
+  }
+  var init_chunk_hIST = __esm({
+    "src/png-codec/decode/chunks/chunk_hIST.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/text.ts
+  function readText(ctx, chunk, textDecoder, maxLength, offset, maxOffset, readTrailingNull, isCompressed) {
+    const bytes = [];
+    let current = 0;
+    let i = 0;
+    for (; maxLength === void 0 || i < maxLength; i++) {
+      if (!readTrailingNull && offset === maxOffset) {
+        break;
+      }
+      try {
+        current = ctx.view.getUint8(offset);
+      } catch (e) {
+        if (e instanceof Error && e.message === "Offset is outside the bounds of the DataView") {
+          throw createChunkDecodeWarning(chunk, "EOF while reading text", offset);
+        }
+        throw e;
+      }
+      if (!isCompressed && current === 0) {
+        break;
+      }
+      offset++;
+      bytes.push(current);
+    }
+    if (readTrailingNull && ctx.view.getUint8(offset) !== 0) {
+      throw createChunkDecodeWarning(
+        chunk,
+        "No null character after text",
+        offset
+      );
+    }
+    let typedArray = new Uint8Array(bytes);
+    if (isCompressed) {
+      const inflator = new Inflate();
+      inflator.push(typedArray);
+      if (inflator.err) {
+        throw createChunkDecodeWarning(
+          chunk,
+          `Inflate error: ${inflator.msg}`,
+          offset
+        );
+      }
+      typedArray = inflator.result;
+    }
+    return {
+      text: textDecoder ? textDecoder.decode(typedArray) : String.fromCharCode(...bytes),
+      bytesRead: i + 1
+    };
+  }
+  var init_text = __esm({
+    "src/png-codec/decode/text.ts"() {
+      init_pako();
+      init_assert();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_iCCP.ts
+  var chunk_iCCP_exports = {};
+  __export(chunk_iCCP_exports, {
+    parseChunk: () => parseChunk9
+  });
+  function parseChunk9(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkMutualExclusion(ctx, chunk, "sRGB" /* sRGB */);
+    assertChunkPrecedes(ctx, chunk, "PLTE" /* PLTE */);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthGte(ctx, chunk, 3);
+    const chunkDataOffset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const maxOffset = chunkDataOffset + chunk.dataLength;
+    let offset = chunkDataOffset;
+    const textDecoder = new TextDecoder("latin1");
+    const readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      79,
+      offset,
+      maxOffset,
+      true
+    );
+    offset += readResult.bytesRead;
+    const name = readResult.text;
+    const compressionMethod = ctx.view.getUint8(offset);
+    assertChunkCompressionMethod(ctx, chunk, compressionMethod, offset);
+    offset++;
+    const data = new Uint8Array(
+      ctx.view.buffer.slice(
+        ctx.view.byteOffset + offset,
+        ctx.view.byteOffset + maxOffset
+      )
+    );
+    return {
+      type: "iCCP",
+      name,
+      data
+    };
+  }
+  var init_chunk_iCCP = __esm({
+    "src/png-codec/decode/chunks/chunk_iCCP.ts"() {
+      init_assert();
+      init_text();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_iTXt.ts
+  var chunk_iTXt_exports = {};
+  __export(chunk_iTXt_exports, {
+    parseChunk: () => parseChunk10
+  });
+  function parseChunk10(ctx, header, chunk) {
+    assertChunkDataLengthGte(ctx, chunk, 6);
+    let offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const maxOffset = offset + chunk.dataLength;
+    const textDecoder = new TextDecoder("utf8");
+    let readResult;
+    readResult = readText(ctx, chunk, textDecoder, 79, offset, maxOffset, true);
+    offset += readResult.bytesRead;
+    const keyword = readResult.text;
+    const isCompressed = ctx.view.getUint8(offset++) === 1;
+    const compressionMethod = ctx.view.getUint8(offset);
+    if (isCompressed) {
+      assertChunkCompressionMethod(ctx, chunk, compressionMethod, offset);
+    }
+    offset++;
+    readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      void 0,
+      offset,
+      maxOffset,
+      true
+    );
+    offset += readResult.bytesRead;
+    const languageTag = readResult.text;
+    readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      void 0,
+      offset,
+      maxOffset,
+      true
+    );
+    offset += readResult.bytesRead;
+    const translatedKeyword = readResult.text;
+    readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      void 0,
+      offset,
+      maxOffset,
+      false,
+      isCompressed
+    );
+    offset += readResult.bytesRead;
+    const text = readResult.text;
+    return {
+      type: "iTXt",
+      keyword,
+      languageTag,
+      translatedKeyword,
+      text
+    };
+  }
+  var init_chunk_iTXt = __esm({
+    "src/png-codec/decode/chunks/chunk_iTXt.ts"() {
+      init_assert();
+      init_text();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_tIME.ts
+  var chunk_tIME_exports = {};
+  __export(chunk_tIME_exports, {
+    parseChunk: () => parseChunk11
+  });
+  function parseChunk11(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkDataLengthEquals(ctx, chunk, 7);
+    let offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const year = ctx.view.getUint16(offset);
+    offset += 2;
+    const month = ctx.view.getUint8(offset++);
+    const day = ctx.view.getUint8(offset++);
+    const hour = ctx.view.getUint8(offset++);
+    const minute = ctx.view.getUint8(offset++);
+    const second = ctx.view.getUint8(offset++);
+    return {
+      type: "tIME",
+      value: new Date(year, month, day, hour, minute, second)
+    };
+  }
+  var init_chunk_tIME = __esm({
+    "src/png-codec/decode/chunks/chunk_tIME.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_oFFs.ts
+  var chunk_oFFs_exports = {};
+  __export(chunk_oFFs_exports, {
+    parseChunk: () => parseChunk12
+  });
+  function parseChunk12(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, 9);
+    let offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const x = ctx.view.getInt32(offset);
+    offset += 4;
+    const y = ctx.view.getInt32(offset);
+    offset += 4;
+    const unitTypeByte = ctx.view.getUint8(offset);
+    let unitType;
+    switch (unitTypeByte) {
+      case 0:
+        unitType = "pixel";
+        break;
+      case 1:
+        unitType = "micrometer";
+        break;
+      default:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Invalid oFFs unit type ("${unitTypeByte}")`,
+          offset
+        );
+    }
+    return {
+      type: "oFFs",
+      offset: { x, y },
+      unitType
+    };
+  }
+  var init_chunk_oFFs = __esm({
+    "src/png-codec/decode/chunks/chunk_oFFs.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/float.ts
+  function readFloat(ctx, chunk, textDecoder, offset, maxOffset, readTrailingNull) {
+    const readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      void 0,
+      offset,
+      maxOffset,
+      readTrailingNull
+    );
+    offset += readResult.bytesRead;
+    if (!isValidFloatingPoint(readResult.text)) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Invalid character in floating point number ("${readResult.text}")`,
+          offset
+        )
+      );
+    }
+    const value = parseFloat(readResult.text);
+    return {
+      bytesRead: readResult.bytesRead,
+      value
+    };
+  }
+  function isValidFloatingPoint(text) {
+    return text.match(/^[+-]?[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?$/) || text.match(/^[+-]?[0-9]+\.?([eE][+-]?[0-9]+)?$/) || text.match(/^[+-]?\.[0-9]+([eE][+-]?[0-9]+)?$/);
+  }
+  var init_float = __esm({
+    "src/png-codec/decode/float.ts"() {
+      init_assert();
+      init_text();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_pCAL.ts
+  var chunk_pCAL_exports = {};
+  __export(chunk_pCAL_exports, {
+    parseChunk: () => parseChunk13
+  });
+  function parseChunk13(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthGte(ctx, chunk, 4);
+    const chunkDataOffset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const maxOffset = chunkDataOffset + chunk.dataLength;
+    let offset = chunkDataOffset;
+    const textDecoder = new TextDecoder("latin1");
+    let readTextResult;
+    readTextResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      79,
+      offset,
+      maxOffset,
+      true
+    );
+    offset += readTextResult.bytesRead;
+    const calibrationName = readTextResult.text;
+    const x0 = ctx.view.getInt32(offset);
+    offset += 4;
+    const x1 = ctx.view.getInt32(offset);
+    offset += 4;
+    const equationTypeByte = ctx.view.getUint8(offset++);
+    let equationType;
+    switch (equationTypeByte) {
+      case 0:
+        equationType = "linear-mapping";
+        break;
+      case 1:
+        equationType = "base-e exponential mapping";
+        break;
+      case 2:
+        equationType = "arbitrary-base exponential mapping";
+        break;
+      case 3:
+        equationType = "hyperbolic mapping";
+        break;
+      default:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Invalid equation type "${equationTypeByte}"`,
+          offset
+        );
+    }
+    const parameterCount = ctx.view.getUint8(offset++);
+    readTextResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      79,
+      offset,
+      maxOffset,
+      true
+    );
+    offset += readTextResult.bytesRead;
+    const unitName = readTextResult.text;
+    const params = [];
+    let readFloatResult;
+    for (let i = 0; i < parameterCount; i++) {
+      readFloatResult = readFloat(
+        ctx,
+        chunk,
+        textDecoder,
+        offset,
+        maxOffset,
+        i < parameterCount - 1
+      );
+      offset += readFloatResult.bytesRead;
+      params.push(readFloatResult.value);
+    }
+    return {
+      type: "pCAL",
+      calibrationName,
+      x0,
+      x1,
+      equationType,
+      unitName,
+      params
+    };
+  }
+  var init_chunk_pCAL = __esm({
+    "src/png-codec/decode/chunks/chunk_pCAL.ts"() {
+      init_assert();
+      init_float();
+      init_text();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_pHYs.ts
+  var chunk_pHYs_exports = {};
+  __export(chunk_pHYs_exports, {
+    parseChunk: () => parseChunk14
+  });
+  function parseChunk14(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, 9);
+    let offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const x = ctx.view.getUint32(offset);
+    offset += 4;
+    const y = ctx.view.getUint32(offset);
+    offset += 4;
+    const unitType = ctx.view.getUint8(offset) === 1 ? "meter" : "unknown";
+    return {
+      type: "pHYs",
+      pixelsPerUnit: { x, y },
+      unitType
+    };
+  }
+  var init_chunk_pHYs = __esm({
+    "src/png-codec/decode/chunks/chunk_pHYs.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_sBIT.ts
+  var chunk_sBIT_exports = {};
+  __export(chunk_sBIT_exports, {
+    parseChunk: () => parseChunk15
+  });
+  function parseChunk15(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "PLTE" /* PLTE */);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    let value;
+    let expectedLength;
+    switch (header.colorType) {
+      case 0: {
+        value = ctx.view.getUint8(offset);
+        expectedLength = 1;
+        break;
+      }
+      case 2:
+      case 3: {
+        value = [
+          ctx.view.getUint8(offset),
+          ctx.view.getUint8(offset + 1),
+          ctx.view.getUint8(offset + 2)
+        ];
+        expectedLength = 3;
+        break;
+      }
+      case 4: {
+        value = [ctx.view.getUint8(offset), ctx.view.getUint8(offset + 1)];
+        expectedLength = 2;
+        break;
+      }
+      case 6: {
+        value = [
+          ctx.view.getUint8(offset),
+          ctx.view.getUint8(offset + 1),
+          ctx.view.getUint8(offset + 2),
+          ctx.view.getUint8(offset + 3)
+        ];
+        expectedLength = 4;
+        break;
+      }
+      default:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Unrecognized color type "${header.colorType}"`,
+          offset
+        );
+    }
+    assertChunkDataLengthEquals(ctx, chunk, expectedLength);
+    return {
+      type: "sBIT",
+      value
+    };
+  }
+  var init_chunk_sBIT = __esm({
+    "src/png-codec/decode/chunks/chunk_sBIT.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_sCAL.ts
+  var chunk_sCAL_exports = {};
+  __export(chunk_sCAL_exports, {
+    parseChunk: () => parseChunk16
+  });
+  function parseChunk16(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthGte(ctx, chunk, 4);
+    const chunkDataOffset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const maxOffset = chunkDataOffset + chunk.dataLength;
+    let offset = chunkDataOffset;
+    const textDecoder = new TextDecoder("latin1");
+    const unitTypeByte = ctx.view.getUint8(offset);
+    let unitType;
+    switch (unitTypeByte) {
+      case 0:
+        unitType = "meter";
+        break;
+      case 1:
+        unitType = "radian";
+        break;
+      default:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Invalid sCAL unit type ("${unitTypeByte}")`,
+          offset
+        );
+    }
+    offset++;
+    let readResult;
+    readResult = readFloat(ctx, chunk, textDecoder, offset, maxOffset, true);
+    offset += readResult.bytesRead;
+    const x = readResult.value;
+    readResult = readFloat(ctx, chunk, textDecoder, offset, maxOffset, false);
+    offset += readResult.bytesRead;
+    const y = readResult.value;
+    if (x < 0 || y < 0) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Values cannot be negative (${x}, ${y})`,
+        offset
+      );
+    }
+    return {
+      type: "sCAL",
+      pixelsPerUnit: { x, y },
+      unitType
+    };
+  }
+  var init_chunk_sCAL = __esm({
+    "src/png-codec/decode/chunks/chunk_sCAL.ts"() {
+      init_assert();
+      init_float();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_sPLT.ts
+  var chunk_sPLT_exports = {};
+  __export(chunk_sPLT_exports, {
+    parseChunk: () => parseChunk17
+  });
+  function parseChunk17(ctx, header, chunk) {
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    const dataStartOffset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    let offset = dataStartOffset;
+    const maxOffset = offset + chunk.dataLength;
+    const textDecoder = new TextDecoder("latin1");
+    const readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      void 0,
+      offset,
+      maxOffset,
+      true
+    );
+    offset += readResult.bytesRead;
+    const name = readResult.text;
+    const sampleDepth = ctx.view.getUint8(offset++);
+    const sampleBytes = sampleDepth === 16 ? 2 : 1;
+    const entrySize = sampleBytes * 4 + 2;
+    const entriesOffset = chunk.dataLength - (offset - dataStartOffset);
+    const entryCount = entriesOffset / entrySize;
+    if (entryCount % 1 !== 0) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Invalid data length: ${entriesOffset} should be divisible by entry size ${entrySize}`,
+        offset
+      );
+    }
+    const entries = [];
+    for (let i = 0; i < entryCount; i++) {
+      const channels = [];
+      for (let c = 0; c < 4; c++) {
+        channels.push(
+          sampleBytes === 2 ? ctx.view.getUint16(offset) : ctx.view.getUint8(offset)
+        );
+        offset += sampleBytes;
+      }
+      const frequency = ctx.view.getUint16(offset);
+      offset += 2;
+      entries.push({
+        red: channels[0],
+        green: channels[1],
+        blue: channels[2],
+        alpha: channels[3],
+        frequency
+      });
+    }
+    return {
+      type: "sPLT",
+      name,
+      sampleDepth,
+      entries
+    };
+  }
+  var init_chunk_sPLT = __esm({
+    "src/png-codec/decode/chunks/chunk_sPLT.ts"() {
+      init_assert();
+      init_text();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_sRGB.ts
+  var chunk_sRGB_exports = {};
+  __export(chunk_sRGB_exports, {
+    parseChunk: () => parseChunk18
+  });
+  function parseChunk18(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkMutualExclusion(ctx, chunk, "iCCP" /* iCCP */);
+    assertChunkPrecedes(ctx, chunk, "PLTE" /* PLTE */);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, 1);
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const byte = ctx.view.getUint8(offset);
+    let renderingIntent;
+    switch (byte) {
+      case 0 /* Perceptual */:
+      case 1 /* RelativeColorimetric */:
+      case 2 /* Saturation */:
+      case 3 /* AbsoluteColorimetric */:
+        renderingIntent = byte;
+        break;
+      default:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Invalid rendering intent "${byte}"`,
+          offset
+        );
+    }
+    return {
+      type: "sRGB",
+      renderingIntent
+    };
+  }
+  var init_chunk_sRGB = __esm({
+    "src/png-codec/decode/chunks/chunk_sRGB.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_sTER.ts
+  var chunk_sTER_exports = {};
+  __export(chunk_sTER_exports, {
+    parseChunk: () => parseChunk19
+  });
+  function parseChunk19(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    assertChunkDataLengthEquals(ctx, chunk, 1);
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const layoutModeByte = ctx.view.getUint8(offset);
+    let layoutMode;
+    switch (layoutModeByte) {
+      case 0:
+        layoutMode = "cross-fuse";
+        break;
+      case 1:
+        layoutMode = "diverging-fuse";
+        break;
+      default:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Invalid layout mode "${layoutModeByte}"`,
+          offset
+        );
+    }
+    const padding = 15 - (header.width - 1) % 16;
+    if (padding > 7) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Invalid padding value "${padding}" for image width ${header.width}`,
+        offset
+      );
+    }
+    const subimageWidth = Math.floor((header.width - padding) / 2);
+    return {
+      type: "sTER",
+      layoutMode,
+      subimageWidth,
+      padding
+    };
+  }
+  var init_chunk_sTER = __esm({
+    "src/png-codec/decode/chunks/chunk_sTER.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_tEXt.ts
+  var chunk_tEXt_exports = {};
+  __export(chunk_tEXt_exports, {
+    parseChunk: () => parseChunk20
+  });
+  function parseChunk20(ctx, header, chunk) {
+    assertChunkDataLengthGte(ctx, chunk, 6);
+    const chunkDataOffset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const maxOffset = chunkDataOffset + chunk.dataLength;
+    let offset = chunkDataOffset;
+    const textDecoder = new TextDecoder("utf8");
+    let readResult;
+    readResult = readText(ctx, chunk, textDecoder, 79, offset, maxOffset, true);
+    offset += readResult.bytesRead;
+    const keyword = readResult.text;
+    readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      void 0,
+      offset,
+      maxOffset,
+      false
+    );
+    offset += readResult.bytesRead;
+    const text = readResult.text;
+    return {
+      type: "tEXt",
+      keyword,
+      text
+    };
+  }
+  var init_chunk_tEXt = __esm({
+    "src/png-codec/decode/chunks/chunk_tEXt.ts"() {
+      init_assert();
+      init_text();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_tRNS.ts
+  var chunk_tRNS_exports = {};
+  __export(chunk_tRNS_exports, {
+    parseChunk: () => parseChunk21
+  });
+  function parseChunk21(ctx, header, chunk) {
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    switch (header.colorType) {
+      case 0 /* Grayscale */:
+        assertChunkDataLengthEquals(ctx, chunk, 2);
+        break;
+      case 2 /* Truecolor */:
+        assertChunkDataLengthEquals(ctx, chunk, 6);
+        break;
+      case 3 /* Indexed */:
+        assertChunkFollows(ctx, chunk, "PLTE" /* PLTE */);
+        if (chunk.dataLength > ctx.palette.size) {
+          throw createChunkDecodeWarning(
+            chunk,
+            `Invalid data length for color type ${header.colorType}: ${chunk.dataLength} > ${ctx.palette.size}`,
+            chunk.offset + 4 /* Length */ + 4 /* Type */
+          );
+        }
+        break;
+      case 4 /* GrayscaleAndAlpha */:
+      case 6 /* TruecolorAndAlpha */:
+        throw createChunkDecodeWarning(
+          chunk,
+          `Chunk invalid when color type has alpha (${header.colorType})`,
+          chunk.offset + 4 /* Length */ + 4 /* Type */
+        );
+    }
+    const offset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    let transparency;
+    switch (header.colorType) {
+      case 0 /* Grayscale */:
+        transparency = ctx.view.getUint16(offset);
+        break;
+      case 2 /* Truecolor */:
+        transparency = [
+          ctx.view.getUint16(offset),
+          ctx.view.getUint16(offset + 2),
+          ctx.view.getUint16(offset + 4)
+        ];
+        break;
+      case 3 /* Indexed */:
+        transparency = [];
+        for (let i = 0; i < chunk.dataLength; i++) {
+          transparency.push(ctx.view.getUint8(offset + i));
+        }
+        break;
+    }
+    return {
+      type: "tRNS",
+      transparency
+    };
+  }
+  var init_chunk_tRNS = __esm({
+    "src/png-codec/decode/chunks/chunk_tRNS.ts"() {
+      init_assert();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_zTXt.ts
+  var chunk_zTXt_exports = {};
+  __export(chunk_zTXt_exports, {
+    parseChunk: () => parseChunk22
+  });
+  function parseChunk22(ctx, header, chunk) {
+    assertChunkDataLengthGte(ctx, chunk, 6);
+    const chunkDataOffset = chunk.offset + 4 /* Length */ + 4 /* Type */;
+    const maxOffset = chunkDataOffset + chunk.dataLength;
+    let offset = chunkDataOffset;
+    const textDecoder = new TextDecoder("utf8");
+    let readResult;
+    readResult = readText(ctx, chunk, textDecoder, 79, offset, maxOffset, true);
+    offset += readResult.bytesRead;
+    const keyword = readResult.text;
+    const compressionMethod = ctx.view.getUint8(offset);
+    assertChunkCompressionMethod(ctx, chunk, compressionMethod, offset);
+    offset++;
+    readResult = readText(
+      ctx,
+      chunk,
+      textDecoder,
+      void 0,
+      offset,
+      maxOffset,
+      false,
+      true
+      // isCompressed
+    );
+    offset += readResult.bytesRead;
+    const text = readResult.text;
+    return {
+      type: "zTXt",
+      keyword,
+      text
+    };
+  }
+  var init_chunk_zTXt = __esm({
+    "src/png-codec/decode/chunks/chunk_zTXt.ts"() {
+      init_assert();
+      init_text();
+      init_types();
+    }
+  });
+
+  // src/png-codec/decode/chunks/chunk_PLTE.ts
+  var chunk_PLTE_exports = {};
+  __export(chunk_PLTE_exports, {
+    Palette: () => Palette,
+    parseChunk: () => parseChunk23
+  });
+  function parseChunk23(ctx, header, chunk) {
+    assertChunkSinglular(ctx, chunk);
+    assertChunkPrecedes(ctx, chunk, "bKGD" /* bKGD */);
+    assertChunkPrecedes(ctx, chunk, "hIST" /* hIST */);
+    assertChunkPrecedes(ctx, chunk, "tRNS" /* tRNS */);
+    assertChunkPrecedes(ctx, chunk, "IDAT" /* IDAT */);
+    let offset = chunk.offset + 4 /* Length */;
+    if (header.colorType === 0 /* Grayscale */ || header.colorType === 4 /* GrayscaleAndAlpha */) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Color type "${header.colorType}" cannot have a palette`,
+        offset
+      );
+    }
+    offset += 4 /* Type */;
+    if (chunk.dataLength === 0) {
+      throw createChunkDecodeWarning(chunk, "Cannot have 0 entries", offset);
+    }
+    if (chunk.dataLength % 3 !== 0) {
+      throw createChunkDecodeWarning(
+        chunk,
+        `Chunk length must be divisible by 3 (actual "${chunk.dataLength}")`,
+        offset
+      );
+    }
+    if (chunk.dataLength / 3 > 256) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Too many entries (${chunk.dataLength / 3} > 256)`,
+          offset
+        )
+      );
+    }
+    if (chunk.dataLength / 3 > Math.pow(2, header.bitDepth)) {
+      handleWarning(
+        ctx,
+        createChunkDecodeWarning(
+          chunk,
+          `Too many entries for bit depth (${chunk.dataLength / 3} > 2^${header.bitDepth})`,
+          offset
+        )
+      );
+    }
+    return new Palette(
+      ctx.view,
+      chunk.offset + 4 /* Length */ + 4 /* Type */,
+      chunk.dataLength
+    );
+  }
+  var Palette;
+  var init_chunk_PLTE = __esm({
+    "src/png-codec/decode/chunks/chunk_PLTE.ts"() {
+      init_assert();
+      init_types();
+      Palette = class {
+        constructor(_view, _paletteOffset, _length) {
+          this._view = _view;
+          this._paletteOffset = _paletteOffset;
+          this._length = _length;
+        }
+        get size() {
+          return this._length / 3;
+        }
+        getRgb(colorIndex) {
+          this._checkIndex(colorIndex);
+          return new Uint8Array(
+            this._view.buffer.slice(
+              this._view.byteOffset + this._paletteOffset + colorIndex * 3,
+              this._view.byteOffset + this._paletteOffset + colorIndex * 3 + 3
+            )
+          );
+        }
+        setRgba(data, offset, colorIndex) {
+          this._checkIndex(colorIndex);
+          const i = this._paletteOffset + colorIndex * 3;
+          data[offset] = this._view.getUint8(i);
+          data[offset + 1] = this._view.getUint8(i + 1);
+          data[offset + 2] = this._view.getUint8(i + 2);
+          data[offset + 3] = 255;
+        }
+        _checkIndex(colorIndex) {
+          if (colorIndex < 0 || colorIndex * 3 > this._length - 3) {
+            throw new Error(`Palette does not contain color index "${colorIndex}"`);
+          }
+        }
+      };
+    }
+  });
+
+  // src/png-codec/decode/decoder.ts
+  var decoder_exports = {};
+  __export(decoder_exports, {
+    DecodeError: () => DecodeError,
+    DecodeWarning: () => DecodeWarning,
+    decodePng: () => decodePng,
+    readChunk: () => readChunk,
+    readChunks: () => readChunks,
+    verifyPngSignature: () => verifyPngSignature
+  });
+  function verifyPngSignature(ctx) {
+    if (ctx.view.byteLength < 7) {
+      throw new DecodeError(
+        ctx,
+        `Not enough bytes in file for png signature (${ctx.view.byteLength})`,
+        0
+      );
+    }
+    const isCorrect = ctx.view.getUint8(0) === 137 && ctx.view.getUint8(1) === 80 && ctx.view.getUint8(2) === 78 && ctx.view.getUint8(3) === 71 && ctx.view.getUint8(4) === 13 && ctx.view.getUint8(5) === 10 && ctx.view.getUint8(6) === 26 && ctx.view.getUint8(7) === 10;
+    if (!isCorrect) {
+      const actual = formatHexAssertion(
+        Array.from(
+          new Uint8Array(ctx.view.buffer).slice(
+            ctx.view.byteOffset,
+            ctx.view.byteOffset + 8
+          )
+        )
+      );
+      const expected = formatHexAssertion([
+        137,
+        80,
+        78,
+        71,
+        13,
+        10,
+        26,
+        10
+      ]);
+      throw new DecodeError(
+        ctx,
+        `Png signature is not correct (${actual} != ${expected})`,
+        0
+      );
+    }
+  }
+  function formatHexAssertion(actual) {
+    return `0x${actual.map((e) => e.toString(16).padStart(2, "0")).join("")}`;
+  }
+  function getChunkDecoder(type) {
+    switch (type) {
+      case "bKGD" /* bKGD */:
+        return Promise.resolve().then(() => (init_chunk_bKGD(), chunk_bKGD_exports));
+      case "cHRM" /* cHRM */:
+        return Promise.resolve().then(() => (init_chunk_cHRM(), chunk_cHRM_exports));
+      case "eXIf" /* eXIf */:
+        return Promise.resolve().then(() => (init_chunk_eXIf(), chunk_eXIf_exports));
+      case "gAMA" /* gAMA */:
+        return Promise.resolve().then(() => (init_chunk_gAMA(), chunk_gAMA_exports));
+      case "hIST" /* hIST */:
+        return Promise.resolve().then(() => (init_chunk_hIST(), chunk_hIST_exports));
+      case "iCCP" /* iCCP */:
+        return Promise.resolve().then(() => (init_chunk_iCCP(), chunk_iCCP_exports));
+      case "iTXt" /* iTXt */:
+        return Promise.resolve().then(() => (init_chunk_iTXt(), chunk_iTXt_exports));
+      case "tIME" /* tIME */:
+        return Promise.resolve().then(() => (init_chunk_tIME(), chunk_tIME_exports));
+      case "oFFs" /* oFFs */:
+        return Promise.resolve().then(() => (init_chunk_oFFs(), chunk_oFFs_exports));
+      case "pCAL" /* pCAL */:
+        return Promise.resolve().then(() => (init_chunk_pCAL(), chunk_pCAL_exports));
+      case "pHYs" /* pHYs */:
+        return Promise.resolve().then(() => (init_chunk_pHYs(), chunk_pHYs_exports));
+      case "sBIT" /* sBIT */:
+        return Promise.resolve().then(() => (init_chunk_sBIT(), chunk_sBIT_exports));
+      case "sCAL" /* sCAL */:
+        return Promise.resolve().then(() => (init_chunk_sCAL(), chunk_sCAL_exports));
+      case "sPLT" /* sPLT */:
+        return Promise.resolve().then(() => (init_chunk_sPLT(), chunk_sPLT_exports));
+      case "sRGB" /* sRGB */:
+        return Promise.resolve().then(() => (init_chunk_sRGB(), chunk_sRGB_exports));
+      case "sTER" /* sTER */:
+        return Promise.resolve().then(() => (init_chunk_sTER(), chunk_sTER_exports));
+      case "tEXt" /* tEXt */:
+        return Promise.resolve().then(() => (init_chunk_tEXt(), chunk_tEXt_exports));
+      case "tRNS" /* tRNS */:
+        return Promise.resolve().then(() => (init_chunk_tRNS(), chunk_tRNS_exports));
+      case "zTXt" /* zTXt */:
+        return Promise.resolve().then(() => (init_chunk_zTXt(), chunk_zTXt_exports));
+      /* istanbul ignore next - this error should never happen in practice */
+      default:
+        throw new Error(`Could not get decoder for chunk type "${type}"`);
+    }
+  }
+  async function decodePng(data, options = {}) {
+    const initialCtx = {
+      view: new DataView(data.buffer, data.byteOffset, data.byteLength),
+      image: void 0,
+      palette: void 0,
+      metadata: [],
+      parsedChunks: /* @__PURE__ */ new Set(),
+      warnings: [],
+      info: [],
+      options
+    };
+    verifyPngSignature(initialCtx);
+    const chunks = readChunks(initialCtx);
+    initialCtx.rawChunks = chunks;
+    const header = parseChunk3(initialCtx, chunks[0]);
+    const ctx = {
+      ...initialCtx,
+      header
+    };
+    let parseChunkTypes;
+    if (options && options.parseChunkTypes) {
+      if (options.parseChunkTypes === "*") {
+        parseChunkTypes = allLazyChunkTypes;
+      } else {
+        parseChunkTypes = defaultLazyChunkTypes.concat(options.parseChunkTypes);
+      }
+    } else {
+      parseChunkTypes = defaultLazyChunkTypes;
+    }
+    for (let i = 1; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      switch (chunk.type) {
+        case "IHDR" /* IHDR */:
+          handleWarning(
+            ctx,
+            createChunkDecodeWarning(
+              chunk,
+              `Multiple IHDR chunks not allowed`,
+              chunk.offset + 4 /* Length */
+            )
+          );
+          break;
+        case "IDAT" /* IDAT */: {
+          const dataChunks = [chunk];
+          while (chunks.length > i + 1 && chunks[i + 1].type === "IDAT" /* IDAT */) {
+            dataChunks.push(chunks[++i]);
+          }
+          ctx.image = {
+            width: header.width,
+            height: header.height,
+            // HACK: Not sure why TS doesn't like unioned typed arrays
+            data: parseChunk(ctx, header, dataChunks)
+          };
+          break;
+        }
+        case "PLTE" /* PLTE */:
+          ctx.palette = (await Promise.resolve().then(() => (init_chunk_PLTE(), chunk_PLTE_exports))).parseChunk(
+            ctx,
+            header,
+            chunk
+          );
+          break;
+        case "IEND" /* IEND */:
+          parseChunk2(ctx, header, chunk);
+          break;
+        default:
+          if (parseChunkTypes.includes(chunk.type)) {
+            try {
+              ctx.metadata.push(
+                (await getChunkDecoder(chunk.type)).parseChunk(
+                  ctx,
+                  header,
+                  chunk
+                )
+              );
+            } catch (e) {
+              if (e instanceof DecodeWarning) {
+                handleWarning(ctx, e);
+              } else {
+                throw e;
+              }
+            }
+          } else {
+            if (!allLazyChunkTypes.includes(chunk.type)) {
+              if (!chunk.isAncillary) {
+                throw new DecodeError(
+                  ctx,
+                  `Unrecognized critical chunk type "${chunk.type}"`,
+                  chunk.offset + 4 /* Length */
+                );
+              } else {
+                ctx.info.push(`Unrecognized chunk type "${chunk.type}"`);
+              }
+            }
+          }
+          break;
+      }
+      ctx.parsedChunks.add(chunk.type);
+    }
+    if (!ctx.image) {
+      throw new DecodeError(ctx, "Failed to decode, no IDAT chunk", 0);
+    }
+    if (options && options.force32 && ctx.image.data.BYTES_PER_ELEMENT === 2) {
+      ctx.image.data = convert16BitTo8BitData(ctx.image.data);
+    }
+    return {
+      image: ctx.image,
+      details: {
+        width: header.width,
+        height: header.height,
+        bitDepth: header.bitDepth,
+        colorType: header.colorType,
+        interlaceMethod: header.interlaceMethod
+      },
+      palette: ctx.palette,
+      metadata: ctx.metadata,
+      rawChunks: chunks,
+      warnings: ctx.warnings,
+      info: ctx.info
+    };
+  }
+  function readChunks(ctx) {
+    const chunks = [];
+    let offset = 8;
+    let hasData = false;
+    let hasEnd = false;
+    let chunk;
+    while (offset < ctx.view.byteLength) {
+      try {
+        chunk = readChunk(ctx, offset);
+      } catch (e) {
+        if (!hasEnd || !(e instanceof Error)) {
+          throw e;
+        }
+        handleWarning(
+          ctx,
+          new DecodeWarning(
+            "Could not parse chunk after IEND: " + e.message,
+            offset
+          )
+        );
+      }
+      offset += 4 /* Length */ + 4 /* Type */ + chunk.dataLength + 4 /* CRC */;
+      chunks.push(chunk);
+      hasData ||= chunk.type === "IDAT" /* IDAT */;
+      hasEnd ||= chunk.type === "IEND" /* IEND */;
+    }
+    if (chunks[0].type !== "IHDR" /* IHDR */) {
+      throw new DecodeError(
+        ctx,
+        `First chunk is not IHDR`,
+        chunks[0].offset + 4 /* Type */
+      );
+    }
+    if (chunks[chunks.length - 1].type !== "IEND" /* IEND */) {
+      handleWarning(
+        ctx,
+        new DecodeWarning(
+          "Last chunk is not IEND",
+          chunks[chunks.length - 1].offset + 4 /* Length */
+        )
+      );
+    }
+    if (!hasData) {
+      throw new DecodeError(ctx, "No IDAT chunk", 0);
+    }
+    return chunks;
+  }
+  function readChunk(ctx, offset) {
+    if (ctx.view.byteLength < offset + 4 /* Length */) {
+      throw new DecodeError(ctx, `EOF while reading chunk length`, offset);
+    }
+    const dataLength = ctx.view.getUint32(offset);
+    if (ctx.view.byteLength < offset + 4 /* Length */ + 4 /* Type */) {
+      throw new DecodeError(ctx, `EOF while reading chunk type`, offset);
+    }
+    const type = String.fromCharCode(
+      ctx.view.getUint8(offset + 4),
+      ctx.view.getUint8(offset + 5),
+      ctx.view.getUint8(offset + 6),
+      ctx.view.getUint8(offset + 7)
+    );
+    if (ctx.view.byteLength < offset + 4 /* Length */ + 4 /* Type */ + dataLength + 4 /* CRC */) {
+      throw new DecodeError(ctx, `EOF while reading chunk "${type}"`, offset);
+    }
+    const actualCrc = ctx.view.getUint32(
+      offset + 4 /* Length */ + 4 /* Type */ + dataLength
+    ) >>> 0;
+    const expectedCrc = crc322(
+      ctx.view,
+      offset + 4 /* Length */,
+      4 /* Type */ + dataLength
+    );
+    if (actualCrc !== expectedCrc) {
+      handleWarning(
+        ctx,
+        new DecodeWarning(
+          `CRC for chunk "${type}" at offset 0x${offset.toString(
+            16
+          )} doesn't match (0x${actualCrc.toString(
+            16
+          )} !== 0x${expectedCrc.toString(16)})`,
+          offset
+        )
+      );
+    }
+    return {
+      offset,
+      type,
+      dataLength,
+      isAncillary: isCharLowercase(type, 0),
+      isPrivate: isCharLowercase(type, 1),
+      isSafeToCopy: isCharLowercase(type, 3)
+    };
+  }
+  function isCharLowercase(text, index) {
+    return !!(text.charCodeAt(index) & 32);
+  }
+  var defaultLazyChunkTypes, allLazyChunkTypes;
+  var init_decoder = __esm({
+    "src/png-codec/decode/decoder.ts"() {
+      init_array();
+      init_assert();
+      init_chunk_IDAT();
+      init_chunk_IEND();
+      init_chunk_IHDR();
+      init_crc322();
+      init_types();
+      defaultLazyChunkTypes = Object.freeze([
+        "tRNS" /* tRNS */
+      ]);
+      allLazyChunkTypes = Object.freeze([
+        "bKGD" /* bKGD */,
+        "cHRM" /* cHRM */,
+        "eXIf" /* eXIf */,
+        "gAMA" /* gAMA */,
+        "hIST" /* hIST */,
+        "iCCP" /* iCCP */,
+        "iTXt" /* iTXt */,
+        "tIME" /* tIME */,
+        "oFFs" /* oFFs */,
+        "pCAL" /* pCAL */,
+        "pHYs" /* pHYs */,
+        "sBIT" /* sBIT */,
+        "sCAL" /* sCAL */,
+        "sPLT" /* sPLT */,
+        "sRGB" /* sRGB */,
+        "sTER" /* sTER */,
+        "tEXt" /* tEXt */,
+        "tRNS" /* tRNS */,
+        "zTXt" /* zTXt */
+      ]);
+    }
+  });
+
+  // src/png-codec/encode/byteStream.ts
+  var ByteStream;
+  var init_byteStream = __esm({
+    "src/png-codec/encode/byteStream.ts"() {
+      ByteStream = class {
+        constructor(length) {
+          this.offset = 0;
+          this.array = new Uint8Array(length);
+          this.view = new DataView(
+            this.array.buffer,
+            this.array.byteOffset,
+            this.array.byteLength
+          );
+        }
+        writeUint8(value) {
+          this.view.setUint8(this.offset, value);
+          this.offset += 1;
+        }
+        writeUint16(value) {
+          this.view.setUint16(this.offset, value);
+          this.offset += 2;
+        }
+        writeUint32(value) {
+          this.view.setUint32(this.offset, value);
+          this.offset += 4;
+        }
+        writeArray(values) {
+          this.array.set(values, this.array.byteOffset + this.offset);
+          this.offset += values.length;
+        }
+        assertAtEnd() {
+          if (this.offset !== this.array.length) {
+            throw new Error("Writing finished before expected length of stream");
+          }
+        }
+      };
+    }
+  });
+
+  // src/png-codec/encode/write.ts
+  function writeChunkType(stream, type) {
+    stream.writeUint8(type.charCodeAt(0));
+    stream.writeUint8(type.charCodeAt(1));
+    stream.writeUint8(type.charCodeAt(2));
+    stream.writeUint8(type.charCodeAt(3));
+  }
+  function writeChunk(type, data) {
+    const stream = new ByteStream(
+      4 /* Length */ + 4 /* Length */ + data.length + 4 /* CRC */
+    );
+    stream.writeUint32(data.length);
+    if (type.length !== 4) {
+      throw new Error(`Cannot encode a chunk type of length ${type.length}`);
+    }
+    writeChunkType(stream, type);
+    stream.writeArray(data);
+    stream.writeUint32(
+      crc322(
+        stream.view,
+        4 /* Length */,
+        4 /* Type */ + data.length
+      )
+    );
+    stream.assertAtEnd();
+    return stream.array;
+  }
+  function writeChunkDataFn(type, dataLength, writeDataFn) {
+    const stream = new ByteStream(
+      4 /* Length */ + 4 /* Length */ + dataLength + 4 /* CRC */
+    );
+    stream.writeUint32(dataLength);
+    if (type.length !== 4) {
+      throw new Error(`Cannot encode a chunk type of length ${type.length}`);
+    }
+    writeChunkType(stream, type);
+    writeDataFn(stream);
+    stream.writeUint32(
+      crc322(
+        stream.view,
+        4 /* Length */,
+        4 /* Type */ + dataLength
+      )
+    );
+    stream.assertAtEnd();
+    return stream.array;
+  }
+  var init_write = __esm({
+    "src/png-codec/encode/write.ts"() {
+      init_byteStream();
+      init_crc322();
+      init_types();
+    }
+  });
+
+  // src/png-codec/encode/chunks/IDAT_encode.ts
+  function encodeChunk(ctx, image) {
+    const dataStreamLength = calculateDataLength(ctx, image);
+    const stream = new ByteStream(dataStreamLength);
+    writeUncompressedData(ctx, image, stream);
+    const compressed = deflate2(stream.array);
+    const chunkIDAT = writeChunk("IDAT", compressed);
+    return chunkIDAT;
+  }
+  function calculateDataLength(ctx, image) {
+    if (ctx.bitDepth < 8) {
+      throw new Error("Only bit depth 8 and 16 is supported currently");
+    }
+    if (image.data.BYTES_PER_ELEMENT === 2 && ctx.bitDepth === 8) {
+      throw new Error("16 to 8 bit conversion isn't supported yet");
+    }
+    if (ctx.interlaceMethod !== 0 /* None */) {
+      throw new Error("Only interlace method 0 is supported currently");
+    }
+    let channels;
+    switch (ctx.colorType) {
+      case 0 /* Grayscale */:
+        channels = 1;
+        break;
+      case 2 /* Truecolor */:
+        channels = 3;
+        break;
+      case 3 /* Indexed */:
+        channels = 1;
+        break;
+      case 4 /* GrayscaleAndAlpha */:
+        channels = 2;
+        break;
+      case 6 /* TruecolorAndAlpha */:
+        channels = 4;
+        break;
+    }
+    const bytesPerChannel = ctx.bitDepth === 16 ? 2 : 1;
+    const bytesPerPixel = channels * bytesPerChannel;
+    const bytesPerLine = (
+      /*Filter type*/
+      1 + bytesPerPixel * image.width
+    );
+    const bytesAllLines = bytesPerLine * image.height;
+    return bytesAllLines;
+  }
+  function writeUncompressedData(ctx, image, stream) {
+    let i = 0, x = 0, y = 0;
+    if (ctx.colorType === 3 /* Indexed */) {
+      if (!ctx.palette) {
+        throw new Error("Cannot encode indexed file without palette");
+      }
+      if (image.data.BYTES_PER_ELEMENT === 2) {
+        throw new Error("Cannot encode indexed file from 16-bit image");
+      }
+      for (; y < image.height; y++) {
+        stream.writeUint8(0);
+        for (x = 0; x < image.width; x++) {
+          stream.writeUint8(
+            ctx.palette.get(
+              image.data[i] << 24 | image.data[i + 1] << 16 | image.data[i + 2] << 8 | image.data[i + 3]
+            )
+          );
+          i += 4;
+        }
+      }
+      return;
+    }
+    let filterPattern;
+    if (ctx.options.filterPattern) {
+      if (ctx.options.filterPattern.length === 0) {
+        throw new Error("Filter pattern with 0 entries");
+      }
+      filterPattern = ctx.options.filterPattern;
+    }
+    const bpp = 4 * image.data.BYTES_PER_ELEMENT;
+    const filterFns = [];
+    for (const filterType of [0, 1, 2, 3, 4]) {
+      filterFns[filterType] = buildFilterFunction(
+        bpp,
+        bpp * image.width,
+        filterType
+      );
+    }
+    const channelsToWrite = getChannelsToWrite(ctx.colorType);
+    for (; y < image.height; y++) {
+      const filterType = filterPattern ? filterPattern[y % filterPattern.length] : pickFilterType(ctx.colorType, image, y * image.width * 4, filterFns);
+      const dataUint8 = new Uint8Array(
+        image.data.buffer,
+        image.data.byteOffset,
+        image.data.byteLength
+      );
+      stream.writeUint8(filterType);
+      let byte = 0, c = 0;
+      for (x = 0; x < image.width; x++) {
+        for (c of channelsToWrite) {
+          for (byte = image.data.BYTES_PER_ELEMENT - 1; byte >= 0; byte--) {
+            stream.writeUint8(
+              filterFns[filterType](
+                dataUint8,
+                (i + c) * image.data.BYTES_PER_ELEMENT + byte,
+                x === 0
+              )
+            );
+          }
+        }
+        i += 4;
+      }
+    }
+  }
+  function pickFilterType(colorType, image, lineIndex, filterFns) {
+    const filterSums = [];
+    const bpp = 4 * image.data.BYTES_PER_ELEMENT;
+    for (const filterType of [0, 1, 2, 3, 4]) {
+      let sum = 0;
+      const channelsToWrite = getChannelsToWrite(colorType);
+      const dataUint8 = new Uint8Array(
+        image.data.buffer,
+        image.data.byteOffset,
+        image.data.byteLength
+      );
+      let c = 0, byte = 0;
+      for (let i = lineIndex; i < lineIndex + image.width * 4; i += 4) {
+        for (c of channelsToWrite) {
+          for (byte = image.data.BYTES_PER_ELEMENT - 1; byte >= 0; byte--) {
+            sum += filterFns[filterType](
+              dataUint8,
+              (i + c) * image.data.BYTES_PER_ELEMENT + byte,
+              i === lineIndex
+            );
+          }
+        }
+      }
+      filterSums[filterType] = sum;
+    }
+    let lowestFilterType = 0 /* None */;
+    let lowestSum = filterSums[0 /* None */];
+    for (const filterType of [1, 2, 3, 4]) {
+      if (filterSums[filterType] < lowestSum) {
+        lowestFilterType = filterType;
+        lowestSum = filterSums[filterType];
+      }
+    }
+    return lowestFilterType;
+  }
+  function buildFilterFunction(bpp, bpl, filterType) {
+    let ai = 0, bi = 0, ci = 0;
+    switch (filterType) {
+      case 0 /* None */:
+        return (filt, filtX) => filt[filtX];
+      case 1 /* Sub */:
+        return (filt, filtX, isFirstInLine) => {
+          ai = isFirstInLine ? -1 : filtX - bpp;
+          return (filt[filtX] - (ai < 0 ? 0 : filt[filtX - bpp]) + 256) % 256;
+        };
+      case 2 /* Up */:
+        return (filt, filtX) => {
+          bi = filtX - bpl;
+          return (filt[filtX] - (bi < 0 ? 0 : filt[bi]) + 256) % 256;
+        };
+      case 3 /* Average */:
+        return (filt, filtX, isFirstInLine) => {
+          ai = isFirstInLine ? -1 : filtX - bpp;
+          bi = filtX - bpl;
+          return (filt[filtX] - Math.floor(
+            ((ai < 0 ? 0 : filt[ai]) + (bi < 0 ? 0 : filt[bi])) / 2
+          ) + 256) % 256;
+        };
+      case 4 /* Paeth */:
+        return (filt, filtX, isFirstInLine) => {
+          ai = isFirstInLine ? -1 : filtX - bpp;
+          bi = filtX - bpl;
+          ci = isFirstInLine ? -1 : filtX - bpp - bpl;
+          return (filt[filtX] - paethPredicator(
+            ai < 0 ? 0 : filt[ai],
+            bi < 0 ? 0 : filt[bi],
+            ci < 0 ? 0 : filt[ci]
+          ) + 256) % 256;
+        };
+    }
+  }
+  function getChannelsToWrite(colorType) {
+    switch (colorType) {
+      case 0 /* Grayscale */:
+        return [0];
+      case 2 /* Truecolor */:
+        return [0, 1, 2];
+      case 4 /* GrayscaleAndAlpha */:
+        return [0, 3];
+      case 6 /* TruecolorAndAlpha */:
+        return [0, 1, 2, 3];
+    }
+  }
+  var init_IDAT_encode = __esm({
+    "src/png-codec/encode/chunks/IDAT_encode.ts"() {
+      init_pako();
+      init_byteStream();
+      init_paeth();
+      init_types();
+      init_write();
+    }
+  });
+
+  // src/png-codec/encode/chunks/IEND_encode.ts
+  function encodeChunk2() {
+    return writeChunk("IEND", new Uint8Array(0));
+  }
+  var init_IEND_encode = __esm({
+    "src/png-codec/encode/chunks/IEND_encode.ts"() {
+      init_write();
+    }
+  });
+
+  // src/png-codec/encode/chunks/IHDR_encode.ts
+  function encodeChunk3(ctx, image) {
+    if (image.width <= 0 || image.height <= 0) {
+      throw new Error(`Invalid dimensions ${image.width}x${image.height}`);
+    }
+    return writeChunkDataFn("IHDR", 13 /* DataLength */, (stream) => {
+      stream.writeUint32(image.width);
+      stream.writeUint32(image.height);
+      stream.writeUint8(ctx.bitDepth);
+      stream.writeUint8(ctx.colorType);
+      stream.writeUint8(0);
+      stream.writeUint8(0);
+      stream.writeUint8(ctx.interlaceMethod);
+    });
+  }
+  var init_IHDR_encode = __esm({
+    "src/png-codec/encode/chunks/IHDR_encode.ts"() {
+      init_write();
+    }
+  });
+
+  // src/png-codec/encode/chunks/tRNS_encode.ts
+  var tRNS_encode_exports = {};
+  __export(tRNS_encode_exports, {
+    encodeChunk: () => encodeChunk4
+  });
+  function encodeChunk4(ctx, image) {
+    switch (ctx.colorType) {
+      case 0 /* Grayscale */: {
+        if (ctx.firstTransparentColor === void 0) {
+          throw new Error(
+            "Cannot write tRNS for grayscale without any transparent colors"
+          );
+        }
+        const firstTransparentColor = ctx.firstTransparentColor;
+        return writeChunkDataFn("tRNS", 2, (stream) => {
+          if (image.data.BYTES_PER_ELEMENT === 2) {
+            stream.writeUint16(firstTransparentColor >> 48 & 65535);
+          } else {
+            stream.writeUint16(firstTransparentColor >> 24 & 255);
+          }
+        });
+      }
+      case 3 /* Indexed */: {
+        if (!ctx.palette) {
+          throw new Error(
+            "Cannot encode tRNS chunk for indexed image without palette"
+          );
+        }
+        return writeChunkDataFn("tRNS", ctx.palette.size, (stream) => {
+          for (const color of ctx.colorSet) {
+            stream.writeUint8(color & 255);
+          }
+        });
+      }
+      case 2 /* Truecolor */: {
+        if (ctx.firstTransparentColor === void 0) {
+          throw new Error(
+            "Cannot write tRNS for True color without any transparent colors"
+          );
+        }
+        const firstTransparentColor = ctx.firstTransparentColor;
+        return writeChunkDataFn("tRNS", 6, (stream) => {
+          if (image.data.BYTES_PER_ELEMENT === 2) {
+            stream.writeUint16(firstTransparentColor >> 48 & 65535);
+            stream.writeUint16(firstTransparentColor >> 32 & 65535);
+            stream.writeUint16(firstTransparentColor >> 16 & 65535);
+          } else {
+            stream.writeUint16(firstTransparentColor >> 24 & 255);
+            stream.writeUint16(firstTransparentColor >> 16 & 255);
+            stream.writeUint16(firstTransparentColor >> 8 & 255);
+          }
+        });
+      }
+      /* istanbul ignore next - this error should never happen in practice */
+      default:
+        throw new Error(
+          `Cannot encode tRNS chunk for color type "${ctx.colorType}"`
+        );
+    }
+  }
+  var init_tRNS_encode = __esm({
+    "src/png-codec/encode/chunks/tRNS_encode.ts"() {
+      init_types();
+      init_write();
+    }
+  });
+
+  // src/png-codec/encode/chunks/PLTE_encode.ts
+  var PLTE_encode_exports = {};
+  __export(PLTE_encode_exports, {
+    encodeChunk: () => encodeChunk5
+  });
+  function encodeChunk5(ctx, image) {
+    if (ctx.bitDepth === 16 || image.data.BYTES_PER_ELEMENT === 2) {
+      throw new Error("Cannot encode 16 bit images using indexed color type");
+    }
+    if (ctx.colorSet.size > Math.pow(2, ctx.bitDepth)) {
+      throw new Error(
+        `Too many colors ${ctx.colorSet.size} to encode into indexed image (2^${ctx.bitDepth} = ${Math.pow(2, ctx.bitDepth)})`
+      );
+    }
+    const chunkData = writeChunkDataFn(
+      "PLTE",
+      ctx.colorSet.size * 3,
+      (stream) => {
+        for (const color of ctx.colorSet.values()) {
+          stream.writeUint8(color >> 24 & 255);
+          stream.writeUint8(color >> 16 & 255);
+          stream.writeUint8(color >> 8 & 255);
+        }
+      }
+    );
+    const palette = /* @__PURE__ */ new Map();
+    for (const color of ctx.colorSet.values()) {
+      palette.set(color, palette.size);
+    }
+    return {
+      chunkData,
+      palette
+    };
+  }
+  var init_PLTE_encode = __esm({
+    "src/png-codec/encode/chunks/PLTE_encode.ts"() {
+      init_write();
+    }
+  });
+
+  // src/png-codec/encode/chunks/tEXt_encode.ts
+  var tEXt_encode_exports = {};
+  __export(tEXt_encode_exports, {
+    encodeChunk: () => encodeChunk6
+  });
+  function encodeChunk6(ctx, image, keyword, value) {
+    if (keyword.length === 0 || keyword.length > 79) {
+      throw new EncodeError(
+        `tEXt: Invalid keyword length: 0 < ${keyword.length} < 80`,
+        0
+      );
+    }
+    value = value instanceof Uint8Array ? value : new TextEncoder().encode(value);
+    const dataLength = keyword.length + 1 + value.length;
+    return writeChunkDataFn("tEXt", dataLength, (stream) => {
+      let i = 0;
+      for (; i < keyword.length; i++) {
+        stream.writeUint8(keyword.charCodeAt(i));
+      }
+      stream.writeUint8(0);
+      for (i = 0; i < value.length; i++) {
+        stream.writeUint8(value[i]);
+      }
+    });
+  }
+  var init_tEXt_encode = __esm({
+    "src/png-codec/encode/chunks/tEXt_encode.ts"() {
+      init_assert2();
+      init_write();
+    }
+  });
+
+  // src/png-codec/encode/chunks/zTXt_encode.ts
+  var zTXt_encode_exports = {};
+  __export(zTXt_encode_exports, {
+    encodeChunk: () => encodeChunk7
+  });
+  function encodeChunk7(ctx, image, keyword, value) {
+    if (keyword.length === 0 || keyword.length > 79) {
+      throw new EncodeError(
+        `zTXt: Invalid keyword length: 0 < ${keyword.length} < 80`,
+        0
+      );
+    }
+    value = deflate2(value);
+    const dataLength = keyword.length + 1 + 1 + value.byteLength;
+    return writeChunkDataFn("zTXt", dataLength, (stream) => {
+      let i = 0;
+      for (; i < keyword.length; i++) {
+        stream.writeUint8(keyword.charCodeAt(i));
+      }
+      stream.writeUint8(0);
+      stream.writeUint8(0);
+      for (i = 0; i < value.byteLength; i++) {
+        stream.writeUint8(value[i]);
+      }
+    });
+  }
+  var init_zTXt_encode = __esm({
+    "src/png-codec/encode/chunks/zTXt_encode.ts"() {
+      init_pako();
+      init_assert2();
+      init_write();
+    }
+  });
+
+  // src/png-codec/encode/encoder.ts
+  var encoder_exports = {};
+  __export(encoder_exports, {
+    EncodeError: () => EncodeError,
+    EncodeWarning: () => EncodeWarning,
+    encodePng: () => encodePng
+  });
+  function getChunkDecoder2(type) {
+    switch (type) {
+      case "tRNS" /* tRNS */:
+        return Promise.resolve().then(() => (init_tRNS_encode(), tRNS_encode_exports));
+      /* istanbul ignore next - this error should never happen in practice */
+      default:
+        throw new Error(`Could not get encoder for chunk type "${type}"`);
+    }
+  }
+  async function encodePng(image, options = {}) {
+    if (image.data.length !== image.width * image.height * 4) {
+      throw new EncodeError(
+        `Provided image data length (${image.data.length}) is not expected length (${image.width * image.height * 4})`,
+        Math.min(image.data.length, image.width * image.height * 4) - 1
+      );
+    }
+    const sections = [];
+    sections.push(writePngSignature());
+    const ctx = analyze(image, options);
+    sections.push(encodeChunk3(ctx, image));
+    if (ctx.colorType === 3 /* Indexed */) {
+      const result2 = (await Promise.resolve().then(() => (init_PLTE_encode(), PLTE_encode_exports))).encodeChunk(
+        ctx,
+        image
+      );
+      ctx.palette = result2.palette;
+      sections.push(result2.chunkData);
+    }
+    if (ctx.useTransparencyChunk) {
+      sections.push(
+        (await getChunkDecoder2("tRNS" /* tRNS */)).encodeChunk(ctx, image)
+      );
+    }
+    sections.push(encodeChunk(ctx, image));
+    if (options?.ancillaryChunks === void 0) {
+    } else {
+      for (const chunk of options.ancillaryChunks) {
+        switch (chunk.type) {
+          case "tEXt" /* tEXt */:
+            sections.push(
+              (await Promise.resolve().then(() => (init_tEXt_encode(), tEXt_encode_exports))).encodeChunk(
+                ctx,
+                image,
+                chunk.keyword,
+                chunk.text
+              )
+            );
+            break;
+          case "zTXt" /* zTXt */:
+            sections.push(
+              (await Promise.resolve().then(() => (init_zTXt_encode(), zTXt_encode_exports))).encodeChunk(
+                ctx,
+                image,
+                chunk.keyword,
+                chunk.text
+              )
+            );
+            break;
+          default:
+            throw new Error(`Cannot encode chunk type "${chunk.type}"`);
+        }
+      }
+    }
+    sections.push(encodeChunk2());
+    const totalLength = sections.reduce((p, c) => p + c.length, 0);
+    const result = new Uint8Array(totalLength);
+    let offset = 0;
+    for (const s of sections) {
+      result.set(s, offset);
+      offset += s.length;
+    }
+    return {
+      data: result,
+      warnings: ctx.warnings,
+      info: ctx.info
+    };
+  }
+  function writePngSignature() {
+    const stream = new ByteStream(8);
+    stream.writeUint8(137);
+    stream.writeUint8(80);
+    stream.writeUint8(78);
+    stream.writeUint8(71);
+    stream.writeUint8(13);
+    stream.writeUint8(10);
+    stream.writeUint8(26);
+    stream.writeUint8(10);
+    stream.assertAtEnd();
+    return stream.array;
+  }
+  function analyze(image, options = {}) {
+    const warnings = [];
+    const info = [];
+    const pixelCount = image.width * image.height;
+    const indexCount = pixelCount * 4;
+    const colorSet = /* @__PURE__ */ new Set();
+    const transparentColorSet = /* @__PURE__ */ new Set();
+    let rgbaId = 0;
+    if (image.data.BYTES_PER_ELEMENT === 2) {
+      for (let i = 0; i < indexCount; i += 4) {
+        rgbaId = image.data[i] << 48 | image.data[i + 1] << 32 | image.data[i + 2] << 16 | image.data[i + 3];
+        if (image.data[i + 3] < 65535) {
+          transparentColorSet.add(rgbaId);
+        }
+        colorSet.add(rgbaId);
+      }
+    } else {
+      for (let i = 0; i < indexCount; i += 4) {
+        rgbaId = image.data[i] << 24 | image.data[i + 1] << 16 | image.data[i + 2] << 8 | image.data[i + 3];
+        if (image.data[i + 3] < 255) {
+          transparentColorSet.add(rgbaId);
+        }
+        colorSet.add(rgbaId);
+      }
+    }
+    let colorType = options.colorType;
+    if (colorType === void 0) {
+      if (colorSet.size > 256 || image.data.BYTES_PER_ELEMENT === 2) {
+        colorType = 2 /* Truecolor */;
+      } else {
+        colorType = 3 /* Indexed */;
+      }
+    }
+    let useTransparencyChunk;
+    switch (colorType) {
+      case 0 /* Grayscale */:
+      case 2 /* Truecolor */:
+        useTransparencyChunk = transparentColorSet.size === 1;
+        if (!useTransparencyChunk && transparentColorSet.size > 1) {
+          colorType = colorType === 2 /* Truecolor */ ? 6 /* TruecolorAndAlpha */ : 4 /* GrayscaleAndAlpha */;
+          if (options.colorType === 2 /* Truecolor */) {
+            handleWarning2(
+              { options, warnings },
+              new EncodeWarning(
+                `Cannot encode image as color type Truecolor as it contains ${transparentColorSet.size} transparent colors`,
+                0
+              )
+            );
+          }
+        }
+        break;
+      case 3 /* Indexed */:
+        useTransparencyChunk = transparentColorSet.size > 0;
+        break;
+      default:
+        useTransparencyChunk = false;
+    }
+    if (options.colorType === void 0) {
+      info.push(`Using color type ${colorType}`);
+    }
+    return {
+      colorType,
+      bitDepth: image.data.BYTES_PER_ELEMENT === 2 ? 16 : 8,
+      interlaceMethod: 0 /* None */,
+      colorSet,
+      transparentColorCount: transparentColorSet.size,
+      firstTransparentColor: transparentColorSet.size > 0 ? transparentColorSet.values().next().value : void 0,
+      useTransparencyChunk,
+      options,
+      warnings,
+      info
+    };
+  }
+  var init_encoder = __esm({
+    "src/png-codec/encode/encoder.ts"() {
+      init_byteStream();
+      init_IDAT_encode();
+      init_IEND_encode();
+      init_IHDR_encode();
+      init_assert2();
+      init_types();
+    }
+  });
+
+  // src/index.ts
+  var index_exports = {};
+  __export(index_exports, {
+    arrayBufferToValue: () => arrayBufferToValue,
+    compress: () => compress,
+    compressJson: () => compressJson,
+    createDataBlock: () => createDataBlock,
+    decode: () => decode,
+    decodeBinary: () => decodeBinary,
+    decodeImageData: () => decodeImageData,
+    decodeImageDataBinary: () => decodeImageDataBinary,
+    decodeImageDataBlocks: () => decodeImageDataBlocks,
+    decodeImageMetadata: () => decodeImageMetadata,
+    decompress: () => decompress2,
+    decompressAsArrayBuffer: () => decompressAsArrayBuffer,
+    decompressAsString: () => decompressAsString,
+    defaultCompressionFormat: () => defaultCompressionFormat,
+    encode: () => encode,
+    encodeBinary: () => encodeBinary,
+    encodeImageData: () => encodeImageData,
+    encodeImageDataBlocks: () => encodeImageDataBlocks,
+    encodeToBlob: () => encodeToBlob,
+    encodeToImage: () => encodeToImage,
+    getDataBlock: () => getDataBlock,
+    getDataBlocks: () => getDataBlocks,
+    valueToArrayBuffer: () => valueToArrayBuffer
+  });
+
+  // src/png-codec/index.ts
+  var png_codec_exports = {};
+  __export(png_codec_exports, {
+    ChunkPartByteLength: () => ChunkPartByteLength,
+    ColorType: () => ColorType,
+    DecodeError: () => DecodeError,
+    DecodeWarning: () => DecodeWarning,
+    EncodeError: () => EncodeError,
+    EncodeWarning: () => EncodeWarning,
+    FilterMethod: () => FilterMethod,
+    FilterType: () => FilterType,
+    InterlaceMethod: () => InterlaceMethod,
+    KnownChunkTypes: () => KnownChunkTypes,
+    RenderingIntent: () => RenderingIntent,
+    decodePng: () => decodePng2,
+    encodePng: () => encodePng2
+  });
+
+  // src/png-codec/public.ts
+  init_assert();
+  init_assert2();
+  async function decodePng2(data, options) {
+    return (await Promise.resolve().then(() => (init_decoder(), decoder_exports))).decodePng(data, options);
+  }
+  async function encodePng2(data, options) {
+    return (await Promise.resolve().then(() => (init_encoder(), encoder_exports))).encodePng(data, options);
+  }
+
+  // src/png-codec/index.ts
+  init_api();
+  init_types();
+
+  // src/image.ts
+  function createImageBlob(buffer) {
+    return new Blob([buffer], {
+      type: "image/png"
+    });
+  }
+  async function blobToImageElement(blob, image = document.createElement("img")) {
+    return new Promise((resolve, reject) => {
+      const listener = () => {
+        URL.revokeObjectURL(image.src);
+        image.removeEventListener("load", listener);
+        image.removeEventListener("error", reject);
+        resolve(image);
+      };
+      image.addEventListener("load", listener);
+      image.addEventListener("error", reject);
+      image.src = URL.createObjectURL(blob);
+    });
+  }
+  function encodeDataIntoImage(data, img) {
+    const size = data.length;
+    for (let i = 0; i < 3; i++) {
+      img[i] = size / Math.pow(256, i) % 256 | 0;
+    }
+    img[3] = 255;
+    for (let i = 4, j = 0, l = img.length; i < l; i += 4, j += 3) {
+      img[i] = data[j] || 0;
+      img[i + 1] = data[j + 1] || 0;
+      img[i + 2] = data[j + 2] || 0;
+      img[i + 3] = 255;
+    }
+    return img;
+  }
+  function decodeDataFromImage(img) {
+    let size = 0;
+    for (let i = 0; i < 3; i++) {
+      const val = img[i] * Math.pow(256, i);
+      size += val;
+    }
+    const data = new Uint8Array(size);
+    root: for (let i = 4, j = 0, l = img.length; j < l; i += 4, j += 3) {
+      for (let k = 0; k < 3; k++) {
+        if (j + k >= size) break root;
+        data[j + k] = img[i + k];
+      }
+    }
+    return data.buffer;
+  }
+
+  // src/png.ts
+  async function encodeBinaryToPng(buffer) {
+    const data = new Uint8Array(buffer);
+    const size = Math.ceil(Math.sqrt(data.length / 3 + 1));
+    const target = new Uint8ClampedArray(size * size * 4);
+    encodeDataIntoImage(data, target);
+    const arr = await encodePng2({
+      width: size,
+      height: size,
+      data: new Uint8Array(target.buffer)
+    });
+    return arr.data.buffer;
+  }
+  async function decodeBinaryFromPng(buffer) {
+    const { image } = await decodePng2(
+      new Uint8Array(buffer instanceof ArrayBuffer ? buffer : buffer.buffer)
+    );
+    return decodeDataFromImage(new Uint8ClampedArray(image.data.buffer));
+  }
+
+  // src/json-array-buffer.ts
+  function valueToArrayBuffer(value) {
+    return new TextEncoder().encode(JSON.stringify(value)).buffer;
+  }
+  function arrayBufferToValue(buffer) {
+    return JSON.parse(new TextDecoder().decode(buffer));
+  }
+
+  // src/compress.ts
+  var { CompressionStream, DecompressionStream, Response } = globalThis;
+  var defaultCompressionFormat = "gzip";
+  async function compress(buffer, compressionFormat = defaultCompressionFormat) {
+    const compressor = new CompressionStream(compressionFormat);
+    const stream = new Response(buffer).body?.pipeThrough(compressor);
+    return await new Response(stream).arrayBuffer();
+  }
+  async function compressJson(value, compressionFormat = defaultCompressionFormat) {
+    return await compress(valueToArrayBuffer(value), compressionFormat);
+  }
+  async function decompressAsResponse(buffer, compressionFormat = defaultCompressionFormat) {
+    const decompressor = new DecompressionStream(compressionFormat);
+    const stream = new Response(buffer).body?.pipeThrough(decompressor);
+    return new Response(stream);
+  }
+  async function decompressAsArrayBuffer(buffer, compressionFormat = defaultCompressionFormat) {
+    return (await decompressAsResponse(buffer, compressionFormat)).arrayBuffer();
+  }
+  async function decompressAsString(buffer, compressionFormat = defaultCompressionFormat) {
+    return (await decompressAsResponse(buffer, compressionFormat)).text();
+  }
+  var decompress2 = decompressAsArrayBuffer;
+
+  // src/encode.ts
+  async function encodeImageData(value) {
+    return await encodeBinaryToPng(
+      await compress(
+        value instanceof ArrayBuffer || value instanceof Uint8Array ? value : valueToArrayBuffer(value)
+      )
+    );
+  }
+  async function encode(value) {
+    return await encodeImageData(value);
+  }
+  async function encodeBinary(value) {
+    return await encodeImageData(value);
+  }
+  async function encodeToBlob(value) {
+    return createImageBlob(await encodeImageData(value));
+  }
+  async function encodeToImage(value, image) {
+    return blobToImageElement(
+      createImageBlob(await encodeImageData(value)),
+      image
+    );
+  }
+
+  // src/string-uint8-array.ts
+  function stringToUint8Array(str) {
+    const ret = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) {
+      ret[i] = str.charCodeAt(i);
+    }
+    return ret;
+  }
+
+  // src/data-blocks.ts
+  var { KnownChunkTypes: KnownChunkTypes4 } = png_codec_exports;
+  function createDataBlock(name, value) {
+    if (value instanceof ArrayBuffer) value = new Uint8Array(value);
+    if (value instanceof Uint8Array) {
+      return {
+        type: "bin",
+        name,
+        value
+      };
+    }
+    if (typeof value === "string") {
+      return {
+        type: "text",
+        name,
+        value
+      };
+    }
+    return {
+      type: "json",
+      name,
+      value
+    };
+  }
+  async function decodeImageDataBlocks(buffer, chunkTypes = []) {
+    const {
+      image,
+      metadata,
+      details,
+      palette
+      // warnings,
+      // info,
+    } = await decodePng2(
+      !(buffer instanceof Uint8Array) ? new Uint8Array(buffer) : buffer,
+      {
+        parseChunkTypes: chunkTypes === "*" ? chunkTypes : [...chunkTypes, KnownChunkTypes4.tEXt, KnownChunkTypes4.zTXt]
+      }
+    );
+    const blocks = [];
+    for (const {
+      type,
+      keyword = "",
+      text: value
+    } of metadata) {
+      const [prefix, name] = keyword.split("/");
+      switch (type) {
+        case KnownChunkTypes4.tEXt:
+          switch (prefix) {
+            case "text":
+              blocks.push({
+                type: prefix,
+                name,
+                value
+              });
+              break;
+          }
+          break;
+        case KnownChunkTypes4.zTXt:
+          switch (prefix) {
+            case "json":
+              blocks.push({
+                type: prefix,
+                name,
+                value: JSON.parse(String(value))
+              });
+              break;
+            case "bin":
+              blocks.push({
+                type: prefix,
+                name,
+                value: stringToUint8Array(value)
+              });
+              break;
+          }
+          break;
+      }
+    }
+    return {
+      image,
+      blocks,
+      chunks: metadata,
+      details,
+      palette
+    };
+  }
+  async function encodeImageDataBlocks(image, blockDefinition) {
+    const imageData = image instanceof ArrayBuffer || image instanceof Uint8Array ? (await decodePng2(image)).image : image;
+    const blocks = [];
+    const chunks = [];
+    for (const [key, value] of Object.entries(blockDefinition)) {
+      if (Array.isArray(value)) {
+        for (const subValue of value) {
+          blocks.push(createDataBlock(key, subValue));
+        }
+      } else {
+        blocks.push(createDataBlock(key, value));
+      }
+    }
+    for (const { type, name, value } of blocks) {
+      switch (type) {
+        case "text":
+          chunks.push({
+            type: KnownChunkTypes4.tEXt,
+            keyword: `${type}/${name}`,
+            text: value
+          });
+          break;
+        case "json":
+          chunks.push({
+            type: KnownChunkTypes4.zTXt,
+            keyword: `${type}/${name}`,
+            text: JSON.stringify(value)
+          });
+          break;
+        case "bin":
+          chunks.push({
+            type: KnownChunkTypes4.zTXt,
+            keyword: `${type}/${name}`,
+            // Array buffer to string - inlined here for performance
+            text: String.fromCharCode.apply(null, new Uint16Array(value))
+          });
+          break;
+        default:
+          break;
+      }
+    }
+    return (await encodePng2(imageData, {
+      ancillaryChunks: chunks
+    })).data;
+  }
+  function getDataBlock(name, blocks) {
+    for (const b of blocks) {
+      if (b.name === name) return b.value;
+    }
+  }
+  function getDataBlocks(name, blocks) {
+    return blocks.filter((b) => b.name === name).map((b) => b.value);
+  }
+
+  // src/decode.ts
+  async function decodeImageData(buffer) {
+    return arrayBufferToValue(await decodeImageDataBinary(buffer));
+  }
+  async function decodeImageDataBinary(buffer) {
+    return await decompressAsArrayBuffer(await decodeBinaryFromPng(buffer));
+  }
+  async function decodeImageMetadata(buffer) {
+    return await decodeImageDataBlocks(buffer);
+  }
+  async function decode(buffer) {
+    return await decodeImageData(buffer);
+  }
+  async function decodeBinary(buffer) {
+    return await decodeImageDataBinary(buffer);
+  }
+
+  // src/png-compressor.ts
+  window.PNGCompressor = index_exports;
+})();
 /**
  * @license
  * Copyright (c) 2022 Daniel Imms <http://www.growingwiththeweb.com>

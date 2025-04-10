@@ -3,7 +3,7 @@ import { compress } from './compress.ts'
 import { valueToArrayBuffer, type JsonValue } from './json-array-buffer.ts'
 import { blobToImageElement, createImageBlob } from './image.ts'
 
-type EncodableValue = JsonValue | ArrayBuffer | Uint8Array
+export type EncodableValue = JsonValue | ArrayBuffer | Uint8Array
 
 /**
  * Encode JSON value or binary data to image (color channels)
