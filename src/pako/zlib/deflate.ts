@@ -1500,9 +1500,9 @@ const deflateResetKeep = (strm) => {
     s.wrap === 2
       ? GZIP_STATE
       : //#endif
-      s.wrap
-      ? INIT_STATE
-      : BUSY_STATE
+        s.wrap
+        ? INIT_STATE
+        : BUSY_STATE
   strm.adler =
     s.wrap === 2
       ? 0 // crc32(0, Z_NULL, 0)
@@ -1962,10 +1962,10 @@ const deflate = (strm, flush) => {
       s.level === 0
         ? deflate_stored(s, flush)
         : s.strategy === Z_HUFFMAN_ONLY
-        ? deflate_huff(s, flush)
-        : s.strategy === Z_RLE
-        ? deflate_rle(s, flush)
-        : configuration_table[s.level].func(s, flush)
+          ? deflate_huff(s, flush)
+          : s.strategy === Z_RLE
+            ? deflate_rle(s, flush)
+            : configuration_table[s.level].func(s, flush)
 
     if (bstate === BS_FINISH_STARTED || bstate === BS_FINISH_DONE) {
       s.status = FINISH_STATE

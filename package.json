@@ -40,7 +40,7 @@
     "build:cjs": "bun build.ts cjs",
     "build:esm": " bun build.ts esm",
     "build:web": "bun build.ts web",
-    "build:types": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --outDir build/types",
+    "build:types": "tsc --project tsconfig.types.json",
     "build": "mkdir -p build && npm run clean && npm run format && npm run build:web && npm run build:cjs && npm run build:esm && npm run build:types && npm run docs",
     "start": "concurrently --raw 'npm run dev' 'npm run docs:dev'",
     "dev": "bun build.ts dev",
@@ -48,21 +48,21 @@
     "docs:dev": "NODE_ENV=development npm run docs -- --watch --preserveWatchOutput",
     "test": "bun tests/index.ts",
     "tdd": "chokidar \"src/**/*.ts\" \"tests/**/*.ts\" --initial --silent --command \"bun run test\"",
-    "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/*",
+    "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/* && rm -rf build/types/* && rm build/tsconfig.types.tsbuildinfo",
     "format": "prettier --no-config --no-semi --single-quote --write src",
     "release": "npm run build && npm publish --access public"
   },
   "dependencies": {},
   "devDependencies": {
-    "@gjsify/esbuild-plugin-transform-ext": "^0.0.3",
+    "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
     "chokidar-cli": "^3.0.0",
-    "concurrently": "^8.2.0",
+    "concurrently": "^9.1.2",
     "esbuild": "^0.25.2",
     "esbuild-node-externals": "^1.18.0",
-    "prettier": "^3.0.1",
+    "prettier": "^3.5.3",
     "testra": "^2.1.5",
-    "typedoc": "^0.24.8",
-    "typedoc-plugin-markdown": "^3.15.4",
-    "typedoc-plugin-mdn-links": "^3.0.3"
+    "typedoc": "^0.28.2",
+    "typedoc-plugin-markdown": "^4.6.2",
+    "typedoc-plugin-mdn-links": "^5.0.1"
   }
 }

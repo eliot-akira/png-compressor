@@ -54,6 +54,37 @@ npm install --global png-compressor
 ```
 -->
 
+## Develop
+
+Prerequisites: [Git](https://git-scm.com/), [Bun](https://bun.sh/)
+
+Clone the project and install dependencies.
+
+```sh
+git clone https://github.com/eliot-akira/png-compressor
+cd png-compressor
+bun install
+```
+
+Build for development, watch files for changes and rebuild. Serve static site for  documentation at http://localhost:8080.
+
+```sh
+bun run start
+```
+
+Build for production. Run formatter, tests, minify assets, build docs.
+
+```sh
+bun run build
+```
+
+Run tests.
+
+```sh
+bun run test
+```
+
+Use `bun run tdd` instead to watch files and re-run tests.
 
 ## Use
 
