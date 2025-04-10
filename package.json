@@ -5,7 +5,7 @@
   "description": "Compress and encode data in PNG image",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eliot-akira/png-compressor"
+    "url": "git+https://github.com/eliot-akira/png-compressor.git"
   },
   "keywords": [
     "gzip",
@@ -17,7 +17,7 @@
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",
   "bin": {
-    "png-compressor": "./bin/png-compressor"
+    "png-compressor": "bin/png-compressor"
   },
   "exports": {
     ".": {
