@@ -1,7 +1,7 @@
 import { test, is, ok, run } from 'testra'
 import {
-  decodeImageWithDataBlocks,
-} from '../common.ts'
+  decodeImageDataBlocks,
+} from './common.ts'
 
 export function testDecodeImageDataBlocks({
   id,
@@ -14,7 +14,7 @@ export function testDecodeImageDataBlocks({
   test(`Decode with data blocks image #${id}`, async () => {
     const buffer = sourceBuffer
 
-    const { image, blocks } = await decodeImageWithDataBlocks(buffer)
+    const { image, blocks } = await decodeImageDataBlocks(buffer)
 
     ok(true, 'decoded image metadata')
     // console.log('decoded', decoded)

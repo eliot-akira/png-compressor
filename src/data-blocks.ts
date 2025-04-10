@@ -10,6 +10,9 @@ import type {
   IPngMetadataCompressedTextualData,
 } from './png-codec/index.ts'
 import { stringToUint8Array } from './string-uint8-array.ts'
+import type { JsonValue } from './json-array-buffer.ts'
+
+const { KnownChunkTypes } = PngCodec
 
 /**
  * Data blocks: text, JSON, binary
@@ -27,14 +30,6 @@ export type JsonBlock = {
   value: JsonValue
 }
 
-export type JsonValue =
-  | null
-  | boolean
-  | number
-  | string
-  | JsonValue[]
-  | { [key: string]: JsonValue }
-
 export type BinaryBlock = {
   type: 'bin'
   name: string
@@ -45,8 +40,9 @@ export type DataBlock = TextBlock | JsonBlock | BinaryBlock
 
 export function createDataBlock(
   name: string,
-  value: string | JsonValue | Uint8Array,
+  value: string | JsonValue | Uint8Array | ArrayBuffer,
 ) {
+  if (value instanceof ArrayBuffer) value = new Uint8Array(value)
   if (value instanceof Uint8Array) {
     return {
       type: 'bin',
@@ -70,9 +66,6 @@ export function createDataBlock(
   } as JsonBlock
 }
 
-const { KnownChunkTypes } = PngCodec
-
-export { KnownChunkTypes }
 export type TextChunkTypes =
   | IPngMetadataCompressedTextualData
   | (IPngMetadataTextualData & {
@@ -81,7 +74,7 @@ export type TextChunkTypes =
 
 export type DecodedPng = IDecodedPng<IImage32 | IImage64>
 
-export async function decodeImageWithDataBlocks(
+export async function decodeImageDataBlocks(
   buffer: Uint8Array | ArrayBuffer,
   chunkTypes: IDecodePngOptions['parseChunkTypes'] = [],
 ): Promise<{
@@ -117,32 +110,36 @@ export async function decodeImageWithDataBlocks(
     text: value,
   } of metadata as TextChunkTypes[]) {
     const [prefix, name] = keyword.split('/')
-    if (type === KnownChunkTypes.tEXt) {
-      if (prefix === 'text') {
-        blocks.push({
-          type: prefix,
-          name,
-          value: value,
-          // latin1.unescape(value),
-          // stringToUint8Array(value),
-        })
-      }
-    } else if (type === KnownChunkTypes.zTXt) {
-      if (prefix === 'json') {
-        blocks.push({
-          type: prefix,
-          name,
-          value: JSON.parse(String(value)),
-        })
-      } else if (prefix === 'bin') {
-        blocks.push({
-          type: prefix,
-          name,
-          value: stringToUint8Array(value as string),
-        })
-      }
-    } else {
-      // Unknown
+    switch (type) {
+      case KnownChunkTypes.tEXt:
+        switch (prefix) {
+          case 'text':
+            blocks.push({
+              type: prefix,
+              name,
+              value: value,
+            })
+            break
+        }
+        break
+      case KnownChunkTypes.zTXt:
+        switch (prefix) {
+          case 'json':
+            blocks.push({
+              type: prefix,
+              name,
+              value: JSON.parse(String(value)),
+            })
+            break
+          case 'bin':
+            blocks.push({
+              type: prefix,
+              name,
+              value: stringToUint8Array(value as string),
+            })
+            break
+        }
+        break
     }
   }
 
@@ -158,37 +155,57 @@ export async function decodeImageWithDataBlocks(
 /**
  * Encode image with data blocks
  */
-export async function encodeImageWithDataBlocks(
+export async function encodeImageDataBlocks(
   image: IImage32 | IImage64 | ArrayBuffer | Uint8Array,
-  blocks: DataBlock[],
+  blockDefinition: {
+    [key: string]: (JsonValue | ArrayBuffer) | (JsonValue | ArrayBuffer)[]
+  },
 ): Promise<IEncodedPng['data']> {
   const imageData =
     image instanceof ArrayBuffer || image instanceof Uint8Array
       ? (await PngCodec.decodePng(image as Uint8Array)).image
       : image
 
+  const blocks: DataBlock[] = []
   const chunks: TextChunkTypes[] = []
 
+  for (const [key, value] of Object.entries(blockDefinition)) {
+    if (Array.isArray(value)) {
+      for (const subValue of value) {
+        blocks.push(createDataBlock(key, subValue))
+      }
+    } else {
+      blocks.push(createDataBlock(key, value))
+    }
+  }
+
   for (const { type, name, value } of blocks) {
-    if (type === 'text') {
-      chunks.push({
-        type: KnownChunkTypes.tEXt,
-        keyword: `text/${name}`,
-        text: value,
-      })
-    } else if (type === 'json') {
-      chunks.push({
-        type: KnownChunkTypes.zTXt,
-        keyword: `json/${name}`,
-        text: JSON.stringify(value),
-      })
-    } else if (type === 'bin') {
-      chunks.push({
-        type: KnownChunkTypes.zTXt,
-        keyword: `bin/${name}`,
-        // Array buffer to string - inlined here for performance
-        text: String.fromCharCode.apply(null, new Uint16Array(value)),
-      })
+    switch (type) {
+      case 'text':
+        chunks.push({
+          type: KnownChunkTypes.tEXt,
+          keyword: `${type}/${name}`,
+          text: value,
+        })
+        break
+      case 'json':
+        chunks.push({
+          type: KnownChunkTypes.zTXt,
+          keyword: `${type}/${name}`,
+          text: JSON.stringify(value),
+        })
+        break
+      case 'bin':
+        chunks.push({
+          type: KnownChunkTypes.zTXt,
+          keyword: `${type}/${name}`,
+          // Array buffer to string - inlined here for performance
+          text: String.fromCharCode.apply(null, new Uint16Array(value)),
+        })
+
+        break
+      default:
+        break
     }
   }
 
@@ -202,10 +219,7 @@ export async function encodeImageWithDataBlocks(
 /**
  * Get single data block by name
  */
-export function getDataBlockValue(
-  name: string,
-  blocks: DataBlock[],
-): any | void {
+export function getDataBlock(name: string, blocks: DataBlock[]): any | void {
   for (const b of blocks) {
     if (b.name === name) return b.value
   }
@@ -214,6 +228,6 @@ export function getDataBlockValue(
 /**
  * Get multiple data blocks by name
  */
-export function getDataBlockValues(name: string, blocks: DataBlock[]): any[] {
+export function getDataBlocks(name: string, blocks: DataBlock[]): any[] {
   return blocks.filter((b) => b.name === name).map((b) => b.value)
 }

@@ -5,7 +5,7 @@
   "exclude": [
     "src/index.ts",
     "src/png-compressor.ts",
-    "src/test/**/*.ts",
+    "src/tests/**/*.ts",
     "src/pako/**",
     "src/png-codec/**",
   ],

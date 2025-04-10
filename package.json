@@ -2,7 +2,7 @@
   "name": "png-compressor",
   "version": "1.4.0",
   "type": "module",
-  "description": "Compress and encode data as PNG image",
+  "description": "Compress and encode data in PNG image",
   "repository": {
     "type": "git",
     "url": "https://github.com/eliot-akira/png-compressor"
@@ -16,6 +16,9 @@
   "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",
+  "bin": {
+    "png-compressor": "./bin/png-compressor"
+  },
   "exports": {
     ".": {
       "types": "./build/types/index.d.ts",
@@ -38,18 +41,21 @@
     "build:esm": " bun build.ts esm",
     "build:web": "bun build.ts web",
     "build:types": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --outDir build/types",
-    "build": "mkdir -p build && npm run clean && npm run format && npm run build:web && npm run build:cjs && npm run build:esm && npm run build:types && npm run docs",
-    "start": "concurrently --raw 'bun build.ts dev' 'npm run docs:dev'",
+    "build": "mkdir -p build && npm run clean && npm run format && npm run build:web && npm run build:cjs && npm run build:esm && npm run build:types",
+    "start": "concurrently --raw 'npm run dev' 'npm run docs:dev'",
     "dev": "bun build.ts dev",
     "docs": "typedoc",
     "docs:dev": "npm run docs -- --watch --preserveWatchOutput",
     "test": "bun tests/index.ts",
+    "tdd": "chokidar \"src/**/*.ts\" \"tests/**/*.ts\" --initial --silent --command \"bun run test\"",
     "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/*",
     "format": "prettier --no-config --no-semi --single-quote --write src",
     "release": "npm run build && npm publish --access public"
   },
+  "dependencies": {},
   "devDependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.3",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.0",
     "esbuild": "^0.25.2",
     "esbuild-node-externals": "^1.18.0",

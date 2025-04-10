@@ -3,3 +3,4 @@
 /tests/generated
 package-lock.json
 tsconfig.tsbuildinfo
+bun.lock

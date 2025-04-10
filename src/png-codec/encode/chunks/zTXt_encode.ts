@@ -21,7 +21,7 @@ export function encodeChunk(
   }
 
   // Compress and encode to Uint8Array
-  value = pako.deflate(value) as Uint8Array
+  value = pako.deflate(value)
 
   // Format:
   // Keyword:            1-79 bytes (character string)
@@ -41,7 +41,7 @@ export function encodeChunk(
     // Compression method
     stream.writeUint8(0)
 
-    for (i = 0; i < value.length; i++) {
+    for (i = 0; i < (value as Uint8Array).byteLength; i++) {
       stream.writeUint8(value[i])
     }
   })

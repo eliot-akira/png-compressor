@@ -1,33 +1,23 @@
 import fs from 'node:fs/promises'
 import { test, is, ok, run } from 'testra'
 import {
-  decodeImageWithDataBlocks,
-  encodeImageWithDataBlocks,
-  getDataBlockValue,
-} from '../common.ts'
+  decodeImageDataBlocks,
+  encodeImageDataBlocks,
+  getDataBlock,
+} from './common.ts'
 
-export function testEncodeImageJsonBlock({
-  id,
-  sourceBuffer,
-  value
-}) {
-
+export function testEncodeImageJsonBlock({ id, sourceBuffer, value }) {
   /**
    * Data block - JSON (compressed)
    */
   test(`Data block with JSON (compressed) - Image #${id}`, async () => {
-
     const buffer = sourceBuffer // await fs.readFile(sourcePng)
 
     const encodedKey = `example-${id}`
 
-    let encoded = await encodeImageWithDataBlocks(buffer, [
-      {
-        type: 'json',
-        name: encodedKey,
-        value,
-      },
-    ])
+    let encoded = await encodeImageDataBlocks(buffer, {
+      [encodedKey]: value,
+    })
     let encodedImageSize = encoded.byteLength
 
     ok(true, 'compressed JSON block')
@@ -51,17 +41,13 @@ export function testEncodeImageJsonBlock({
     )
     // console.log('Target image size', targetBuffer.byteLength, 'bytes')
 
-    let targetDecoded = await decodeImageWithDataBlocks(targetBuffer)
+    let targetDecoded = await decodeImageDataBlocks(targetBuffer)
     ok(true, 'decoded image metadata')
 
     // console.log(targetDecoded.blocks)
 
-    const decodedBuffer = getDataBlockValue(
-      encodedKey,
-      targetDecoded.blocks
-    )
+    const decodedBuffer = getDataBlock(encodedKey, targetDecoded.blocks)
 
     is(value, decodedBuffer, 'decoded value is the same as encoded value')
   })
-
 }

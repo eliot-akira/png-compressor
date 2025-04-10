@@ -1,6 +1,6 @@
 # PNG Compressor
 
-> Compress and encode data as Portable Network Graphics (PNG) image
+> Compress and encode data in Portable Network Graphics (PNG) image
 
 ![](screenshot.jpg)
 
@@ -8,7 +8,7 @@
 
 ## Why
 
-It can be useful to encode data or application state into an image file for sharing easily - compared to JSON or ZIP format, which might not be possible to upload to a discussion forum.
+It can be useful to encode data or application state into an image file for sharing easily. Other formats like ZIP or JSON might be difficult to send by email or upload to a discussion forum.
 
 Such images are sometimes called "cartridges", referring to retro game ROM cards.
 
@@ -16,139 +16,152 @@ Such images are sometimes called "cartridges", referring to retro game ROM cards
 
 There are two ways to store data in a PNG image.
 
-1. Create an image by encoding the data into [color channels](#color-channels)
+1. Encode the data into [color channels](#color-channels) to create an image
 2. Attach invisible [data blocks](#data-blocks) to an existing image
 
-Optionally the data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and server-side JavaScript runtimes.
+The data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and server-side JavaScript runtimes.
 
 ## Install
+
+Install as a dependency in your project.
 
 ```sh
 npm install --save png-compressor
 ```
 
-## Color channels
+Or globally as a command-line tool.
 
-The given data is converted into an image by encoding every byte into the color channels (red/green/blue). The opacity (alpha) channel is not used because it affects color values.
+```sh
+npm install --global png-compressor
+```
 
-The encoded buffer is written to a file, or rendered as an image element and downloaded.
+## Use
 
-### Encode JSON-serializable value
+### Color channels
+
+Use `encodeImageData()` to convert data into an image buffer by encoding every byte into the color channels (red/green/blue). The opacity (alpha) channel is not used because it affects color values.
+
+The encoded buffer can be written to a file, or rendered as an image element and downloaded.
 
 ```ts
-import { encode, decode } from 'png-compressor'
+import { encodeImageData, decodeImageData } from 'png-compressor'
 
-const object = { key: 'value' }
-
-const pngImage = await encode(object)
-const decoded = await decode(pngImage)
+const imageData = await encodeImageData({ key: 'value' })
+const decoded = await decodeImageData(imageData)
 
 assert.deepEqual(decoded, object)
 ```
 
-### Encode binary data
+The data can be a JSON-serializable object or binary (`ArrayBuffer` or `Uint8Array`). Use `decodeImageData` to decode the JSON object, and `decodeImageDataBinary` to decode binary data.
 
 ```ts
-import { encodeBinary, decodeBinary } from 'png-compressor'
+import { encodeImageData, decodeImageDataBinary } from 'png-compressor'
 
 const buffer = new ArrayBuffer(8)
-
-const pngImage = await encodeBinary(buffer)
-const decoded = await decodeBinary(pngImage)
+const imageData = await encodeImageData(buffer)
+const decoded = await decodeImageDataBinary(imageData)
 
 assert.deepEqual(decoded, buffer)
 ```
 
-## Data blocks
+### Data blocks
 
-Blocks of data can be attached to an existing image.
+Blocks of data can be attached to an existing image buffer.
 
-### Encode
+They are stored in the image as [ancillary chunks](https://www.w3.org/TR/2003/REC-PNG-20031110/#11Ancillary-chunks) of the PNG format, using `tEXt` (textual data) and `zTXt` (compressed textual data).
 
-Each block is given a keyword, which can be used to identify a single block or group multiple blocks.
+Each block has a "key" to identify by name; and a "value" which can be:
+
+- Text - `string`
+- JSON-serializable object
+- Binary - `ArrayBuffer`, `Uint8Array`
+
+A key can also group multiple blocks together, such as a collection of binary data.
+
+#### Example
 
 ```ts
 import fs from 'node:fs/promises'
-import {
-  encodeImageWithDataBlocks,
-  createDataBlock,
-  getDataBlockValue,
-  getDataBlockValues.
-} from 'png-compressor
+import { encodeImageDataBlocks, decodeImageDataBlocks } from 'png-compressor'
 
-const imageBuffer = await fs.readFile('./example.png')
+const imageData = await fs.readFile('./example.png')
 
-const image = encodeImageWithDataBlocks(imageBuffer, [
-  createDataBlock('text', 'hello'),
-  createDataBlock('object', { key: 'value' }),
-  createDataBlock('file', new ArrayBuffer(8)),
-  createDataBlock('products', '12345'),
-  createDataBlock('products', '67890'),
-])
+const blocks = {
+  text: 'hello',
+  info: { key: 'value' },
+  file: new ArrayBuffer(8),
+  // Multiple blocks
+  items: [
+    { name: 'item-1' },
+    { name: 'item-2' }
+  ]
+}
 
-await fs.writeFile('./example-with-data.png', image.data)
+// Encode
+const encodedImageData = await encodeImageDataBlocks(imageData, blocks)
+await fs.writeFile('./example-with-data.png', encodedImageData)
 
-const { blocks } = decodeImageWithDataBlocks(image.data)
-
-const text = getDataBlockValues('text', blocks)
-const json = getDataBlockValues('object', blocks)
-const file = getDataBlockValues('file', blocks)
-const products = getDataBlockValues('products', blocks)
+// Decode
+const decoded = await decodeImageDataBlocks(encodedImageData)
+assert.deepEqual(decoded.blocks, blocks)
 ```
 
-### Decode
+### Browser
 
-### Text block
-
-### JSON block
-
-### Binary block
-
-## Browser
-
-### Create image element
+#### Create image element
 
 ```ts
-import * as png from 'png-compressor'
+import { encodeImageData, createImageElement } from 'png-compressor'
 
 const object = { key: 'value' }
 
-const image = await png.encodeToImage(object)
+const imageData = await encodeImageData(object)
+const imageElement = await createImageElement(imageData)
 ```
 
 Or pass an image element as second argument to render into it.
 
 ```ts
-const image = document.createElement('img')
+const imageElement = document.createElement('img')
 
-await png.encodeToImage(object, image)
+await createImageElement(imageData, imageElement)
 ```
 
-### Download as image
+#### Download as image
 
 ```ts
-const blob = await png.encodeToBlob(object)
+import {
+  encodeImageData,
+  createImageBlob,
+  downloadImageBlob,
+} from 'png-compressor'
 
-png.downloadImage(blob, 'example.png')
+const imageData = await encodeImageData(object)
+const blob = await createImageBlob(imageData)
+
+downloadImageBlob(blob, 'example.png')
 ```
 
-## Server (Node.js)
+### Server
 
-### Write to image file
+#### Write to image file
 
 ```ts
 import fs from 'node:fs/promises'
-import * as png from 'png-compressor'
+import { encodeImageData } from 'png-compressor'
 
 const object = { key: 'value' }
 
-const encoded = await png.encode(source)
+const encoded = await encodeImageData(object)
 await fs.writeFile('test.png', Buffer.from(encoded))
 ```
 
-### Read from image file
+#### Read from image file
 
 ```ts
+import fs from 'node:fs/promises'
+import { decodeImageData } from 'png-compressor'
+
 const buffer = await fs.readFile('test.png')
-const decoded = await png.decode(buffer.buffer)
+const decoded = await decodeImageData(buffer)
 ```

@@ -1,21 +1,19 @@
 import fs from 'node:fs/promises'
 import { test, is, ok, run } from 'testra'
-import {
-  testEncodeImageColors,
-  testEncodeImageTextBlock,
-  testEncodeImageJsonBlock,
-  testEncodeImageBinaryBlock,
-} from './encode-image'
-import { testDecodeImage, testDecodeImageDataBlocks } from './decode-image'
+import { testDecodeImageColors, testEncodeImageColors } from './colors.ts'
+import { testEncodeImageTextBlock } from './text.ts'
+import { testEncodeImageJsonBlock } from './json.ts'
+import { testEncodeImageBinaryBlock } from './binary.ts'
+import { testDecodeImageDataBlocks } from './blocks.ts'
+import { testDecodeImage } from './metadata'
 
 run(async () => {
+
   const jsonValue = JSON.parse(
     await fs.readFile('./tests/fixtures/example.json', 'utf8')
   )
 
-  testEncodeImageColors({
-    value: jsonValue,
-  })
+  testDecodeImageColors()
 
   const testImageIds = [1, 2]
 
@@ -33,6 +31,10 @@ run(async () => {
       value: textValue,
     }
 
+    testEncodeImageColors({
+      id,
+      value: textValue,
+    })  
     testDecodeImage(testData)
     testDecodeImageDataBlocks(testData)
     testEncodeImageTextBlock(testData)

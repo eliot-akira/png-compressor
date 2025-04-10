@@ -1,5 +1,5 @@
 /**
- * Escape/unescape from https://github.com/zloirock/core-js
+ * Escape/unescape - Based on https://github.com/zloirock/core-js
  */
 
 const FunctionPrototype = Function.prototype

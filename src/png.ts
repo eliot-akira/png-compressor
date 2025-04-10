@@ -1,7 +1,11 @@
 import { decodePng, encodePng, KnownChunkTypes } from './png-codec/index.ts'
-import { encodeDataIntoImage, decodeDataFromImage } from './image.ts'
+import {
+  encodeDataIntoImage,
+  decodeDataFromImage,
+  createImageBlob,
+} from './image.ts'
 
-export * from './png-codec/index.ts'
+export { decodePng, encodePng, KnownChunkTypes } from './png-codec/index.ts'
 
 /**
  * Encode binary as image data
@@ -32,24 +36,18 @@ export async function encodeBinaryToPng(
  * Encode binary as canvas blob
  */
 export async function encodeBinaryToBlob(buffer: ArrayBuffer): Promise<Blob> {
-  const png = await encodeBinaryToPng(buffer)
-  const blob = new Blob([png], {
-    type: 'image/png',
-  })
-  return blob
+  return createImageBlob(await encodeBinaryToPng(buffer))
 }
 
 /**
  * Decode binary from image data
  */
 export async function decodeBinaryFromPng(
-  buffer: ArrayBuffer,
+  buffer: ArrayBuffer | Uint8Array,
 ): Promise<ArrayBuffer> {
-  if (!(buffer instanceof ArrayBuffer)) {
-    throw new Error('Expected ArrayBuffer but got ' + typeof buffer)
-  }
+  const { image } = await decodePng(
+    new Uint8Array(buffer instanceof ArrayBuffer ? buffer : buffer.buffer),
+  )
 
-  const decoded = await decodePng(new Uint8Array(buffer))
-
-  return decodeDataFromImage(new Uint8ClampedArray(decoded.image.data.buffer))
+  return decodeDataFromImage(new Uint8ClampedArray(image.data.buffer))
 }

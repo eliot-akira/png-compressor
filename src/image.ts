@@ -3,6 +3,19 @@
  * @module
  */
 
+export function createImageBlob(buffer: ArrayBuffer) {
+  return new Blob([buffer], {
+    type: 'image/png',
+  })
+}
+
+export async function createImageElement(
+  imageData: ArrayBuffer,
+  image?: HTMLImageElement,
+): Promise<HTMLImageElement> {
+  return blobToImageElement(createImageBlob(imageData), image)
+}
+
 export async function imageElementToBlob(
   image: HTMLImageElement,
 ): Promise<Blob> {

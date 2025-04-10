@@ -1,9 +1,7 @@
 import { test, is, ok, run } from 'testra'
 import {
-  decodePng,
-} from '../common.ts'
-
-export * from './blocks.ts'
+  decodeImageMetadata
+} from './common.ts'
 
 export function testDecodeImage({
   id,
@@ -16,7 +14,9 @@ export function testDecodeImage({
   test(`Decode source image #${id}`, async () => {
 
     const buffer = sourceBuffer
-    const { image } = await decodePng(buffer)
+    const {
+      image
+    } = await decodeImageMetadata(buffer)
 
     ok(true, 'decoded image metadata')
 
@@ -24,5 +24,6 @@ export function testDecodeImage({
     is('number', typeof image.width, 'has image width')
     is('number', typeof image.height, 'has image height')
     is(true, image.data instanceof Uint8Array, 'image data is Uint8Array')
+
   })
 }

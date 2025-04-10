@@ -73,14 +73,14 @@ test('Compress', async (it, is) => {
 
 test('PNG', async (it, is) => {
   for (const [type, source] of encodableDataTypes) {
-    const encoded = await png.encode(source)
+    const encoded = await png.encodeImageData(source)
 
     it(
       `encode() encodes ${type} to array buffer`,
       encoded instanceof ArrayBuffer,
     )
 
-    const decoded = await png.decode(encoded)
+    const decoded = await png.decodeImageData(encoded)
 
     it(
       `decode() decodes array buffer to original value (${type})`,

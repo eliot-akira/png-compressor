@@ -1,10 +1,10 @@
 import fs from 'node:fs/promises'
 import { test, is, ok, run } from 'testra'
 import {
-  decodeImageWithDataBlocks,
-  encodeImageWithDataBlocks,
-  getDataBlockValue,
-} from '../common.ts'
+  decodeImageDataBlocks,
+  encodeImageDataBlocks,
+  getDataBlock,
+} from './common.ts'
 
 export function testEncodeImageBinaryBlock({ id, sourceBuffer, value }) {
   /**
@@ -12,13 +12,9 @@ export function testEncodeImageBinaryBlock({ id, sourceBuffer, value }) {
    */
   test(`Data block with binary (compressed) - Image #${id}`, async () => {
     const encodedKey = `example-${id}`
-    let encoded = await encodeImageWithDataBlocks(sourceBuffer, [
-      {
-        type: 'bin',
-        name: encodedKey,
-        value,
-      },
-    ])
+    let encoded = await encodeImageDataBlocks(sourceBuffer, {
+      [encodedKey]: value,
+    })
     ok(encoded, 'encoded binary')
     let encodedImageSize = encoded.byteLength
 
@@ -40,23 +36,16 @@ export function testEncodeImageBinaryBlock({ id, sourceBuffer, value }) {
     )
     // console.log('Target image size', targetBuffer.byteLength, 'bytes')
 
-    let targetDecoded = await decodeImageWithDataBlocks(targetBuffer)
+    const { blocks } = await decodeImageDataBlocks(targetBuffer)
     ok(true, 'decoded image metadata')
 
-    const decodedBuffer = getDataBlockValue(
-      encodedKey,
-      targetDecoded.blocks
-    )
+    const decodedBuffer = getDataBlock(encodedKey, blocks)
 
     is(
       value.byteLength,
       decodedBuffer.byteLength,
       'decoded value has the same length'
     )
-    is(
-      value,
-      decodedBuffer,
-      'decoded value is the same as encoded value'
-    )
+    is(value, decodedBuffer, 'decoded value is the same as encoded value')
   })
 }

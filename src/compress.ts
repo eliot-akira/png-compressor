@@ -2,6 +2,11 @@
  * Methods to compress and decompress using [CompressionStream](https://developer.mozilla.org/docs/Web/API/CompressionStream)
  * @module
  */
+import {
+  valueToArrayBuffer,
+  arrayBufferToValue,
+  type JsonValue,
+} from './json-array-buffer.ts'
 
 // Browser and server
 const { CompressionStream, DecompressionStream, Response } = globalThis
@@ -25,6 +30,16 @@ export async function compress(
   return await new Response(stream).arrayBuffer()
 }
 
+/**
+ * Compress JSON value
+ */
+export async function compressJson(
+  value: JsonValue,
+  compressionFormat: CompressionFormat = defaultCompressionFormat,
+): Promise<ArrayBuffer> {
+  return await compress(valueToArrayBuffer(value), compressionFormat)
+}
+
 async function decompressAsResponse(
   buffer: ArrayBuffer,
   compressionFormat: CompressionFormat = defaultCompressionFormat,
@@ -34,6 +49,9 @@ async function decompressAsResponse(
   return new Response(stream)
 }
 
+/**
+ * Decompress as ArrayBuffer
+ */
 export async function decompressAsArrayBuffer(
   buffer: ArrayBuffer,
   compressionFormat: CompressionFormat = defaultCompressionFormat,
@@ -41,6 +59,9 @@ export async function decompressAsArrayBuffer(
   return (await decompressAsResponse(buffer, compressionFormat)).arrayBuffer()
 }
 
+/**
+ * Decompress as string
+ */
 export async function decompressAsString(
   buffer: ArrayBuffer,
   compressionFormat: CompressionFormat = defaultCompressionFormat,

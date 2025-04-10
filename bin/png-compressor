@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+script_dir=$(dirname "$(readlink -f "$0")")
+cmd=node
+if [ -x "$(command -v bun)" ]; then
+  cmd=bun
+  $cmd "$script_dir"/src/index.ts "$@"
+  exit
+elif [ -x "$(command -v deno)" ]; then
+  cmd=deno
+  $cmd "$script_dir"/src/index.ts "$@"
+  exit
+fi
+$cmd "$script_dir"/build/esm/index.js "$@"
