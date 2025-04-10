@@ -2,24 +2,42 @@
 
 > Compress and encode data in Portable Network Graphics (PNG) image
 
-![Screenshot](screenshot.jpg)
+![Screenshot](docs/assets/screenshot.jpg)
 
 **[Demo](https://eliot-akira.github.io/png-compressor/) · [API](https://eliot-akira.github.io/png-compressor/api/) · [Source](https://github.com/eliot-akira/png-compressor)**
 
 ## Why
 
-It can be useful to encode data or application state into an image file for sharing easily. Other formats like ZIP or JSON might be difficult to send by email or upload to a discussion forum.
+It can be useful to encode data or persist application state into an image file, to import/export and share easily. Other formats like JSON and ZIP can be difficult to send by email or upload to a discussion forum.
 
-Such images are sometimes called "cartridges", referring to retro game ROM cards.
+The PNG image format is a mature standard supported by many languages and environments. It's often used to store and transfer data in addition to the image itself. Examples include the [P8PNGFileFormat](https://pico-8.fandom.com/wiki/P8PNGFileFormat).
+
+> PICO-8 cartridges can be saved in a special `.png` format and sent directly to other users, shared with anyone via a web cart player, or exported to stand-alone HTML5, Windows, Mac and Linux apps. Any cartridge can be opened again in PICO-8, letting you peek inside to modify or study the code, graphics and sound.
+
+AI image generation tools like ComfyUI and Automatic1111 export PNG files with metadata for prompts and node graphs. Adobe Fireworks used PNG as its native file format, storing data for layers, animation, vector data, text and effects.
 
 ## How
 
-There are two ways to store data in a PNG image.
+This library offers two ways to store data in a PNG image.
 
 1. Encode the data into [color channels](#color-channels) to create an image
 2. Attach invisible [data blocks](#data-blocks) to an existing image
 
-The data is `gzip` compressed using the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API), well-supported by browsers and server-side JavaScript runtimes.
+The first method results in an image that looks like colorful noise.
+
+<img src="docs/assets/color-channels.svg" style="max-width:600px">
+
+The second method adds data blocks as metadata, without affecting how the image looks.
+
+<img src="docs/assets/png-file-format.svg" style="max-width:280px">
+
+The image and data blocks (except plain text) are compressed using the classic `deflate` algorithm for lossless compression, with the [Compression Streams API](https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API) well-supported by browsers and server-side JavaScript runtimes.
+
+#### Reference
+
+- [Portable Network Graphics (PNG) Specification (Second Edition)](https://www.w3.org/TR/2003/REC-PNG-20031110/)
+- https://en.wikipedia.org/wiki/PNG
+- https://github.com/pnggroup/libpng
 
 ## Install
 
@@ -29,11 +47,13 @@ Install as a dependency in your project.
 npm install --save png-compressor
 ```
 
-Or globally as a command-line tool.
+<!--TODO: Or globally as a command-line tool.
 
 ```sh
 npm install --global png-compressor
 ```
+-->
+
 
 ## Use
 
@@ -52,7 +72,9 @@ const decoded = await decodeImageData(imageData)
 assert.deepEqual(decoded, object)
 ```
 
-The data can be a JSON-serializable object or binary (`ArrayBuffer` or `Uint8Array`). Use `decodeImageData` to decode the JSON object, and `decodeImageDataBinary` to decode binary data.
+The data can be a JSON-serializable object or binary (`ArrayBuffer` or `Uint8Array`).
+
+Use `decodeImageData` to decode JSON value; and `decodeImageDataBinary` for binary data.
 
 ```ts
 import { encodeImageData, decodeImageDataBinary } from 'png-compressor'
@@ -70,13 +92,13 @@ Blocks of data can be attached to an existing image buffer.
 
 They are stored in the image as [ancillary chunks](https://www.w3.org/TR/2003/REC-PNG-20031110/#11Ancillary-chunks) of the PNG format, using `tEXt` (textual data) and `zTXt` (compressed textual data).
 
-Each block has a "key" to identify by name; and a "value" which can be:
+Each block has a "key" to identify it by name; and a "value" which can be:
 
 - Text - `string`
 - JSON-serializable object
 - Binary - `ArrayBuffer`, `Uint8Array`
 
-A key can also group multiple blocks together, such as a collection of binary data.
+A key can also group together multiple blocks of the same name, such as a collection of binary data.
 
 #### Example
 

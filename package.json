@@ -45,7 +45,7 @@
     "start": "concurrently --raw 'npm run dev' 'npm run docs:dev'",
     "dev": "bun build.ts dev",
     "docs": "typedoc && bun build.ts docs",
-    "docs:dev": "npm run docs -- --watch --preserveWatchOutput",
+    "docs:dev": "NODE_ENV=development npm run docs -- --watch --preserveWatchOutput",
     "test": "bun tests/index.ts",
     "tdd": "chokidar \"src/**/*.ts\" \"tests/**/*.ts\" --initial --silent --command \"bun run test\"",
     "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/*",

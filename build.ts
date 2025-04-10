@@ -9,24 +9,31 @@ const isDev = command === 'dev'
 if (isDev)
   command = args.shift() // cjs, esm, web, docs
 ;(async () => {
-
   const { name } = JSON.parse(await fs.readFile('./package.json', 'utf8'))
 
   if (command === 'docs') {
+    /**
+     * Update image links
+     *
+     * - From `docs/assets` in `readme.md` at project root (GitHub and NPM Markdown preview)
+     * - To `/assets` at http://localhost:8080 during development
+     * - To `/png-compressor/assets` in published page under subdirectory
+     */
+    const isDevEnv = process.env.NODE_ENV === 'development'
+    const srcUrl = `docs/assets/`
+    const targetUrl = isDevEnv ? `/assets/` : `/${name}/assets/`
+    const filePath = './docs/api/index.html'
 
-    // Fix image link URL
-    let filePath = './docs/api/index.html'
-    let urlBase = `/${name}/api`
-    let srcLink = `screenshot.jpg`
-    let targetLink = `${urlBase}/${srcLink}`
-    await fs.writeFile(filePath, (await fs.readFile(filePath, 'utf8')).replace(
-      `src="${srcLink}"`,
-      `src="${targetLink}"`
-    ))
-    console.log('Corrected link URL', targetLink)
+    await fs.writeFile(
+      filePath,
+      (await fs.readFile(filePath, 'utf8')).replaceAll(
+        `src="${srcUrl}`,
+        `src="${targetUrl}`
+      )
+    )
+    console.log('Updated link URLs to', targetUrl)
     return
   }
-
 
   const esbuildOptions = {
     entryPoints: [`./src/${name}.ts`, './src/tests/index.ts'],
