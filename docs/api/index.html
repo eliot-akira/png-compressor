@@ -15,38 +15,59 @@
 <div class="tsd-panel tsd-typography"><a id="md:png-compressor" class="tsd-anchor"></a><h1><a href="#md:png-compressor">PNG Compressor</a></h1><blockquote>
 <p>Compress and encode data in Portable Network Graphics (PNG) image</p>
 </blockquote>
-<p><img src="/png-compressor/api/screenshot.jpg" alt="Screenshot"></p>
+<p><img src="/png-compressor/assets/screenshot.jpg" alt="Screenshot"></p>
 <p><strong><a href="https://eliot-akira.github.io/png-compressor/">Demo</a> · <a href="https://eliot-akira.github.io/png-compressor/api/">API</a> · <a href="https://github.com/eliot-akira/png-compressor">Source</a></strong></p>
-<a id="md:why" class="tsd-anchor"></a><h2><a href="#md:why">Why</a></h2><p>It can be useful to encode data or application state into an image file for sharing easily. Other formats like ZIP or JSON might be difficult to send by email or upload to a discussion forum.</p>
-<p>Such images are sometimes called &quot;cartridges&quot;, referring to retro game ROM cards.</p>
-<a id="md:how" class="tsd-anchor"></a><h2><a href="#md:how">How</a></h2><p>There are two ways to store data in a PNG image.</p>
+<a id="md:why" class="tsd-anchor"></a><h2><a href="#md:why">Why</a></h2><p>It can be useful to encode data or persist application state into an image file, to import/export and share easily. Other formats like JSON and ZIP can be difficult to send by email or upload to a discussion forum.</p>
+<p>The PNG image format is a mature standard supported by many languages and environments. It&#39;s often used to store and transfer data in addition to the image itself. Examples include the <a href="https://pico-8.fandom.com/wiki/P8PNGFileFormat">P8PNGFileFormat</a>.</p>
+<blockquote>
+<p>PICO-8 cartridges can be saved in a special <code>.png</code> format and sent directly to other users, shared with anyone via a web cart player, or exported to stand-alone HTML5, Windows, Mac and Linux apps. Any cartridge can be opened again in PICO-8, letting you peek inside to modify or study the code, graphics and sound.</p>
+</blockquote>
+<p>AI image generation tools like ComfyUI and Automatic1111 export PNG files with metadata for prompts and node graphs. Adobe Fireworks used PNG as its native file format, storing data for layers, animation, vector data, text and effects.</p>
+<a id="md:how" class="tsd-anchor"></a><h2><a href="#md:how">How</a></h2><p>This library offers two ways to store data in a PNG image.</p>
 <ol>
 <li>Encode the data into <a href="#color-channels">color channels</a> to create an image</li>
 <li>Attach invisible <a href="#data-blocks">data blocks</a> to an existing image</li>
 </ol>
-<p>The data is <code>gzip</code> compressed using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API">Compression Streams API</a>, well-supported by browsers and server-side JavaScript runtimes.</p>
+<p>The first method results in an image that looks like colorful noise.</p>
+<img src="/png-compressor/assets/color-channels.svg" style="max-width:600px">
+
+<p>The second method adds data blocks as metadata, without affecting how the image looks.</p>
+<img src="/png-compressor/assets/png-file-format.svg" style="max-width:280px">
+
+<p>The image and data blocks (except plain text) are compressed using the classic <code>deflate</code> algorithm for lossless compression, with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API">Compression Streams API</a> well-supported by browsers and server-side JavaScript runtimes.</p>
+<a id="md:reference" class="tsd-anchor"></a><h4><a href="#md:reference">Reference</a></h4><ul>
+<li><a href="https://www.w3.org/TR/2003/REC-PNG-20031110/">Portable Network Graphics (PNG) Specification (Second Edition)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/PNG">https://en.wikipedia.org/wiki/PNG</a></li>
+<li><a href="https://github.com/pnggroup/libpng">https://github.com/pnggroup/libpng</a></li>
+</ul>
 <a id="md:install" class="tsd-anchor"></a><h2><a href="#md:install">Install</a></h2><p>Install as a dependency in your project.</p>
 <pre><code class="language-sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-3">--save</span><span class="hl-1"> </span><span class="hl-2">png-compressor</span>
 </code><button>Copy</button></pre>
-<p>Or globally as a command-line tool.</p>
-<pre><code class="language-sh"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-3">--global</span><span class="hl-1"> </span><span class="hl-2">png-compressor</span>
-</code><button>Copy</button></pre>
+<!--TODO: Or globally as a command-line tool.
+
+```sh
+npm install --global png-compressor
+```
+-->
+
+
 <a id="md:use" class="tsd-anchor"></a><h2><a href="#md:use">Use</a></h2><a id="md:color-channels" class="tsd-anchor"></a><h3><a href="#md:color-channels">Color channels</a></h3><p>Use <code>encodeImageData()</code> to convert data into an image buffer by encoding every byte into the color channels (red/green/blue). The opacity (alpha) channel is not used because it affects color values.</p>
 <p>The encoded buffer can be written to a file, or rendered as an image element and downloaded.</p>
 <pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">encodeImageData</span><span class="hl-1">, </span><span class="hl-5">decodeImageData</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;png-compressor&#39;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">imageData</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">encodeImageData</span><span class="hl-1">({ </span><span class="hl-5">key:</span><span class="hl-1"> </span><span class="hl-2">&#39;value&#39;</span><span class="hl-1"> })</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">decoded</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">decodeImageData</span><span class="hl-1">(</span><span class="hl-5">imageData</span><span class="hl-1">)</span><br/><br/><span class="hl-5">assert</span><span class="hl-1">.</span><span class="hl-0">deepEqual</span><span class="hl-1">(</span><span class="hl-5">decoded</span><span class="hl-1">, </span><span class="hl-5">object</span><span class="hl-1">)</span>
 </code><button>Copy</button></pre>
-<p>The data can be a JSON-serializable object or binary (<code>ArrayBuffer</code> or <code>Uint8Array</code>). Use <code>decodeImageData</code> to decode the JSON object, and <code>decodeImageDataBinary</code> to decode binary data.</p>
+<p>The data can be a JSON-serializable object or binary (<code>ArrayBuffer</code> or <code>Uint8Array</code>).</p>
+<p>Use <code>decodeImageData</code> to decode JSON value; and <code>decodeImageDataBinary</code> for binary data.</p>
 <pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">encodeImageData</span><span class="hl-1">, </span><span class="hl-5">decodeImageDataBinary</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;png-compressor&#39;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">buffer</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ArrayBuffer</span><span class="hl-1">(</span><span class="hl-7">8</span><span class="hl-1">)</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">imageData</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">encodeImageData</span><span class="hl-1">(</span><span class="hl-5">buffer</span><span class="hl-1">)</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">decoded</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">decodeImageDataBinary</span><span class="hl-1">(</span><span class="hl-5">imageData</span><span class="hl-1">)</span><br/><br/><span class="hl-5">assert</span><span class="hl-1">.</span><span class="hl-0">deepEqual</span><span class="hl-1">(</span><span class="hl-5">decoded</span><span class="hl-1">, </span><span class="hl-5">buffer</span><span class="hl-1">)</span>
 </code><button>Copy</button></pre>
 <a id="md:data-blocks" class="tsd-anchor"></a><h3><a href="#md:data-blocks">Data blocks</a></h3><p>Blocks of data can be attached to an existing image buffer.</p>
 <p>They are stored in the image as <a href="https://www.w3.org/TR/2003/REC-PNG-20031110/#11Ancillary-chunks">ancillary chunks</a> of the PNG format, using <code>tEXt</code> (textual data) and <code>zTXt</code> (compressed textual data).</p>
-<p>Each block has a &quot;key&quot; to identify by name; and a &quot;value&quot; which can be:</p>
+<p>Each block has a &quot;key&quot; to identify it by name; and a &quot;value&quot; which can be:</p>
 <ul>
 <li>Text - <code>string</code></li>
 <li>JSON-serializable object</li>
 <li>Binary - <code>ArrayBuffer</code>, <code>Uint8Array</code></li>
 </ul>
-<p>A key can also group multiple blocks together, such as a collection of binary data.</p>
+<p>A key can also group together multiple blocks of the same name, such as a collection of binary data.</p>
 <a id="md:example" class="tsd-anchor"></a><h4><a href="#md:example">Example</a></h4><pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-5">fs</span><span class="hl-1"> </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;node:fs/promises&#39;</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">encodeImageDataBlocks</span><span class="hl-1">, </span><span class="hl-5">decodeImageDataBlocks</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;png-compressor&#39;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">imageData</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">fs</span><span class="hl-1">.</span><span class="hl-0">readFile</span><span class="hl-1">(</span><span class="hl-2">&#39;./example.png&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">blocks</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-5">text:</span><span class="hl-1"> </span><span class="hl-2">&#39;hello&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-5">info:</span><span class="hl-1"> { </span><span class="hl-5">key:</span><span class="hl-1"> </span><span class="hl-2">&#39;value&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  </span><span class="hl-5">file:</span><span class="hl-1"> </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ArrayBuffer</span><span class="hl-1">(</span><span class="hl-7">8</span><span class="hl-1">),</span><br/><span class="hl-1">  </span><span class="hl-8">// Multiple blocks</span><br/><span class="hl-1">  </span><span class="hl-5">items:</span><span class="hl-1"> [</span><br/><span class="hl-1">    { </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;item-1&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">    { </span><span class="hl-5">name:</span><span class="hl-1"> </span><span class="hl-2">&#39;item-2&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">  ]</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-8">// Encode</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">encodedImageData</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">encodeImageDataBlocks</span><span class="hl-1">(</span><span class="hl-5">imageData</span><span class="hl-1">, </span><span class="hl-5">blocks</span><span class="hl-1">)</span><br/><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-5">fs</span><span class="hl-1">.</span><span class="hl-0">writeFile</span><span class="hl-1">(</span><span class="hl-2">&#39;./example-with-data.png&#39;</span><span class="hl-1">, </span><span class="hl-5">encodedImageData</span><span class="hl-1">)</span><br/><br/><span class="hl-8">// Decode</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">decoded</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">decodeImageDataBlocks</span><span class="hl-1">(</span><span class="hl-5">encodedImageData</span><span class="hl-1">)</span><br/><span class="hl-5">assert</span><span class="hl-1">.</span><span class="hl-0">deepEqual</span><span class="hl-1">(</span><span class="hl-5">decoded</span><span class="hl-1">.</span><span class="hl-5">blocks</span><span class="hl-1">, </span><span class="hl-5">blocks</span><span class="hl-1">)</span>
 </code><button>Copy</button></pre>
 <a id="md:browser" class="tsd-anchor"></a><h3><a href="#md:browser">Browser</a></h3><a id="md:create-image-element" class="tsd-anchor"></a><h4><a href="#md:create-image-element">Create image element</a></h4><pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">encodeImageData</span><span class="hl-1">, </span><span class="hl-5">createImageElement</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;png-compressor&#39;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">object</span><span class="hl-1"> = { </span><span class="hl-5">key:</span><span class="hl-1"> </span><span class="hl-2">&#39;value&#39;</span><span class="hl-1"> }</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">imageData</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">encodeImageData</span><span class="hl-1">(</span><span class="hl-5">object</span><span class="hl-1">)</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">imageElement</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">createImageElement</span><span class="hl-1">(</span><span class="hl-5">imageData</span><span class="hl-1">)</span>
@@ -80,6 +101,9 @@
 <ul>
 <li><a href="#md:why"><span>Why</span></a></li>
 <li><a href="#md:how"><span>How</span></a></li>
+<li>
+<ul>
+<li><a href="#md:reference"><span>Reference</span></a></li></ul></li>
 <li><a href="#md:install"><span>Install</span></a></li>
 <li><a href="#md:use"><span>Use</span></a></li>
 <li>
