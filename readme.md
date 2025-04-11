@@ -97,13 +97,14 @@ The encoded buffer can be written to a file, or rendered as an image element and
 ```ts
 import { encodeImageData, decodeImageData } from 'png-compressor'
 
-const imageData = await encodeImageData({ key: 'value' })
+const object = { key: 'value' }
+const imageData = await encodeImageData(object)
 const decoded = await decodeImageData(imageData)
 
 assert.deepEqual(decoded, object)
 ```
 
-The data can be a JSON-serializable object or binary (`ArrayBuffer` or `Uint8Array`).
+The data can be a JSON-serializable object, or binary (`ArrayBuffer` or `Uint8Array`).
 
 Use `decodeImageData` to decode JSON value; and `decodeImageDataBinary` for binary data.
 
@@ -167,7 +168,6 @@ assert.deepEqual(decoded.blocks, blocks)
 import { encodeImageData, createImageElement } from 'png-compressor'
 
 const object = { key: 'value' }
-
 const imageData = await encodeImageData(object)
 const imageElement = await createImageElement(imageData)
 ```
@@ -175,7 +175,7 @@ const imageElement = await createImageElement(imageData)
 Or pass an image element as second argument to render into it.
 
 ```ts
-const imageElement = document.createElement('img')
+const imageElement = document.querySelector('#image')
 
 await createImageElement(imageData, imageElement)
 ```
@@ -204,8 +204,8 @@ import fs from 'node:fs/promises'
 import { encodeImageData } from 'png-compressor'
 
 const object = { key: 'value' }
-
 const encoded = await encodeImageData(object)
+
 await fs.writeFile('test.png', Buffer.from(encoded))
 ```
 
