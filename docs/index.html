@@ -23,6 +23,9 @@ body, p, textarea, pre {
 p {
   margin: 1rem 0;
 }
+.hidden {
+  display: none;
+}
 .result {
   background-color: #eee;
   min-height: 3rem;
@@ -39,7 +42,10 @@ textarea, .result, .result-image {
   word-break: break-all;
 }
 
-#encode .result, #decode .result-image {
+#encode .result,
+#decode .result-image,
+#encode-binary .result,
+#decode-binary .result {
   max-width: 220px;
   image-rendering: pixelated;
 }
@@ -65,13 +71,13 @@ input.visually-hidden:is(:focus, :focus-within) + label {
   <article>
     <section id=encode>
 
-      <h1>Encode</h1>
+      <h1>Encode text</h1>
 
       <p><textarea class="input-text" cols=60 rows=10 autocomplete=off>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</textarea></p>
 
       <p>
       <button type=button class="button action-clear">Clear</button>
-      <button type=button class="button action-download">Download</button>
+      <button type=button class="button action-download">Download image</button>
       </p>
 
       <h4>Result</h4>
@@ -83,12 +89,12 @@ input.visually-hidden:is(:focus, :focus-within) + label {
     <hr>
     <section id=decode>
 
-      <h1>Decode</h1>
+      <h1>Decode text</h1>
 
       <p>
         <input type=file id=input-image class="input-image visually-hidden" accept="image/png" />
         <button type=button><label for="input-image">
-          Upload
+          Upload image
         </label></button>
         <button type=button class="button action-clear">Clear</button>
       </p>
@@ -99,12 +105,52 @@ input.visually-hidden:is(:focus, :focus-within) + label {
       <p><img class="result-image" /></p>
 
     </section>
+    <hr>
+    <section id=encode-binary>
+
+      <h1>Encode binary</h1>
+
+      <p>
+        <input type=file id=encode-binary-input-image class="input-image visually-hidden" accept="*" />
+        <button type=button><label for="encode-binary-input-image">
+          Upload file
+        </label></button>
+        <button type=button class="button action-clear">Clear</button>
+      </p>
+
+      <h4>Result</h4>
+
+      <div class=stats></div>
+      <p><img class="result" /></p>
+      <button type=button class="button action-download hidden">Download image</button>
+
+    </section>
+    <hr>
+    <section id=decode-binary>
+
+      <h1>Decode binary</h1>
+
+      <p>
+        <input type=file id=decode-binary-input-image class="input-image visually-hidden" accept="image/png" />
+        <button type=button><label for="decode-binary-input-image">
+          Upload image
+        </label></button>
+        <button type=button class="button action-clear">Clear</button>
+      </p>
+
+      <h4>Result</h4>
+
+      <div class=stats></div>
+      <p><img class="result" /></p>
+      <button type=button class="button action-download hidden">Download decoded file</button>
+
+    </section>
   </article>
 
   <script src=png-compressor.js></script>
   <script type=module>
 
-const { encodeToBlob, decode } = PNGCompressor
+const { encodeToBlob, decode, encodeBinary, decodeBinary } = PNGCompressor
 
 const $encode = document.getElementById('encode')
 const $encodeInput = $encode.querySelector('.input-text')
@@ -120,7 +166,7 @@ const $decodeResult = $decode.querySelector('.result')
 const $decodeResultImage = $decode.querySelector('.result-image')
 const $decodeClearButton = $decode.querySelector('.action-clear')
 
-let currentBlob
+let encodedBlob
 
 encodeInput()
 
@@ -133,7 +179,7 @@ function encodeInput() {
   encodeToBlob(value)
   .then(blob => {
 
-    currentBlob = blob
+    encodedBlob = blob
 
     // $encodeResult.innerText = encoded
     if (url) {
@@ -147,14 +193,14 @@ function encodeInput() {
     const after = blob.size // encoded.byteLength
     
     if (!before) {
-      $encodeStats.innerText = ''      
+      $encodeStats.innerText = ''
     } else {
       const ratio = after / before
       $encodeStats.innerText = `Before: ${before} bytes · After: ${after} bytes · Compressed: ${(ratio * 100).toFixed(2)}%`
     }
 
     // Demonstrate that decode works
-    decodeInput(currentBlob)
+    decodeInput(encodedBlob)
   })
   .catch(error => {
     $encodeResult.innerText = error.message
@@ -177,9 +223,9 @@ $encodeClearButton.addEventListener('click', function() {
 })
 
 $encodeDownloadButton.addEventListener('click', function() {
-  if (!currentBlob) return
+  if (!encodedBlob) return
 
-  const blob = currentBlob
+  const blob = encodedBlob
   const url = URL.createObjectURL(blob)
 
   let a = document.createElement("a")
@@ -192,6 +238,8 @@ $encodeDownloadButton.addEventListener('click', function() {
 
   URL.revokeObjectURL(url)
 })
+
+// Decode
 
 async function decodeInput(buffer) {
   if (!buffer) return
@@ -236,6 +284,188 @@ $decodeClearButton.addEventListener('click', function() {
   $decodeResult.innerText = ''
   $decodeResultImage.src = ''
 })
-  </script>
+
+// Encode binary
+
+const $encodeBinary = document.getElementById('encode-binary')
+const $encodeBinaryInput = $encodeBinary.querySelector('.input-image')
+const $encodeBinaryClearButton = $encodeBinary.querySelector('.action-clear')
+const $encodeBinaryDownloadButton = $encodeBinary.querySelector('.action-download')
+const $encodeBinaryResult = $encodeBinary.querySelector('.result')
+const $encodeBinaryStats = $encodeBinary.querySelector('.stats')
+
+let encodedBinaryBlob
+let encodedBinaryBlobFileName
+
+$encodeBinaryInput.addEventListener('change', function() {
+
+  const file = this.files[0]
+
+  const reader = new FileReader()
+
+  reader.addEventListener('load', () => {
+
+    const pngFileName = file.name + '.png'
+    const buffer = reader.result
+
+    console.log('Got file', file.name, buffer)
+
+    encodeBinary(buffer)
+    .then(encoded => {
+
+      console.log('Encoded', encoded)
+
+      const blob = new Blob([ encoded ])
+      const url = URL.createObjectURL(blob)
+      $encodeBinaryResult.src = url
+      setTimeout(() => {
+        URL.revokeObjectURL(url)
+      }, 0)
+
+      encodedBinaryBlob = blob
+      encodedBinaryBlobFileName = pngFileName
+
+      $encodeBinaryDownloadButton.classList.remove('hidden')
+
+      const before = buffer.byteLength
+      const after = encoded.byteLength
+      
+      if (!before) {
+        $encodeBinaryStats.innerText = ''
+      } else {
+        const ratio = after / before
+        $encodeBinaryStats.innerText = `Before: ${before} bytes · After: ${after} bytes · Compressed: ${(ratio * 100).toFixed(2)}%`
+      }
+
+    })
+    .catch(e => {
+
+      clearEncodedBinaryInterface()
+
+      $encodeBinaryStats.innerText = `Error: ${e.message || 'Unknown'}`
+      console.error(e)
+    })
+
+  })
+
+  reader.readAsArrayBuffer(file)
+})
+
+function clearEncodedBinaryInterface() {
+  $encodeBinaryInput.value = ''
+  $encodeBinaryResult.src = ''
+  $encodeBinaryStats.innerText = ''
+  $encodeBinaryDownloadButton.classList.add('hidden')
+
+  encodedBinaryBlob = null
+  encodedBinaryBlobFileName = null
+}
+
+$encodeBinaryClearButton.addEventListener('click', function() {
+  clearEncodedBinaryInterface()
+})
+
+
+$encodeBinaryDownloadButton.addEventListener('click', function() {
+  if (!encodedBinaryBlob) return
+
+  const blob = encodedBinaryBlob
+  const url = URL.createObjectURL(blob)
+
+  let a = document.createElement("a")
+  a.download = encodedBinaryBlobFileName // 'compressed.png'
+  a.href = url
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  a = null
+
+  URL.revokeObjectURL(url)
+})
+
+// Decode binary
+
+const $decodeBinary = document.getElementById('decode-binary')
+const $decodeBinaryInput = $decodeBinary.querySelector('.input-image')
+const $decodeBinaryResult = $decodeBinary.querySelector('.result')
+const $decodeBinaryDownloadButton = $decodeBinary.querySelector('.action-download')
+const $decodeBinaryClearButton = $decodeBinary.querySelector('.action-clear')
+const $decodeBinaryStats = $decodeBinary.querySelector('.stats')
+
+let decodedBinaryBlob
+let decodedBinaryBlobFileName
+
+$decodeBinaryInput.addEventListener('change', function() {
+
+  const file = this.files[0]
+
+  const reader = new FileReader()
+  reader.addEventListener('load', () => {
+
+    const buffer = reader.result
+    const blob = new Blob([ buffer ])
+
+    const url = URL.createObjectURL(blob)
+    $decodeBinaryResult.src = url
+    setTimeout(() => {
+      URL.revokeObjectURL(url)
+    }, 0)
+
+    decodeBinary(buffer)
+    .then(decoded => {
+
+      decodedBinaryBlob = new Blob([ decoded ])
+      decodedBinaryBlobFileName = file.name.replace(/\.png$/, '')
+
+      $decodeBinaryStats.innerText = `Decoded ${decodedBinaryBlobFileName}`
+      $decodeBinaryDownloadButton.classList.remove('hidden')
+    })
+    .catch(error => {
+
+      clearDecodedBinaryInterface()
+
+      $decodeBinaryStats.innerText = error.message
+      console.error(error)  
+    })
+
+  })
+
+  reader.readAsArrayBuffer(file)
+})
+
+function clearDecodedBinaryInterface() {
+  $decodeBinaryInput.value = ''
+  $decodeBinaryResult.src = ''
+  $decodeBinaryStats.innerText = ''
+  $decodeBinaryDownloadButton.classList.add('hidden')
+
+  decodedBinaryBlob = null
+  decodedBinaryBlobFileName = null
+}
+
+$decodeBinaryClearButton.addEventListener('click', function() {
+  clearDecodedBinaryInterface()
+})
+
+$decodeBinaryDownloadButton.addEventListener('click', function() {
+  if (!decodedBinaryBlob) return
+
+  const blob = decodedBinaryBlob
+
+  const url = URL.createObjectURL(blob)
+  let a = document.createElement("a")
+  a.download = decodedBinaryBlobFileName // 'compressed.png'
+  a.href = url
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  a = null
+
+  setTimeout(() => {
+    URL.revokeObjectURL(url)
+  }, 0)
+})
+
+</script>
 </body>
 </html>
