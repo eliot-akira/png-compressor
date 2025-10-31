@@ -555,7 +555,7 @@ export interface IPngMetadataExif {
   /**
    * The raw EXIF buffer.
    */
-  value: ArrayBuffer
+  value: ArrayBuffer | SharedArrayBuffer
 }
 
 /**

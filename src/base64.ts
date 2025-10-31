@@ -20,7 +20,7 @@ export function encodeBase64(data: string) {
 
 export function decodeBase64(data: string) {
   const decoder = new TextDecoder()
-  return decoder.decode(toByteArray(data) as ArrayBuffer)
+  return decoder.decode(toByteArray(data) as unknown as ArrayBuffer)
 }
 
 function getLens(b64) {

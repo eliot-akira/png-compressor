@@ -15,6 +15,9 @@ run(async () => {
 
   testDecodeImageColors()
 
+  // See ./colors
+  await fs.mkdir(`./tests/generated`, { recursive: true })
+
   const testImageIds = [1, 2]
 
   for (const id of testImageIds) {

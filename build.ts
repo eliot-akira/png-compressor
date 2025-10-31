@@ -113,6 +113,7 @@ if (isDev)
   } else if (command === 'esm') {
     await fs.writeFile(`build/esm/package.json`, `{"type": "module"}`)
   } else if (command === 'web') {
+    await fs.mkdir(`./build/web`, { recursive: true })
     // Copy from docs
     await Promise.all([
       fs.copyFile(`./docs/${name}.js`, `./build/web/${name}.js`),

@@ -11,9 +11,9 @@ export type EncodableValue = JsonValue | ArrayBuffer | Uint8Array
 export async function encodeImageData(value: EncodableValue) {
   return await encodeBinaryToPng(
     await compress(
-      value instanceof ArrayBuffer || value instanceof Uint8Array
+      (value instanceof ArrayBuffer || value instanceof Uint8Array
         ? value
-        : valueToArrayBuffer(value),
+        : valueToArrayBuffer(value)) as ArrayBuffer,
     ),
   )
 }

@@ -48,13 +48,14 @@
     "docs:dev": "NODE_ENV=development npm run docs -- --watch --preserveWatchOutput",
     "test": "bun tests/index.ts",
     "tdd": "chokidar \"src/**/*.ts\" \"tests/**/*.ts\" --initial --silent --command \"bun run test\"",
-    "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/* && rm -rf build/types/* && rm build/tsconfig.types.tsbuildinfo",
+    "clean": "rm -rf build/cjs/* && rm -rf build/esm/* && rm -rf build/web/* && rm -rf build/types/* && rm -f build/tsconfig.types.tsbuildinfo",
     "format": "prettier --no-config --no-semi --single-quote --write src",
     "release": "npm run build && npm publish --access public"
   },
   "dependencies": {},
   "devDependencies": {
     "@gjsify/esbuild-plugin-transform-ext": "^0.0.4",
+    "@types/node": "^24.9.2",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.2",
